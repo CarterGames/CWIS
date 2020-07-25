@@ -15,6 +15,7 @@ namespace CarterGames.CWIS
     {
         public int shipHealth = 5;
         public int shipMissiles = 0;
+        public GameObject mast;
 
         public void DamageShip(int damage)
         {

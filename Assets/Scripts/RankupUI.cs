@@ -60,11 +60,17 @@ namespace CarterGames.CWIS
                     rateButtons[i].GetComponent<Button>().interactable = false;
                     rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = true;
                 }
-                else
+                else if (i == rate)
                 {
                     // unlock option
                     rateButtons[i].GetComponent<Button>().interactable = true;
                     rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                }
+                else
+                {
+                    rateButtons[i].GetComponent<Button>().interactable = false;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }
 
@@ -76,11 +82,17 @@ namespace CarterGames.CWIS
                     ammoButtons[i].GetComponent<Button>().interactable = false;
                     ammoButtons[i].GetComponentsInChildren<Image>()[1].enabled = true;
                 }
-                else
+                else if (i == ammo)
                 {
                     // unlock option
                     rateButtons[i].GetComponent<Button>().interactable = true;
                     rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                }
+                else
+                {
+                    rateButtons[i].GetComponent<Button>().interactable = false;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }
 
@@ -92,11 +104,17 @@ namespace CarterGames.CWIS
                     coolButtons[i].GetComponent<Button>().interactable = false;
                     coolButtons[i].GetComponentsInChildren<Image>()[1].enabled = true;
                 }
-                else
+                else if (i == cool)
                 {
                     // unlock option
                     rateButtons[i].GetComponent<Button>().interactable = true;
                     rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                }
+                else
+                {
+                    rateButtons[i].GetComponent<Button>().interactable = false;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }
 
