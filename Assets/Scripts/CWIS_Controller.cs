@@ -18,14 +18,15 @@ namespace CarterGames.CWIS
         [SerializeField] private GameObject[] turretUI;
 
         private bool isCoR;
-        private int ammo1 = 250;
-        private int ammo2 = 250;
+        private int ammo1 = 200;
+        internal int maxAmmo1 = 200;
+        private int ammo2 = 200;
+        internal int maxAmmo2 = 200;
 
         private bool isShooting;
 
         internal float[] shootSpd;
 
-        public float coolDown = .05f;
         public GameObject bulletPrefab;
         public int bulletPoolLimit;
 
@@ -104,19 +105,20 @@ namespace CarterGames.CWIS
         }
 
 
-        public void ShootBullet(Vector3 startPos, Vector3 direction, Controller controller)
+        public void ShootBullet(Vector3 startPos, Vector3 direction, Controller controller, float delay)
         {
             if (!isShooting)
             {
-                StartCoroutine(ShootBulletCo(startPos, direction, controller));
+                StartCoroutine(ShootBulletCo(startPos, direction, controller, delay));
             }
         }
 
 
-        private IEnumerator ShootBulletCo(Vector3 startPos, Vector3 direction, Controller controller)
+        private IEnumerator ShootBulletCo(Vector3 startPos, Vector3 direction, Controller controller, float delay)
         {
             isShooting = true;
-            float moveSpd;
+            float moveSpd = 0;
+            bool shoot = true;
 
             for (int i = 0; i < objectLimit; i++)
             {
@@ -125,28 +127,51 @@ namespace CarterGames.CWIS
                     switch (controller)
                     {
                         case Controller.CWIS1:
-                            UseAmmo_CW1();
-                            moveSpd = Random.Range(shootSpd[0] - 10, shootSpd[0] + 10);
-                            objectPool[i].GetComponent<Bullet>().shotBy = 1;
+
+                            if (ammo1 > 0)
+                            {
+                                UseAmmo_CW1();
+                                moveSpd = Random.Range(shootSpd[0] - 10, shootSpd[0] + 10);
+                                objectPool[i].GetComponent<Bullet>().shotBy = 1;
+                            }
+                            else
+                            {
+                                shoot = false;
+                            }
+
                             break;
                         case Controller.CWIS2:
-                            UseAmmo_CW2();
-                            moveSpd = Random.Range(shootSpd[1] - 10, shootSpd[1] + 10);
-                            objectPool[i].GetComponent<Bullet>().shotBy = 2;
+
+                            if (ammo2 > 0)
+                            {
+                                UseAmmo_CW2();
+                                moveSpd = Random.Range(shootSpd[1] - 10, shootSpd[1] + 10);
+                                objectPool[i].GetComponent<Bullet>().shotBy = 2;
+                            }
+                            else
+                            {
+                                shoot = false;
+                            }
+
                             break;
                         default:
                             moveSpd = 0;
                             break;
                     }
 
-                    objectPool[i].transform.position = startPos;
-                    objectPool[i].transform.rotation = Quaternion.LookRotation(direction);
-                    objectPool[i].GetComponent<Rigidbody>().velocity = (new Vector3(direction.x, 0, direction.z)).normalized * moveSpd;
-                    objectPool[i].SetActive(true);
+                    if (shoot)
+                    {
+                        objectPool[i].transform.position = startPos;
+                        objectPool[i].transform.rotation = Quaternion.LookRotation(direction);
+                        objectPool[i].GetComponent<Rigidbody>().velocity = (new Vector3(direction.x, 0, direction.z)).normalized * moveSpd;
+                        objectPool[i].SetActive(true);
+                    }
+
                     break;
                 }
             }
-            yield return new WaitForSeconds(coolDown);
+
+            yield return new WaitForSeconds(delay);
             isShooting = false;
         }
 
@@ -164,7 +189,14 @@ namespace CarterGames.CWIS
 
         public void AddAmmo_CW1(int input)
         {
-            ammo1 += input;
+            if (ammo1 + input < maxAmmo1)
+            {
+                ammo1 += input;
+            }
+            else
+            {
+                ammo1 = maxAmmo1;
+            }
         }
 
         public string GetAmmoCount_CW2()
@@ -180,7 +212,14 @@ namespace CarterGames.CWIS
 
         public void AddAmmo_CW2(int input)
         {
-            ammo2 += input;
+            if (ammo2 + input < maxAmmo2)
+            {
+                ammo2 += input;
+            }
+            else
+            {
+                ammo2 = maxAmmo2;
+            }
         }
     }
 }

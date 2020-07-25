@@ -24,10 +24,11 @@ namespace CarterGames.CWIS
         [SerializeField] internal float timeHeldDown;
         [SerializeField] private float maxTime;
 
-        internal int rateOfFire = 0;
-        internal int coolerEff = 0;
-        internal int ammoCap = 0;
-
+        [SerializeField] internal int rateOfFire = 0;
+        [SerializeField] internal int coolerEff = 0;
+        [SerializeField] internal int ammoCap = 0;
+        private int lastAmmoCap = 0;
+        private int lastCool = 0;
 
         private void Start()
         {
@@ -66,7 +67,14 @@ namespace CarterGames.CWIS
 
                         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                         {
-                            control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret);
+                            if (rateOfFire > 0)
+                            {
+                                control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret, (0.05f / rateOfFire));
+                            }
+                            else
+                            {
+                                control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret, 0.075f);
+                            }
                         }
                     }
                 }
@@ -83,8 +91,38 @@ namespace CarterGames.CWIS
             {
                 if (timeHeldDown != 0)
                 {
-                    timeHeldDown -= Time.deltaTime / 6;
+                    if (coolerEff > 0)
+                    {
+                        timeHeldDown -= Time.deltaTime / (6 - coolerEff);
+                    }
+                    else
+                    {
+                        timeHeldDown -= Time.deltaTime / (8);
+                    }
                 }
+            }
+
+            if (ammoCap > lastAmmoCap)
+            {
+                switch (thisTurret)
+                {
+                    case CWIS_Controller.Controller.CWIS1:
+                        control.maxAmmo1 += 100;
+                        lastAmmoCap = ammoCap;
+                        break;
+                    case CWIS_Controller.Controller.CWIS2:
+                        control.maxAmmo2 += 100;
+                        lastAmmoCap = ammoCap;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (coolerEff > lastCool)
+            {
+                maxTime += 1;
+                lastCool = coolerEff;
             }
         }
 
@@ -108,12 +146,6 @@ namespace CarterGames.CWIS
         private void IncrementTimeHeldDown()
         {
             timeHeldDown += Time.deltaTime;
-        }
-
-
-        private void Ranking()
-        {
-
         }
     }
 }
