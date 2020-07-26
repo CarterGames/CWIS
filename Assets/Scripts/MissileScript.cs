@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using CarterGames.Assets.AudioManager;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.U2D;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -16,6 +16,7 @@ namespace CarterGames.CWIS
         [SerializeField] private Transform radarSprite;
 
         private GameManager gm;
+        private AudioManager am;
 
         private void OnEnable()
         {
@@ -27,6 +28,11 @@ namespace CarterGames.CWIS
             if (!gm)
             {
                 gm = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+            }
+
+            if (!am)
+            {
+                am = FindObjectOfType<AudioManager>();
             }
         }
 
@@ -60,6 +66,18 @@ namespace CarterGames.CWIS
                         break;
                 }
 
+
+                if (IsVisibleFrom(this.GetComponentInChildren<Renderer>(), Camera.main))
+                {
+                    //am.Play("missileHitClose", .5f, .75f);
+                }
+                else
+                {
+                    am.Play("missileHitFar", .5f, .75f);
+                }
+
+                gm.AddToScore(50 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
+
                 gameObject.SetActive(false);
             }
 
@@ -70,6 +88,20 @@ namespace CarterGames.CWIS
                 _go.GetComponent<ParticleSystem>().Play();
                 gameObject.SetActive(false);
             }
+        }
+
+
+
+        /// <summary>
+        /// Checks to see if the inputted camera can see the object
+        /// </summary>
+        /// <param name="renderer">Renderer to check</param>
+        /// <param name="camera">Camera view to check</param>
+        /// <returns>true / false</returns>
+        private bool IsVisibleFrom(Renderer renderer, Camera camera)
+        {
+            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+            return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
         }
     }
 }

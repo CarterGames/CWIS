@@ -15,7 +15,7 @@ namespace CarterGames.CWIS
         [SerializeField] private int cw2BestRank = 0;
         [SerializeField] internal bool openRankupUI;
         [SerializeField] private CanvasGroup rankui;
-
+        [SerializeField] private FlickerButton[] buttons;
         public enum Ranks { None, Chev1, Chev2, Chev3, Star1, Star2, Star3 }
        
 
@@ -25,6 +25,10 @@ namespace CarterGames.CWIS
         public CWIS_Turret cwis1Turret;
         public CWIS_Turret cwis2Turret;
 
+        public bool isGameRunning;
+        public int score;
+
+        public CanvasGroup gameoverUI;
 
         private void Start()
         {
@@ -37,6 +41,8 @@ namespace CarterGames.CWIS
             Random.Range(50, 65),
             Random.Range(75, 100)
             };
+
+            isGameRunning = true;
         }
 
 
@@ -116,14 +122,14 @@ namespace CarterGames.CWIS
                         if (cw1BestRank == 0)
                         {
                             cw1BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[0].shouldFlicker = true;
                         }
                         break;
                     case 2:
                         if (cw2BestRank == 0)
                         {
                             cw2BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[1].shouldFlicker = true;
                         }
                         break;
                     default:
@@ -141,14 +147,14 @@ namespace CarterGames.CWIS
                         if (cw1BestRank == 1)
                         {
                             cw1BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[0].shouldFlicker = true;
                         }
                         break;
                     case 2:
                         if (cw2BestRank == 1)
                         {
                             cw2BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[1].shouldFlicker = true;
                         }
                         break;
                     default:
@@ -166,14 +172,14 @@ namespace CarterGames.CWIS
                         if (cw1BestRank == 2)
                         {
                             cw1BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[0].shouldFlicker = true;
                         }
                         break;
                     case 2:
                         if (cw2BestRank == 2)
                         {
                             cw2BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[1].shouldFlicker = true;
                         }
                         break;
                     default:
@@ -191,14 +197,14 @@ namespace CarterGames.CWIS
                         if (cw1BestRank == 3)
                         {
                             cw1BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[0].shouldFlicker = true;
                         }
                         break;
                     case 2:
                         if (cw2BestRank == 3)
                         {
                             cw2BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[1].shouldFlicker = true;
                         }
                         break;
                     default:
@@ -216,14 +222,14 @@ namespace CarterGames.CWIS
                         if (cw1BestRank == 4)
                         {
                             cw1BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[0].shouldFlicker = true;
                         }
                         break;
                     case 2:
                         if (cw2BestRank == 4)
                         {
                             cw2BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[1].shouldFlicker = true;
                         }
                         break;
                     default:
@@ -241,14 +247,14 @@ namespace CarterGames.CWIS
                         if (cw1BestRank == 5)
                         {
                             cw1BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[0].shouldFlicker = true;
                         }
                         break;
                     case 2:
                         if (cw2BestRank == 5)
                         {
                             cw2BestRank++;
-                            OpenRankupUI(turret);
+                            buttons[1].shouldFlicker = true;
                         }
                         break;
                     default:
@@ -258,7 +264,7 @@ namespace CarterGames.CWIS
         }
 
 
-        private void OpenRankupUI(CWIS_Turret whichTurret)
+        public void OpenRankupUI(CWIS_Turret whichTurret)
         {
             rankui.gameObject.GetComponent<RankupUI>().turret = whichTurret;
             rankui.gameObject.GetComponent<RankupUI>().rate = whichTurret.rateOfFire;
@@ -266,6 +272,17 @@ namespace CarterGames.CWIS
             rankui.gameObject.GetComponent<RankupUI>().cool = whichTurret.coolerEff;
             rankui.gameObject.GetComponent<RankupUI>().Setup();
             openRankupUI = true;
+        }
+
+
+        public void AddToScore(int amount)
+        {
+            score += amount;
+        }
+
+        public void ReduceScore(int amount)
+        {
+            score -= amount;
         }
     }
 }

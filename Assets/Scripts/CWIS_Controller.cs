@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CarterGames.Utilities;
+using CarterGames.Assets.AudioManager;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -16,6 +17,8 @@ namespace CarterGames.CWIS
         [SerializeField] private int maxController = 3;
         [SerializeField] private GameObject[] turrets;
         [SerializeField] private GameObject[] turretUI;
+
+        private AudioManager am;
 
         private bool isCoR;
         private int ammo1 = 200;
@@ -52,6 +55,8 @@ namespace CarterGames.CWIS
             }
 
             shootSpd = new float[2] { 120f, 120f };
+
+            am = FindObjectOfType<AudioManager>();
         }
 
 
@@ -165,6 +170,7 @@ namespace CarterGames.CWIS
                         objectPool[i].transform.rotation = Quaternion.LookRotation(direction);
                         objectPool[i].GetComponent<Rigidbody>().velocity = (new Vector3(direction.x, 0, direction.z)).normalized * moveSpd;
                         objectPool[i].SetActive(true);
+                        am.PlayFromTime("cwisShoot", .65f, .25f, .75f);
                     }
 
                     break;

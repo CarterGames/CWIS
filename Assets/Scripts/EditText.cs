@@ -14,10 +14,11 @@ namespace CarterGames.CWIS
         private Text text;
         private CWIS_Controller controller;
         private ShipController ship;
+        private GameManager gm;
 
-        public bool isCwis1;
-        public bool isCwis2;
-        public bool isShipHealth;
+        public enum textOption { Cw1, Cw2, ShipHealth, Score, }
+
+        public textOption option;
 
 
         private void Start()
@@ -25,21 +26,27 @@ namespace CarterGames.CWIS
             text = GetComponent<Text>();
             controller = FindObjectOfType<CWIS_Controller>();
             ship = FindObjectOfType<ShipController>();
+            gm = FindObjectOfType<GameManager>();
         }
 
         private void Update()
         {
-            if ((isCwis1) && (!isCwis2))
+            switch (option)
             {
-                text.text = controller.GetAmmoCount_CW1();
-            }
-            else if ((!isCwis1) && (isCwis2))
-            {
-                text.text = controller.GetAmmoCount_CW2();
-            }
-            else if (isShipHealth)
-            {
-                text.text = ship.shipHealth.ToString();
+                case textOption.Cw1:
+                    text.text = controller.GetAmmoCount_CW1();
+                    break;
+                case textOption.Cw2:
+                    text.text = controller.GetAmmoCount_CW2();
+                    break;
+                case textOption.ShipHealth:
+                    text.text = ship.shipHealth.ToString();
+                    break;
+                case textOption.Score:
+                    text.text = gm.score.ToString();
+                    break;
+                default:
+                    break;
             }
         }
     }

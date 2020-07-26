@@ -21,6 +21,8 @@ namespace CarterGames.CWIS
         private bool hasAmmo;
         private bool isFiring;
 
+        private GameManager gm;
+
         [SerializeField] internal float timeHeldDown;
         [SerializeField] private float maxTime;
 
@@ -30,6 +32,7 @@ namespace CarterGames.CWIS
         private int lastAmmoCap = 0;
         private int lastCool = 0;
 
+
         private void Start()
         {
             cam = Camera.main;
@@ -37,6 +40,7 @@ namespace CarterGames.CWIS
             ship = FindObjectOfType<ShipController>();
             canShoot = true;
             hasAmmo = true;
+            gm = FindObjectOfType<GameManager>();
         }
 
 
@@ -49,6 +53,8 @@ namespace CarterGames.CWIS
                 if (timeHeldDown > maxTime)
                 {
                     canShoot = false;
+
+                    gm.ReduceScore(1);
                 }
                 else
                 {

@@ -14,6 +14,7 @@ namespace CarterGames.CWIS
         private Rigidbody rB;
         private ShipController ship;
         private CWIS_Controller control;
+        private GameManager gm;
 
         public int ammoStandard;
         public int ammoSpecial;
@@ -35,6 +36,7 @@ namespace CarterGames.CWIS
             rB = GetComponent<Rigidbody>();
             ship = FindObjectOfType<ShipController>();
             control = FindObjectOfType<CWIS_Controller>();
+            gm = FindObjectOfType<GameManager>();
 
             rB.velocity = (new Vector3(transform.position.x, transform.position.y, 100) - transform.position).normalized * moveSpd;
         }
@@ -63,6 +65,7 @@ namespace CarterGames.CWIS
                     ship.shipMissiles += missiles;
                 }
 
+                gm.AddToScore(50);
                 gameObject.SetActive(false);
             }
         }
