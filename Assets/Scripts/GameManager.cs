@@ -10,25 +10,34 @@ namespace CarterGames.CWIS
 {
     public class GameManager : MonoBehaviour
     {
-        private int[] rankUpRequirements;
+        public enum Ranks { None, Chev1, Chev2, Chev3, Star1, Star2, Star3 }
+
+        [Header("Weapon Ranks")]
         [SerializeField] private int cw1BestRank = 0;
         [SerializeField] private int cw2BestRank = 0;
+
+        [Header("Weapon Rankup UI")]
         [SerializeField] internal bool openRankupUI;
         [SerializeField] private CanvasGroup rankui;
         [SerializeField] private FlickerButton[] buttons;
-        public enum Ranks { None, Chev1, Chev2, Chev3, Star1, Star2, Star3 }
-       
 
+
+        private int[] rankUpRequirements;
+
+        [Header("Kill Counts")]
         public int cwis1Hits = 0;
         public int cwis2Hits = 0;
 
+        [Header("Turrets")]
         public CWIS_Turret cwis1Turret;
         public CWIS_Turret cwis2Turret;
 
+        [Header("Game Control")]
         public bool isGameRunning;
         public int score;
-
         public CanvasGroup gameoverUI;
+
+
 
         private void Start()
         {

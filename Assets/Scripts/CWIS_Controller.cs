@@ -14,29 +14,35 @@ namespace CarterGames.CWIS
 {
     public class CWIS_Controller : MonoBehaviour, IObjectPool<GameObject>
     {
-        [SerializeField] private int maxController = 3;
+        public enum Controller { CWIS1, CWIS2, Shaft, Missiles };
+        [Header("Which Turret Is In Use?")]
+        public Controller activeTurret;
+
+        [SerializeField] [Header("Weapons Stuff")] private int maxController = 4;
         [SerializeField] private GameObject[] turrets;
         [SerializeField] private GameObject[] turretUI;
 
         private AudioManager am;
+        private Shaft_Ability shaft;
 
+        // used for cycling weapons
         private bool isCoR;
+
+        // used for shooting cooldown
+        private bool isShooting;
+
+
+        // CWIS Ammo/speed - Both Turrets
         private int ammo1 = 200;
         internal int maxAmmo1 = 200;
         private int ammo2 = 200;
         internal int maxAmmo2 = 200;
-
-        private bool isShooting;
-
         internal float[] shootSpd;
 
+
+        [Header("Objct Pooling 4 Bullets")]
         public GameObject bulletPrefab;
         public int bulletPoolLimit;
-
-        public enum Controller { CWIS1, CWIS2, Shaft };
-        public Controller activeTurret;
-
-
         public int objectLimit { get; set; }
         public List<GameObject> objectPool { get; set; }
 
@@ -44,6 +50,7 @@ namespace CarterGames.CWIS
 
         private void Start()
         {
+            // object pool
             objectLimit = bulletPoolLimit;
             objectPool = new List<GameObject>();
 
@@ -54,9 +61,11 @@ namespace CarterGames.CWIS
                 objectPool.Add(_go);
             }
 
+            // misc setup
             shootSpd = new float[2] { 120f, 120f };
 
             am = FindObjectOfType<AudioManager>();
+            shaft = FindObjectOfType<Shaft_Ability>();
         }
 
 
@@ -67,6 +76,30 @@ namespace CarterGames.CWIS
             {
                 StartCoroutine(Cycle());
             }
+
+            if (Input.GetButtonDown("Button1") && !isCoR)
+            {
+                activeTurret = Controller.CWIS1;
+                UpdateTurretUI();
+            }
+
+            if (Input.GetButtonDown("Button2") && !isCoR)
+            {
+                activeTurret = Controller.CWIS2;
+                UpdateTurretUI();
+            }
+
+            if (Input.GetButtonDown("Button3") && !isCoR)
+            {
+                activeTurret = Controller.Shaft;
+                UpdateTurretUI();
+            }
+
+            if (Input.GetButtonDown("Button4") && !isCoR)
+            {
+                activeTurret = Controller.Missiles;
+                UpdateTurretUI();
+            }
         }
 
 
@@ -74,32 +107,51 @@ namespace CarterGames.CWIS
         {
             activeTurret++;
 
+            UpdateTurretUI();
+
+            if ((int)activeTurret == maxController)
+            {
+                activeTurret = 0;
+            }
+        }
+
+
+        private void UpdateTurretUI()
+        {
             switch (activeTurret)
             {
                 case Controller.CWIS1:
                     turretUI[0].SetActive(true);
                     turretUI[1].SetActive(false);
+                    turretUI[2].SetActive(false);
+                    turretUI[3].SetActive(false);
                     break;
                 case Controller.CWIS2:
                     turretUI[1].SetActive(true);
                     turretUI[0].SetActive(false);
+                    turretUI[2].SetActive(false);
+                    turretUI[3].SetActive(false);
                     break;
                 case Controller.Shaft:
                     turretUI[0].SetActive(false);
                     turretUI[1].SetActive(false);
+                    turretUI[2].SetActive(true);
+                    turretUI[3].SetActive(false);
+                    break;
+                case Controller.Missiles:
+                    turretUI[0].SetActive(false);
+                    turretUI[1].SetActive(false);
+                    turretUI[2].SetActive(false);
+                    turretUI[3].SetActive(true);
                     break;
                 default:
+                    turretUI[0].SetActive(false);
+                    turretUI[1].SetActive(false);
+                    turretUI[2].SetActive(false);
+                    turretUI[3].SetActive(false);
                     break;
             }
-
-            if ((int)activeTurret == maxController)
-            {
-                activeTurret = 0;
-                turretUI[0].SetActive(true);
-                turretUI[1].SetActive(false);
-            }
         }
-
 
         private IEnumerator Cycle()
         {

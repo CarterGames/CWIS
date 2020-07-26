@@ -24,7 +24,7 @@ namespace CarterGames.CWIS
         private GameManager gm;
 
         [SerializeField] internal float timeHeldDown;
-        [SerializeField] private float maxTime;
+        [SerializeField] internal float maxTime;
 
         [SerializeField] internal int rateOfFire = 0;
         [SerializeField] internal int coolerEff = 0;

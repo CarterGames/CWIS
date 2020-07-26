@@ -24,6 +24,7 @@ namespace CarterGames.CWIS
         public int objectLimit { get; set; }
         public List<GameObject> objectPool { get; set; }
 
+        public List<GameObject> activeMissiles;
 
         public float minWait;
         public float maxWait;
@@ -69,6 +70,7 @@ namespace CarterGames.CWIS
                     objectPool[i].GetComponent<Rigidbody>().velocity = (dir).normalized * 100;
                     objectPool[i].transform.LookAt(dir);
                     objectPool[i].SetActive(true);
+                    activeMissiles.Add(objectPool[i]);
                     break;
                 }
             }

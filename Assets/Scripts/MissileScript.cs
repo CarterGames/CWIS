@@ -17,6 +17,7 @@ namespace CarterGames.CWIS
 
         private GameManager gm;
         private AudioManager am;
+        private MissileSpawer ms;
 
         private void OnEnable()
         {
@@ -33,6 +34,11 @@ namespace CarterGames.CWIS
             if (!am)
             {
                 am = FindObjectOfType<AudioManager>();
+            }
+
+            if (!ms)
+            {
+                ms = FindObjectOfType<MissileSpawer>();
             }
         }
 
@@ -77,9 +83,26 @@ namespace CarterGames.CWIS
                 }
 
                 gm.AddToScore(50 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
-
+                ms.activeMissiles.Remove(this.gameObject);
                 gameObject.SetActive(false);
             }
+
+
+
+            if (other.gameObject.CompareTag("Shaft"))
+            {
+                // explosion
+                GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
+                _go.GetComponent<ParticleSystem>().Play();
+
+                //am.Play("missileHitClose", .5f, .75f);
+
+                gm.AddToScore(20 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
+                ms.activeMissiles.Remove(this.gameObject);
+                gameObject.SetActive(false);
+            }
+
+
 
             if (other.gameObject.CompareTag("Player"))
             {

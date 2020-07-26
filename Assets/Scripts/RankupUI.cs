@@ -85,14 +85,14 @@ namespace CarterGames.CWIS
                 else if (i == ammo)
                 {
                     // unlock option
-                    rateButtons[i].GetComponent<Button>().interactable = true;
-                    rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                    ammoButtons[i].GetComponent<Button>().interactable = true;
+                    ammoButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
                 }
                 else
                 {
-                    rateButtons[i].GetComponent<Button>().interactable = false;
-                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
-                    rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
+                    ammoButtons[i].GetComponent<Button>().interactable = false;
+                    ammoButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    ammoButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }
 
@@ -107,14 +107,14 @@ namespace CarterGames.CWIS
                 else if (i == cool)
                 {
                     // unlock option
-                    rateButtons[i].GetComponent<Button>().interactable = true;
-                    rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                    coolButtons[i].GetComponent<Button>().interactable = true;
+                    coolButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
                 }
                 else
                 {
-                    rateButtons[i].GetComponent<Button>().interactable = false;
-                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
-                    rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
+                    coolButtons[i].GetComponent<Button>().interactable = false;
+                    coolButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    coolButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }
 

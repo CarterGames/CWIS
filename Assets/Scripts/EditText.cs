@@ -16,7 +16,7 @@ namespace CarterGames.CWIS
         private ShipController ship;
         private GameManager gm;
 
-        public enum textOption { Cw1, Cw2, ShipHealth, Score, }
+        public enum textOption { Cw1, Cw2, ShipHealth, Score, Missiles }
 
         public textOption option;
 
@@ -34,16 +34,19 @@ namespace CarterGames.CWIS
             switch (option)
             {
                 case textOption.Cw1:
-                    text.text = controller.GetAmmoCount_CW1();
+                    text.text = controller.GetAmmoCount_CW1() + "/" + controller.maxAmmo1;
                     break;
                 case textOption.Cw2:
-                    text.text = controller.GetAmmoCount_CW2();
+                    text.text = controller.GetAmmoCount_CW2() + "/" + controller.maxAmmo2;
                     break;
                 case textOption.ShipHealth:
                     text.text = ship.shipHealth.ToString();
                     break;
                 case textOption.Score:
                     text.text = gm.score.ToString();
+                    break;
+                case textOption.Missiles:
+                    text.text = ship.shipMissiles.ToString();
                     break;
                 default:
                     break;

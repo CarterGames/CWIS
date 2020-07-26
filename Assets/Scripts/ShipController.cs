@@ -18,6 +18,7 @@ namespace CarterGames.CWIS
         private int timesHit = 0;
         private bool isCoR;
         private GameManager gm;
+        private MissileSpawer ms;
 
         private float gameTimer;
         private bool timerRunning;
@@ -27,6 +28,7 @@ namespace CarterGames.CWIS
         {
             isCoR = false;
             gm = FindObjectOfType<GameManager>();
+            ms = FindObjectOfType<MissileSpawer>();
             timerRunning = true;
             gameTimer = 0;
         }
@@ -88,6 +90,13 @@ namespace CarterGames.CWIS
                 gm.cwis1Turret.enabled = false;
                 gm.cwis2Turret.enabled = false;
                 gm.isGameRunning = false;
+
+                for (int i = 0; i < ms.activeMissiles.Count; i++)
+                {
+                    ms.activeMissiles[i].SetActive(false);
+                }
+
+                ms.enabled = false;
             }
         }
     }
