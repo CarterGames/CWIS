@@ -5212,6 +5212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62194a7f6cea2d43a7f15e77da1069a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radarIcon: {fileID: 223740367}
   missileSpd: 150
 --- !u!114 &1740485642701228697
 MonoBehaviour:

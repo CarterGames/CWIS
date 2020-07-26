@@ -55,7 +55,8 @@ namespace CarterGames.CWIS
             {
                 if (!objectPool[i].activeInHierarchy)
                 {
-                    objectPool[i].transform.position = new Vector3(Random.Range(-150f, 150f), 4, Random.Range(-150f, -300f));
+                    Vector3 spawnPos = ChooseSpawnLocation();
+                    objectPool[i].transform.position = new Vector3(spawnPos.x, 4, spawnPos.z);
                     objectPool[i].SetActive(true);
                     break;
                 }
@@ -63,6 +64,12 @@ namespace CarterGames.CWIS
 
             yield return new WaitForSeconds(Random.Range(minWait, maxWait));
             isCoR = false;
+        }
+
+
+        private Vector3 ChooseSpawnLocation()
+        {
+            return Random.onUnitSphere * (Random.Range(500, 2000));
         }
     }
 }

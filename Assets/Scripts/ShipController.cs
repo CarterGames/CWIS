@@ -21,8 +21,8 @@ namespace CarterGames.CWIS
         private GameManager gm;
         private MissileSpawer ms;
 
-        private float gameTimer;
-        private bool timerRunning;
+        public float gameTimer;
+        public bool timerRunning;
         private bool shipDead;
 
         private void Start()

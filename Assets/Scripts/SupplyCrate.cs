@@ -26,8 +26,8 @@ namespace CarterGames.CWIS
         {
             ammoStandard = Random.Range(30, 300);
             ammoSpecial = Random.Range(2, 10);
-            health = Random.Range(-5, 1);
-            missiles = Random.Range(-5, 2);
+            health = Random.Range(-5, 2);
+            missiles = Random.Range(-5, 4);
         }
 
 
@@ -38,13 +38,13 @@ namespace CarterGames.CWIS
             control = FindObjectOfType<CWIS_Controller>();
             gm = FindObjectOfType<GameManager>();
 
-            rB.velocity = (new Vector3(transform.position.x, transform.position.y, 100) - transform.position).normalized * moveSpd;
+            rB.velocity = (Vector3.zero - transform.position).normalized * moveSpd;
         }
 
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Bullet"))
+            if (other.gameObject.CompareTag("Bullet") || other.gameObject.CompareTag("Player"))
             {
                 // splits CWIS ammo evenly between both guns
                 int ammoSplit = Mathf.Abs(ammoStandard / 2);
@@ -58,9 +58,13 @@ namespace CarterGames.CWIS
                 {
                     ship.shipHealth += health;
                 }
+                else
+                {
+                    ship.shipHealth = 5;
+                }
 
                 // missiles, only if it is a positive value and below the max value
-                if (missiles > 0 && ship.shipMissiles + missiles <= 3)
+                if (missiles > 0)
                 {
                     ship.shipMissiles += missiles;
                 }

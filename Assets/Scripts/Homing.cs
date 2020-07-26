@@ -10,6 +10,8 @@ namespace CarterGames.CWIS
 {
     public class Homing : MonoBehaviour
     {
+        [SerializeField] private Transform radarIcon;
+
         private Rigidbody rb;
         internal GameObject targetPos;
         public int missileSpd = 150;
@@ -25,12 +27,17 @@ namespace CarterGames.CWIS
         {
             Vector3 dir = new Vector3(targetPos.transform.position.x - transform.position.x, 0, targetPos.transform.position.z - transform.position.z);
             rb.velocity = (dir).normalized * missileSpd;
-            transform.LookAt(dir);
+            transform.LookAt(targetPos.transform.position);
 
             if (!targetPos.gameObject.activeInHierarchy)
             {
                 gameObject.SetActive(false);
             }
+        }
+
+        private void LateUpdate()
+        {
+            radarIcon.transform.rotation = Quaternion.Euler(90, -90, 0);
         }
 
 

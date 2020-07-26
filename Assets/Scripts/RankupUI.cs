@@ -65,7 +65,7 @@ namespace CarterGames.CWIS
                 else
                 {
                     rateButtons[i].GetComponent<Button>().enabled = false;
-                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.red;
                     rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }
@@ -109,7 +109,7 @@ namespace CarterGames.CWIS
                 else
                 {
                     coolButtons[i].GetComponent<Button>().enabled = false;
-                    coolButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
+                    coolButtons[i].GetComponentsInChildren<Image>()[2].color = Color.green;
                     coolButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
             }

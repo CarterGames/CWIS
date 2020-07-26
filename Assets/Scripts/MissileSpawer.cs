@@ -28,7 +28,7 @@ namespace CarterGames.CWIS
 
         public float minWait;
         public float maxWait;
-
+        
 
         private void Start()
         {
@@ -52,6 +52,53 @@ namespace CarterGames.CWIS
             if (!isCoR)
             {
                 StartCoroutine(FireMissileCo(Random.Range(minWait, maxWait)));
+            }
+
+
+            switch (ship.gameTimer)
+            {
+                case 5:
+                    minWait = 7f;
+                    maxWait = 10f;
+                    break;
+                case 10:
+                    minWait = 6f;
+                    maxWait = 9f;
+                    break;
+                case 20:
+                    minWait = 6f;
+                    maxWait = 8.5f;
+                    break;
+                case 35:
+                    minWait = 5f;
+                    maxWait = 7f;
+                    break;
+                case 50:
+                    minWait = 4f;
+                    maxWait = 7f;
+                    break;
+                case 75:
+                    minWait = 3f;
+                    maxWait = 7f;
+                    break;
+                case 100:
+                    minWait = 2f;
+                    maxWait = 5f;
+                    break;
+                case 125:
+                    minWait = 2f;
+                    maxWait = 4f;
+                    break;
+                case 150:
+                    minWait = 1f;
+                    maxWait = 4f;
+                    break;
+                case 200:
+                    minWait = 1f;
+                    maxWait = 3f;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -82,7 +129,7 @@ namespace CarterGames.CWIS
 
         private Vector3 ChooseSpawnLocation()
         {
-            return Random.onUnitSphere * (Random.Range(500, 2000));
+            return Random.onUnitSphere * (Random.Range(minDistance, 1500));
         }
     }
 }
