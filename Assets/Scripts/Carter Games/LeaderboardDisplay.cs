@@ -15,8 +15,9 @@ namespace CarterGames.Assets.LeaderboardManager
     public class LeaderboardDisplay : MonoBehaviour
     {
         [SerializeField] private LeaderboardData[] data;
-        [SerializeField] private Text[] namesTxt;
-        [SerializeField] private Text[] scoreTxt;
+        [SerializeField] private GameObject rowAnchor;
+        [SerializeField] private GameObject rowPrefab;
+        [SerializeField] private GameObject loading;
 
         public bool updateLeaderboard;
         public bool useOnline;
@@ -35,14 +36,34 @@ namespace CarterGames.Assets.LeaderboardManager
         }
 
 
+        private void Update()
+        {
+            if (updateLeaderboard)
+            {
+                for (int i = 0; i < data.Length; i++)
+                {
+                    GameObject _newRow = Instantiate(rowPrefab, rowAnchor.transform);
+                    _newRow.GetComponentsInChildren<Text>()[0].text = (i + 1).ToString();
+                    _newRow.GetComponentsInChildren<Text>()[1].text = data[i].name;
+                    _newRow.GetComponentsInChildren<Text>()[2].text = data[i].score.ToString();
+                    _newRow.SetActive(true);
+                }
+
+                loading.SetActive(false);
+                updateLeaderboard = false;
+            }
+        }
+
         private IEnumerator GetAllEntries()
         {
+            loading.SetActive(true);
+
             List<LeaderboardData> ListData = new List<LeaderboardData>();
 
             List<string> ReceivedPlayerName = new List<string>();
             List<string> ReceivedPlayerScore = new List<string>();
 
-            UnityWebRequest Request = UnityWebRequest.Get("getscores.php?");
+            UnityWebRequest Request = UnityWebRequest.Get("https://carter.games/leaderboardfiles/getscoress9.php?");
 
             yield return Request.SendWebRequest();
 
@@ -51,19 +72,19 @@ namespace CarterGames.Assets.LeaderboardManager
                 string[] Values = Request.downloadHandler.text.Split("\r"[0]);
 
                 // only get the top 5 entries
-                for (int i = 0; i < Values.Length; i++)
+                for (int i = 0; i < Values.Length - 1; i++)
                 {
-                    if (i % 8 == 0)
+                    if ((i % 2) == 0)
                     {
                         ReceivedPlayerName.Add(Values[i]);
                     }
-                    else if (i % 8 == 1)
+                    else if ((i % 2) == 1)
                     {
                         ReceivedPlayerScore.Add(Values[i]);
                     }
                     else
                     {
-                        Debug.LogError("Value to added to any list!");
+                        Debug.LogError("Value not added to any list!" + Values[i]);
                     }
                 }
 
@@ -73,12 +94,18 @@ namespace CarterGames.Assets.LeaderboardManager
                     LeaderboardData Data = new LeaderboardData();
 
                     Data.name = ReceivedPlayerName[i];
-                    Data.score = float.Parse(ReceivedPlayerScore[i]);
+
+                    if (ReceivedPlayerScore[i] != null)
+                    {
+                        Data.score = float.Parse(ReceivedPlayerScore[i]);
+                    }
 
                     ListData.Add(Data);
                 }
 
                 data = ListData.ToArray();
+
+                updateLeaderboard = true;
             }
         }
     }

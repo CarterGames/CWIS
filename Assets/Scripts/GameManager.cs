@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -20,6 +21,8 @@ namespace CarterGames.CWIS
         [SerializeField] internal bool openRankupUI;
         [SerializeField] private CanvasGroup rankui;
         [SerializeField] private FlickerButton[] buttons;
+        [SerializeField] private Text titleTxt;
+        [SerializeField] private Text descTxt;
 
 
         private int[] rankUpRequirements;
@@ -275,11 +278,14 @@ namespace CarterGames.CWIS
 
         public void OpenRankupUI(CWIS_Turret whichTurret)
         {
+            rankui.GetComponentsInChildren<Text>()[0].text = "Upgrading: " + whichTurret.gameObject.name;
             rankui.gameObject.GetComponent<RankupUI>().turret = whichTurret;
             rankui.gameObject.GetComponent<RankupUI>().rate = whichTurret.rateOfFire;
             rankui.gameObject.GetComponent<RankupUI>().ammo = whichTurret.ammoCap;
             rankui.gameObject.GetComponent<RankupUI>().cool = whichTurret.coolerEff;
             rankui.gameObject.GetComponent<RankupUI>().Setup();
+            titleTxt.text = "...";
+            descTxt.text = "Select an option to see what it does.";
             openRankupUI = true;
         }
 

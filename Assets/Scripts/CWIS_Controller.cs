@@ -72,10 +72,10 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-            if ((Input.GetMouseButtonDown(1)) && (!isCoR))
-            {
-                StartCoroutine(Cycle());
-            }
+            //if ((Input.GetMouseButtonDown(1)) && (!isCoR))
+            //{
+            //    StartCoroutine(Cycle());
+            //}
 
             if (Input.GetButtonDown("Button1") && !isCoR)
             {
@@ -112,6 +112,10 @@ namespace CarterGames.CWIS
             if ((int)activeTurret == maxController)
             {
                 activeTurret = 0;
+                turretUI[0].SetActive(true);
+                turretUI[1].SetActive(false);
+                turretUI[2].SetActive(false);
+                turretUI[3].SetActive(false);
             }
         }
 

@@ -11,7 +11,7 @@ namespace CarterGames.CWIS
     public class Homing : MonoBehaviour
     {
         private Rigidbody rb;
-        internal Vector3 targetPos;
+        internal GameObject targetPos;
         public int missileSpd = 150;
 
 
@@ -21,11 +21,16 @@ namespace CarterGames.CWIS
         }
 
 
-        private void Update()
+        private void FixedUpdate()
         {
-            Vector3 dir = new Vector3(targetPos.x - transform.position.x, 0, targetPos.z - transform.position.z);
+            Vector3 dir = new Vector3(targetPos.transform.position.x - transform.position.x, 0, targetPos.transform.position.z - transform.position.z);
             rb.velocity = (dir).normalized * missileSpd;
             transform.LookAt(dir);
+
+            if (!targetPos.gameObject.activeInHierarchy)
+            {
+                gameObject.SetActive(false);
+            }
         }
 
 

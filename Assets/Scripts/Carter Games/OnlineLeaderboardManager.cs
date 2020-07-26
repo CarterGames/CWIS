@@ -26,7 +26,9 @@ namespace CarterGames.Assets.LeaderboardManager
             Form.AddField("Score", Data.score.ToString());
             Form.AddField("Date", System.DateTime.Now.ToString());
 
-            UnityWebRequest W = UnityWebRequest.Post(Data.url, Form);
+            Debug.Log(Data.name + " : " + Data.score + " : " + System.DateTime.Now.ToString());
+
+            UnityWebRequest W = UnityWebRequest.Post("https://carter.games/leaderboardfiles/addscoress9.php", Form);
             yield return W.SendWebRequest();
         }
     }

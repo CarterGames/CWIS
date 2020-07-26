@@ -28,10 +28,6 @@ namespace CarterGames.CWIS
 
         internal void Setup()
         {
-            //rate = turret.rateOfFire;
-            //ammo = turret.ammoCap;
-            //cool = turret.coolerEff;
-
             updateLocks = true;
 
             if (!gm)
@@ -58,17 +54,17 @@ namespace CarterGames.CWIS
                 {
                     // lock option
                     rateButtons[i].GetComponent<Button>().interactable = false;
-                    rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = true;
+                    rateButtons[i].GetComponentsInChildren<Image>()[3].enabled = true;
                 }
                 else if (i == rate)
                 {
                     // unlock option
                     rateButtons[i].GetComponent<Button>().interactable = true;
-                    rateButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                    rateButtons[i].GetComponentsInChildren<Image>()[3].enabled = false;
                 }
                 else
                 {
-                    rateButtons[i].GetComponent<Button>().interactable = false;
+                    rateButtons[i].GetComponent<Button>().enabled = false;
                     rateButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
                     rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
@@ -80,17 +76,17 @@ namespace CarterGames.CWIS
                 {
                     // lock option
                     ammoButtons[i].GetComponent<Button>().interactable = false;
-                    ammoButtons[i].GetComponentsInChildren<Image>()[1].enabled = true;
+                    ammoButtons[i].GetComponentsInChildren<Image>()[3].enabled = true;
                 }
                 else if (i == ammo)
                 {
                     // unlock option
                     ammoButtons[i].GetComponent<Button>().interactable = true;
-                    ammoButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                    ammoButtons[i].GetComponentsInChildren<Image>()[3].enabled = false;
                 }
                 else
                 {
-                    ammoButtons[i].GetComponent<Button>().interactable = false;
+                    ammoButtons[i].GetComponent<Button>().enabled = false;
                     ammoButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
                     ammoButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
@@ -102,17 +98,17 @@ namespace CarterGames.CWIS
                 {
                     // lock option
                     coolButtons[i].GetComponent<Button>().interactable = false;
-                    coolButtons[i].GetComponentsInChildren<Image>()[1].enabled = true;
+                    coolButtons[i].GetComponentsInChildren<Image>()[3].enabled = true;
                 }
                 else if (i == cool)
                 {
                     // unlock option
                     coolButtons[i].GetComponent<Button>().interactable = true;
-                    coolButtons[i].GetComponentsInChildren<Image>()[1].enabled = false;
+                    coolButtons[i].GetComponentsInChildren<Image>()[3].enabled = false;
                 }
                 else
                 {
-                    coolButtons[i].GetComponent<Button>().interactable = false;
+                    coolButtons[i].GetComponent<Button>().enabled = false;
                     coolButtons[i].GetComponentsInChildren<Image>()[2].color = Color.yellow;
                     coolButtons[i].GetComponentsInChildren<Image>()[2].enabled = true;
                 }
@@ -124,36 +120,7 @@ namespace CarterGames.CWIS
 
         public void SelectOption(int selOption)
         {
-            DeselectOtherButtons();
             option = selOption;
-        }
-
-
-        private void DeselectOtherButtons()
-        {
-            for (int i = 0; i < rateButtons.Length; i++)
-            {
-                if (rateButtons[i].GetComponentsInChildren<Image>()[2].enabled)
-                {
-                    rateButtons[i].GetComponentsInChildren<Image>()[2].enabled = false;
-                }
-            }
-
-            for (int i = 0; i < ammoButtons.Length; i++)
-            {
-                if (ammoButtons[i].GetComponentsInChildren<Image>()[2].enabled)
-                {
-                    ammoButtons[i].GetComponentsInChildren<Image>()[2].enabled = false;
-                }
-            }
-
-            for (int i = 0; i < coolButtons.Length; i++)
-            {
-                if (coolButtons[i].GetComponentsInChildren<Image>()[2].enabled)
-                {
-                    coolButtons[i].GetComponentsInChildren<Image>()[2].enabled = false;
-                }
-            }
         }
 
 

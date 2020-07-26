@@ -11,6 +11,5 @@ namespace CarterGames.Assets.LeaderboardManager
     {
         public string name;
         public float score;
-        public string url;
     }
 }

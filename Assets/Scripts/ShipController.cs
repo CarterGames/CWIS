@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CarterGames.Assets.LeaderboardManager;
+using System.Collections;
 using UnityEngine;
 
 /*
@@ -65,7 +66,7 @@ namespace CarterGames.CWIS
         {
             timesHit++;
             shipHealth -= damage;
-            gm.ReduceScore((1 * timesHit) * 150);
+            gm.ReduceScore((1 * timesHit) * 30);
 
             if (shipHealth == 0)
             {
@@ -95,6 +96,13 @@ namespace CarterGames.CWIS
                 {
                     ms.activeMissiles[i].SetActive(false);
                 }
+
+#if UNITY_STANDALONE
+                LeaderboardData _data = new LeaderboardData();
+                _data.name = PlayerPrefs.GetString("PlayerName");
+                _data.score = gm.score;
+                StartCoroutine(OnlineLeaderboardManager.SendDataOnline(_data));
+#endif
 
                 ms.enabled = false;
             }

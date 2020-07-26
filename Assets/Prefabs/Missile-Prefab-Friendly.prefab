@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223740366}
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 30, y: 30, z: 1}
   m_Children: []
   m_Father: {fileID: 6444107113298100389}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
 --- !u!212 &223740368
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5131,6 +5131,7 @@ GameObject:
   - component: {fileID: 373261822728472846}
   - component: {fileID: 1980227749044196168}
   - component: {fileID: 7399011104043332952}
+  - component: {fileID: 1740485642701228697}
   m_Layer: 10
   m_Name: Missile-Prefab-Friendly
   m_TagString: Untagged
@@ -5180,8 +5181,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 6
+  m_Radius: 15
+  m_Height: 10
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1980227749044196168
@@ -5212,3 +5213,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missileSpd: 150
+--- !u!114 &1740485642701228697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6745593406842079945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3061297637ea9da4cb87fee352ef5c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  despawnTime: 20
+  disable: 1
+  destroy: 0

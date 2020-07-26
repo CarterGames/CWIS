@@ -28,7 +28,7 @@ namespace CarterGames.CWIS
         {
             if (!gm)
             {
-                gm = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+                gm = FindObjectOfType<GameManager>();
             }
 
             if (!am)
