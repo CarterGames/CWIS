@@ -2,6 +2,7 @@
 using UnityEngine;
 using CarterGames.Utilities;
 using System.Collections;
+using CarterGames.Assets.AudioManager;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -15,6 +16,7 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private int missilesWanted;
         [SerializeField] private float minDistance;
+        [SerializeField] private float maxDistance;
 
         private bool isCoR;
         private ShipController ship;
@@ -28,6 +30,8 @@ namespace CarterGames.CWIS
 
         public float minWait;
         public float maxWait;
+
+        private AudioManager am;
         
 
         private void Start()
@@ -44,6 +48,7 @@ namespace CarterGames.CWIS
             }
 
             ship = FindObjectOfType<ShipController>();
+            am = FindObjectOfType<AudioManager>();
         }
 
 
@@ -57,45 +62,53 @@ namespace CarterGames.CWIS
 
             switch (ship.gameTimer)
             {
-                case 5:
+                case 3:
                     minWait = 7f;
                     maxWait = 10f;
                     break;
-                case 10:
+                case 5:
                     minWait = 6f;
                     maxWait = 9f;
                     break;
-                case 20:
+                case 10:
                     minWait = 6f;
                     maxWait = 8.5f;
                     break;
-                case 35:
+                case 15:
                     minWait = 5f;
                     maxWait = 7f;
                     break;
-                case 50:
+                case 20:
                     minWait = 4f;
                     maxWait = 7f;
                     break;
-                case 75:
+                case 25:
                     minWait = 3f;
                     maxWait = 7f;
                     break;
-                case 100:
+                case 40:
                     minWait = 2f;
                     maxWait = 5f;
                     break;
-                case 125:
+                case 55:
                     minWait = 2f;
                     maxWait = 4f;
                     break;
-                case 150:
+                case 65:
                     minWait = 1f;
                     maxWait = 4f;
                     break;
-                case 200:
+                case 80:
                     minWait = 1f;
                     maxWait = 3f;
+                    break;
+                case 90:
+                    minWait = 1f;
+                    maxWait = 2f;
+                    break;
+                case 150:
+                    minWait = .5f;
+                    maxWait = 1f;
                     break;
                 default:
                     break;
@@ -118,6 +131,7 @@ namespace CarterGames.CWIS
                     objectPool[i].transform.LookAt(dir);
                     objectPool[i].SetActive(true);
                     activeMissiles.Add(objectPool[i]);
+                    //am.PlayFromTime("inbound", .8f, .01f, .9f);
                     break;
                 }
             }
@@ -129,7 +143,15 @@ namespace CarterGames.CWIS
 
         private Vector3 ChooseSpawnLocation()
         {
-            return Random.onUnitSphere * (Random.Range(minDistance, 1500));
+            float innerRad = minDistance;
+            float outerRad = maxDistance;
+
+            Vector3 dir = Random.insideUnitSphere;
+            float length = innerRad + outerRad * Random.value;
+
+            Vector3 final = dir.normalized * length;
+
+            return final;
         }
     }
 }

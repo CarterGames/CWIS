@@ -44,7 +44,12 @@ namespace CarterGames.CWIS
                     break;
                 case sliderType.Shaft:
 
-                    GetComponentsInChildren<Image>()[1].fillAmount = (Mathf.InverseLerp(0,1, shaft.cooldown));
+                    slider.value = shaft.cooldown;
+
+                    if (slider.maxValue != shaft.cooldownStart)
+                    {
+                        slider.maxValue = shaft.cooldownStart;
+                    }
 
                     break;
                 default:

@@ -81,24 +81,28 @@ namespace CarterGames.CWIS
             {
                 activeTurret = Controller.CWIS1;
                 UpdateTurretUI();
+                am.Play("click", .5f);
             }
 
             if (Input.GetButtonDown("Button2") && !isCoR)
             {
                 activeTurret = Controller.CWIS2;
                 UpdateTurretUI();
+                am.Play("click", .5f);
             }
 
             if (Input.GetButtonDown("Button3") && !isCoR)
             {
                 activeTurret = Controller.Shaft;
                 UpdateTurretUI();
+                am.Play("click", .5f);
             }
 
             if (Input.GetButtonDown("Button4") && !isCoR)
             {
                 activeTurret = Controller.Missiles;
                 UpdateTurretUI();
+                am.Play("click", .5f);
             }
         }
 

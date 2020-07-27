@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CarterGames.Assets.AudioManager;
+using UnityEngine;
 using UnityEngine.UI;
 
 /*
@@ -26,6 +27,8 @@ namespace CarterGames.CWIS
 
 
         private int[] rankUpRequirements;
+        private AudioManager am;
+
 
         [Header("Kill Counts")]
         public int cwis1Hits = 0;
@@ -44,6 +47,8 @@ namespace CarterGames.CWIS
 
         private void Start()
         {
+            am = FindObjectOfType<AudioManager>();
+
             rankUpRequirements = new int[6]
             {
             Random.Range(3, 7),
@@ -94,18 +99,25 @@ namespace CarterGames.CWIS
             switch (currentRank)
             {
                 case Ranks.None:
+                    
                     return Ranks.Chev1;
                 case Ranks.Chev1:
+                    
                     return Ranks.Chev2;
                 case Ranks.Chev2:
+                    
                     return Ranks.Chev3;
                 case Ranks.Chev3:
+                    
                     return Ranks.Star1;
                 case Ranks.Star1:
+                    
                     return Ranks.Star2;
                 case Ranks.Star2:
+                    
                     return Ranks.Star3;
                 case Ranks.Star3:
+                    
                     return Ranks.Star3;
                 default:
                     return Ranks.None;
@@ -135,6 +147,7 @@ namespace CarterGames.CWIS
                         {
                             cw1BestRank++;
                             buttons[0].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     case 2:
@@ -142,6 +155,7 @@ namespace CarterGames.CWIS
                         {
                             cw2BestRank++;
                             buttons[1].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     default:
@@ -160,6 +174,7 @@ namespace CarterGames.CWIS
                         {
                             cw1BestRank++;
                             buttons[0].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     case 2:
@@ -167,6 +182,7 @@ namespace CarterGames.CWIS
                         {
                             cw2BestRank++;
                             buttons[1].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     default:
@@ -185,6 +201,7 @@ namespace CarterGames.CWIS
                         {
                             cw1BestRank++;
                             buttons[0].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     case 2:
@@ -192,6 +209,7 @@ namespace CarterGames.CWIS
                         {
                             cw2BestRank++;
                             buttons[1].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     default:
@@ -210,6 +228,7 @@ namespace CarterGames.CWIS
                         {
                             cw1BestRank++;
                             buttons[0].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     case 2:
@@ -217,6 +236,7 @@ namespace CarterGames.CWIS
                         {
                             cw2BestRank++;
                             buttons[1].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     default:
@@ -235,6 +255,7 @@ namespace CarterGames.CWIS
                         {
                             cw1BestRank++;
                             buttons[0].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     case 2:
@@ -242,6 +263,7 @@ namespace CarterGames.CWIS
                         {
                             cw2BestRank++;
                             buttons[1].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     default:
@@ -260,6 +282,7 @@ namespace CarterGames.CWIS
                         {
                             cw1BestRank++;
                             buttons[0].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     case 2:
@@ -267,6 +290,7 @@ namespace CarterGames.CWIS
                         {
                             cw2BestRank++;
                             buttons[1].shouldFlicker = true;
+                            am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                         }
                         break;
                     default:
@@ -278,6 +302,8 @@ namespace CarterGames.CWIS
 
         public void OpenRankupUI(CWIS_Turret whichTurret)
         {
+            cwis1Turret.enabled = false;
+            cwis2Turret.enabled = false;
             rankui.GetComponentsInChildren<Text>()[0].text = "Upgrading: " + whichTurret.gameObject.name;
             rankui.gameObject.GetComponent<RankupUI>().turret = whichTurret;
             rankui.gameObject.GetComponent<RankupUI>().rate = whichTurret.rateOfFire;

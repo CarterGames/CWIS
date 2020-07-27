@@ -43,7 +43,7 @@ Material:
     - Color_95B0E427: {r: 0.022027401, g: 0.33146316, b: 0.5188679, a: 0}
     - Vector2_457B0308: {r: -0.03, g: 1.2, b: 0, a: 0}
     - Vector2_C7756A7C: {r: 0, g: 0, b: 0, a: 0}
-    - Vector2_E223FF12: {r: -1, g: -0.25, b: 0, a: 0}
+    - Vector2_E223FF12: {r: -9.46, g: -20, b: 0, a: 0}
 --- !u!114 &2109536042064212820
 MonoBehaviour:
   m_ObjectHideFlags: 11

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CarterGames.Assets.AudioManager;
+using System.Collections;
 using UnityEngine;
 
 /*
@@ -31,10 +32,11 @@ namespace CarterGames.CWIS
         private bool useAbility = false;
         public bool canUseAbilty = true;
 
-        internal float cooldown = 0;
+        public float cooldown = 10;
         public float cooldownStart = 10;
 
         private GameManager gm;
+        private AudioManager am;
 
 
         private void Start()
@@ -55,6 +57,8 @@ namespace CarterGames.CWIS
             control = FindObjectOfType<CWIS_Controller>();
             var em = ps.emission;
             em.enabled = false;
+
+            am = FindObjectOfType<AudioManager>();
         }
 
 
@@ -77,16 +81,16 @@ namespace CarterGames.CWIS
                 StartCoroutine(DelayShafts());
             }
 
-            if (!canUseAbilty)
+            if ((!canUseAbilty) & (!isCoR))
             {
-                if (cooldown > 0)
+                cooldown -= Time.deltaTime / 2;
+
+                if (cooldown < 0)
                 {
-                    cooldown -= Time.deltaTime / 2;
-                }
-                else
-                {
+                    cooldown = 0;
                     canUseAbilty = true;
                 }
+                
             }
         }
 
@@ -95,14 +99,15 @@ namespace CarterGames.CWIS
         {
             timesUsed++;
             CheckForNewRank();
-            canUseAbilty = false;
             isCoR = true;
             cc.enabled = true;
+            cooldown = cooldownStart;
+            canUseAbilty = false;
             ps.Play();
+            am.PlayFromTime("chaft", 4.5f, .75f);
             yield return new WaitForSeconds(duration);
             ps.Stop();
             cc.enabled = false;
-            cooldown = cooldownStart;
             isCoR = false;
             var em = ps.emission;
             em.enabled = false;
@@ -112,9 +117,11 @@ namespace CarterGames.CWIS
 
         private void CheckForNewRank()
         {
+
             if (timesUsed == rankUpRequirements[0])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.None);
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 duration += .5f;
                 //flicker.shouldFlicker = true;
             }
@@ -122,6 +129,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[1])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Chev1);
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 duration += .5f;
                 cooldownStart = 9;
                 //flicker.shouldFlicker = true;
@@ -130,6 +138,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[2])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Chev2);
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 duration += .5f;
                 cooldownStart = 8;
                 //flicker.shouldFlicker = true;
@@ -138,6 +147,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[3])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Chev3);
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 duration += .5f;
                 //flicker.shouldFlicker = true;
             }
@@ -145,6 +155,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[4])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Star1);
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 duration += .5f;
                 cooldownStart = 7;
                 //flicker.shouldFlicker = true;
@@ -153,6 +164,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[5])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Star2);
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 cooldownStart = 6;
                 //flicker.shouldFlicker = true;
             }

@@ -404,5 +404,22 @@ namespace CarterGames.Assets.AudioManager
                 }
             }
         }
+
+        public void Play(string request)
+        {
+            if (soundLibrary.ContainsKey(request))                                              // If the sound is in the library
+            {
+                GameObject _clip = Instantiate(soundPrefab);                                    // Instantiate a Sound prefab
+                _clip.GetComponent<AudioSource>().clip = soundLibrary[request];                     // Get the prefab and add the requested clip to it
+                _clip.GetComponent<AudioSource>().volume = .75f;  // changes the volume if a it is inputted
+                _clip.GetComponent<AudioSource>().pitch = 1f;      // changes the pitch if a change is inputted
+                _clip.GetComponent<AudioSource>().Play();                                       // play the audio from the prefab
+                Destroy(_clip, _clip.GetComponent<AudioSource>().clip.length);                  // Destroy the prefab once the clip has finished playing
+            }
+            else
+            {
+                Debug.LogWarning("(*Audio Manager*): Could not find clip. Please ensure the clip is scanned and the string you entered is correct (Note the input is CaSe SeNsItIvE).");
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CarterGames.Assets.AudioManager;
+using UnityEngine;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -12,6 +13,7 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private CWIS_Controller.Controller thisTurret;
         [SerializeField] internal GameManager.Ranks thisRank;
+        [SerializeField] private ParticleSystem ps;
 
         private Camera cam;
         private ShipController ship;
@@ -33,6 +35,9 @@ namespace CarterGames.CWIS
         private int lastCool = 0;
 
 
+        private AudioManager am;
+
+
         private void Start()
         {
             cam = Camera.main;
@@ -41,6 +46,7 @@ namespace CarterGames.CWIS
             canShoot = true;
             hasAmmo = true;
             gm = FindObjectOfType<GameManager>();
+            am = FindObjectOfType<AudioManager>();
         }
 
 
@@ -54,11 +60,22 @@ namespace CarterGames.CWIS
                 {
                     canShoot = false;
 
+                    if (!ps.isPlaying)
+                    {
+                        ps.Play();
+                        am.Play("missilesmoke", .5f);
+                    }
+
                     gm.ReduceScore(1);
                 }
                 else
                 {
                     canShoot = true;
+
+                    if (ps.isPlaying)
+                    {
+                        ps.Stop();
+                    }
                 }
 
                 if (Input.GetMouseButton(0))

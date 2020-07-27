@@ -25,6 +25,7 @@ namespace CarterGames.CWIS
         public bool timerRunning;
         private bool shipDead;
 
+
         private void Start()
         {
             isCoR = false;
@@ -97,12 +98,12 @@ namespace CarterGames.CWIS
                     ms.activeMissiles[i].SetActive(false);
                 }
 
-#if UNITY_STANDALONE
+//#if UNITY_STANDALONE
                 LeaderboardData _data = new LeaderboardData();
                 _data.name = PlayerPrefs.GetString("PlayerName");
                 _data.score = gm.score;
                 StartCoroutine(OnlineLeaderboardManager.SendDataOnline(_data));
-#endif
+//#endif
 
                 ms.enabled = false;
             }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using CarterGames.Assets.AudioManager;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -25,7 +26,7 @@ namespace CarterGames.CWIS
         [SerializeField] private MissileSpawer ms;
 
         private ShipController ship;
-
+        private AudioManager am;
 
 
         [SerializeField] private ParticleSystem missileFire;
@@ -62,6 +63,8 @@ namespace CarterGames.CWIS
             Random.Range(20, 25),
             Random.Range(30, 40)
             };
+
+            am = FindObjectOfType<AudioManager>();
         }
 
 
@@ -103,6 +106,8 @@ namespace CarterGames.CWIS
                         objectPool[i].transform.position = new Vector3(transform.position.x, 4, transform.position.z);
                         objectPool[i].GetComponent<Homing>().targetPos = ms.activeMissiles[ms.activeMissiles.Count - 1];
                         ms.activeMissiles.RemoveAt(ms.activeMissiles.Count - 1);
+                        am.Play("missileSmoke", .75f);
+                        am.PlayWithDelay("missileFire", .25f,.5f);
                         objectPool[i].SetActive(true);
                         break;
                     }
@@ -117,19 +122,17 @@ namespace CarterGames.CWIS
 
         private void CheckForNewRank()
         {
-            Debug.Log("this has run");
-
             if (timesUsed == rankUpRequirements[0])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.None);
-                ship.shipMissiles += 2;
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 //flicker.shouldFlicker = true;
             }
 
             if (timesUsed == rankUpRequirements[1])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Chev1);
-                ship.shipMissiles += 2;
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 missileDelay = 1.75f;
                 //flicker.shouldFlicker = true;
             }
@@ -137,7 +140,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[2])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Chev2);
-                ship.shipMissiles += 2;
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 missileDelay = 1.5f;
                 //flicker.shouldFlicker = true;
             }
@@ -145,7 +148,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[3])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Chev3);
-                ship.shipMissiles += 2;
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 missileDelay = 1.25f;
                 //flicker.shouldFlicker = true;
             }
@@ -153,7 +156,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[4])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Star1);
-                ship.shipMissiles += 2;
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 missileDelay = 1f;
                 //flicker.shouldFlicker = true;
             }
@@ -161,7 +164,7 @@ namespace CarterGames.CWIS
             if (timesUsed == rankUpRequirements[5])
             {
                 currentRank = gm.Rankup(GameManager.Ranks.Star2);
-                ship.shipMissiles += 2;
+                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
                 missileDelay = .5f;
                 //flicker.shouldFlicker = true;
             }

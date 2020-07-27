@@ -123,6 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d3dc2493dc2e64495d99aa637dba74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crateuiPrefab: {fileID: 3701526001283821677, guid: 0ad9b3addb015154d9bdbec517c73be1,
+    type: 3}
   moveSpd: 10
   ammoStandard: 0
   ammoSpecial: 0

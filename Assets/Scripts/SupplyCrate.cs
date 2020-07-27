@@ -10,11 +10,14 @@ namespace CarterGames.CWIS
 {
     public class SupplyCrate : MonoBehaviour
     {
+        [SerializeField] private GameObject crateuiPrefab;
         [SerializeField] private float moveSpd = 10;
+
         private Rigidbody rB;
         private ShipController ship;
         private CWIS_Controller control;
         private GameManager gm;
+        private Transform crateAnchor;
 
         public int ammoStandard;
         public int ammoSpecial;
@@ -39,6 +42,8 @@ namespace CarterGames.CWIS
             gm = FindObjectOfType<GameManager>();
 
             rB.velocity = (Vector3.zero - transform.position).normalized * moveSpd;
+
+            crateAnchor = GameObject.FindGameObjectWithTag("crateanchor").transform;
         }
 
 
@@ -68,6 +73,12 @@ namespace CarterGames.CWIS
                 {
                     ship.shipMissiles += missiles;
                 }
+
+
+                // make the ui showing what was gotten
+                GameObject _go = Instantiate(crateuiPrefab, crateAnchor);
+                _go.GetComponent<CrateUI>().contents = this;
+
 
                 gm.AddToScore(50);
                 gameObject.SetActive(false);

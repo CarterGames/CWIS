@@ -56,9 +56,10 @@ namespace CarterGames.CWIS
                     rateButtons[i].GetComponent<Button>().interactable = false;
                     rateButtons[i].GetComponentsInChildren<Image>()[3].enabled = true;
                 }
-                else if (i == rate)
+                else if (i <= rate)
                 {
                     // unlock option
+                    rateButtons[i].GetComponent<Button>().enabled = true;
                     rateButtons[i].GetComponent<Button>().interactable = true;
                     rateButtons[i].GetComponentsInChildren<Image>()[3].enabled = false;
                 }
@@ -78,9 +79,10 @@ namespace CarterGames.CWIS
                     ammoButtons[i].GetComponent<Button>().interactable = false;
                     ammoButtons[i].GetComponentsInChildren<Image>()[3].enabled = true;
                 }
-                else if (i == ammo)
+                else if (i <= ammo)
                 {
                     // unlock option
+                    ammoButtons[i].GetComponent<Button>().enabled = true;
                     ammoButtons[i].GetComponent<Button>().interactable = true;
                     ammoButtons[i].GetComponentsInChildren<Image>()[3].enabled = false;
                 }
@@ -100,9 +102,10 @@ namespace CarterGames.CWIS
                     coolButtons[i].GetComponent<Button>().interactable = false;
                     coolButtons[i].GetComponentsInChildren<Image>()[3].enabled = true;
                 }
-                else if (i == cool)
+                else if (i <= cool)
                 {
                     // unlock option
+                    coolButtons[i].GetComponent<Button>().enabled = true;
                     coolButtons[i].GetComponent<Button>().interactable = true;
                     coolButtons[i].GetComponentsInChildren<Image>()[3].enabled = false;
                 }

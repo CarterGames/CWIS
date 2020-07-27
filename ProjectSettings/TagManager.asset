@@ -9,6 +9,7 @@ TagManager:
   - AMC
   - AMN
   - Shaft
+  - crateanchor
   layers:
   - Default
   - TransparentFX

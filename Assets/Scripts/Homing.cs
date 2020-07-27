@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CarterGames.Assets.AudioManager;
+using UnityEngine;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -12,6 +13,7 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private Transform radarIcon;
 
+        private AudioManager am;
         private Rigidbody rb;
         internal GameObject targetPos;
         public int missileSpd = 150;
@@ -20,6 +22,7 @@ namespace CarterGames.CWIS
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
+            am = FindObjectOfType<AudioManager>();
         }
 
 
@@ -35,6 +38,7 @@ namespace CarterGames.CWIS
             }
         }
 
+
         private void LateUpdate()
         {
             radarIcon.transform.rotation = Quaternion.Euler(90, -90, 0);
@@ -47,6 +51,7 @@ namespace CarterGames.CWIS
             {
                 other.gameObject.SetActive(false);
                 gameObject.SetActive(false);
+                am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));
             }
         }
     }
