@@ -95,21 +95,26 @@ namespace CarterGames.CWIS
 
             if (ms.activeMissiles.Count > 0)
             {
-                for (int i = 0; i < objectLimit; i++)
+               float test = Vector3.Distance(ms.activeMissiles[ms.activeMissiles.Count - 1].transform.position, transform.position);
+
+                if (test > 250f)
                 {
-                    if (!objectPool[i].activeInHierarchy)
+                    for (int i = 0; i < objectLimit; i++)
                     {
-                        timesUsed++;
-                        CheckForNewRank();
-                        ship.shipMissiles--;
-                        missileFire.Play();
-                        objectPool[i].transform.position = new Vector3(transform.position.x, 4, transform.position.z);
-                        objectPool[i].GetComponent<Homing>().targetPos = ms.activeMissiles[ms.activeMissiles.Count - 1];
-                        ms.activeMissiles.RemoveAt(ms.activeMissiles.Count - 1);
-                        am.Play("missileSmoke", .75f);
-                        am.PlayWithDelay("missileFire", .25f,.5f);
-                        objectPool[i].SetActive(true);
-                        break;
+                        if (!objectPool[i].activeInHierarchy)
+                        {
+                            timesUsed++;
+                            CheckForNewRank();
+                            ship.shipMissiles--;
+                            missileFire.Play();
+                            objectPool[i].transform.position = new Vector3(transform.position.x, 4, transform.position.z);
+                            objectPool[i].GetComponent<Homing>().targetPos = ms.activeMissiles[ms.activeMissiles.Count - 1];
+                            ms.activeMissiles.RemoveAt(ms.activeMissiles.Count - 1);
+                            am.Play("missileSmoke", .75f);
+                            am.PlayWithDelay("missileFire", .25f, .5f);
+                            objectPool[i].SetActive(true);
+                            break;
+                        }
                     }
                 }
             }

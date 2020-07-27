@@ -10,6 +10,7 @@ TagManager:
   - AMN
   - Shaft
   - crateanchor
+  - GameMusic
   layers:
   - Default
   - TransparentFX

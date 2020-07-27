@@ -21,7 +21,6 @@ namespace CarterGames.CWIS
 
         public int ammoStandard;
         public int ammoSpecial;
-        public int health;
         public int missiles;
 
 
@@ -29,7 +28,6 @@ namespace CarterGames.CWIS
         {
             ammoStandard = Random.Range(30, 300);
             ammoSpecial = Random.Range(2, 10);
-            health = Random.Range(-5, 2);
             missiles = Random.Range(-5, 4);
         }
 
@@ -58,15 +56,7 @@ namespace CarterGames.CWIS
 
                 // special ammo here if I get to it
 
-                // health, only if it is a positive value and below the max value
-                if (health > 0 && ship.shipHealth + health <= 5)
-                {
-                    ship.shipHealth += health;
-                }
-                else
-                {
-                    ship.shipHealth = 5;
-                }
+
 
                 // missiles, only if it is a positive value and below the max value
                 if (missiles > 0)

@@ -27,16 +27,6 @@ namespace CarterGames.CWIS
             {
                 text[1].text = "";
             }
-
-            if (contents.health > 0)
-            {
-                text[2].text = "+ (" + contents.health + ") Ship Health";
-            }
-            else
-            {
-                text[2].text = "";
-            }
-
         }
     }
 }

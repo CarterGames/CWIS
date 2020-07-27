@@ -112,7 +112,7 @@ namespace CarterGames.CWIS
 
             if (!isFiring)
             {
-                if (timeHeldDown != 0)
+                if (timeHeldDown >= 0f)
                 {
                     if (coolerEff > 0)
                     {
@@ -120,7 +120,7 @@ namespace CarterGames.CWIS
                     }
                     else
                     {
-                        timeHeldDown -= Time.deltaTime / (8);
+                        timeHeldDown -= Time.deltaTime / 6;
                     }
                 }
             }

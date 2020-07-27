@@ -45,7 +45,7 @@ namespace CarterGames.Utilities
         {
             if (!IsDefinedScene() && audioSource.isPlaying)
             {
-                audioSource.volume -= Time.deltaTime;
+                audioSource.volume -= Time.unscaledDeltaTime;
 
                 if (audioSource.volume == 0)
                 {
@@ -61,12 +61,12 @@ namespace CarterGames.Utilities
 
                 if (audioSource.volume != volumeEdit)
                 {
-                    audioSource.volume += 1 * Time.deltaTime;
+                    audioSource.volume += 1 * Time.unscaledDeltaTime;
                 }
             }
             else if (IsDefinedScene() && audioSource.isPlaying && audioSource.volume != volumeEdit)
             {
-                audioSource.volume += 1 * Time.deltaTime;
+                audioSource.volume += 1 * Time.unscaledDeltaTime;
             }
         }
 
