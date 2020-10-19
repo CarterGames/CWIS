@@ -11,7 +11,6 @@ namespace CarterGames.CWIS
 {
     public class CWIS_Turret : MonoBehaviour
     {
-        [SerializeField] private CWIS_Controller.Controller thisTurret;
         [SerializeField] internal GameManager.Ranks thisRank;
         [SerializeField] private ParticleSystem ps;
 
@@ -52,95 +51,53 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-            if (control.activeTurret == thisTurret)
+            RotateToMousePos();
+
+            if (timeHeldDown > maxTime)
             {
-                RotateToMousePos();
+                canShoot = false;
 
-                if (timeHeldDown > maxTime)
+                if (!ps.isPlaying)
                 {
-                    canShoot = false;
-
-                    if (!ps.isPlaying)
-                    {
-                        ps.Play();
-                        am.Play("missilesmoke", .5f);
-                    }
-
-                    gm.ReduceScore(1);
-                }
-                else
-                {
-                    canShoot = true;
-
-                    if (ps.isPlaying)
-                    {
-                        ps.Stop();
-                    }
+                    ps.Play();
                 }
 
-                if (Input.GetMouseButton(0))
-                {
-                    IncrementTimeHeldDown();
-                    isFiring = true;
+                gm.ReduceScore(1);
+            }
+            else
+            {
+                canShoot = true;
 
-                    if (hasAmmo && canShoot)
-                    {
-                        RaycastHit hit;
-                        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-                        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                        {
-                            if (rateOfFire > 0)
-                            {
-                                control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret, (0.05f / rateOfFire));
-                            }
-                            else
-                            {
-                                control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret, 0.075f);
-                            }
-                        }
-                    }
-                }
-                else
+                if (ps.isPlaying)
                 {
-                    if (isFiring)
-                    {
-                        isFiring = false;
-                    }
+                    ps.Stop();
                 }
             }
 
+            if (Input.GetMouseButton(0))
+            {
+                ShootCWIS();
+            }
+            else
+            {
+                if (isFiring)
+                {
+                    isFiring = false;
+                }
+            }
+            
+
             if (!isFiring)
             {
-                if (timeHeldDown >= 0f)
-                {
-                    if (coolerEff > 0)
-                    {
-                        timeHeldDown -= Time.deltaTime / (6 - coolerEff);
-                    }
-                    else
-                    {
-                        timeHeldDown -= Time.deltaTime / 6;
-                    }
-                }
+                GunCooldown();
             }
 
             if (ammoCap > lastAmmoCap)
             {
-                switch (thisTurret)
-                {
-                    case CWIS_Controller.Controller.CWIS1:
-                        control.maxAmmo1 += 100;
-                        lastAmmoCap = ammoCap;
-                        break;
-                    case CWIS_Controller.Controller.CWIS2:
-                        control.maxAmmo2 += 100;
-                        lastAmmoCap = ammoCap;
-                        break;
-                    default:
-                        break;
-                }
+                //control.maxAmmo += 100;
+                lastAmmoCap = ammoCap;
             }
+
 
             if (coolerEff > lastCool)
             {
@@ -150,6 +107,9 @@ namespace CarterGames.CWIS
         }
 
 
+        /// <summary>
+        /// Rotates the turret to the mouse position
+        /// </summary>
         private void RotateToMousePos()
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -166,9 +126,59 @@ namespace CarterGames.CWIS
         }
 
 
+        /// <summary>
+        /// Incrementa the time held down when firing
+        /// </summary>
         private void IncrementTimeHeldDown()
         {
             timeHeldDown += Time.deltaTime;
+        }
+
+
+        /// <summary>
+        /// Fire the CWIS if possible
+        /// </summary>
+        private void ShootCWIS()
+        {
+            IncrementTimeHeldDown();
+            isFiring = true;
+
+            if (hasAmmo && canShoot)
+            {
+                RaycastHit hit;
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    if (rateOfFire > 0)
+                    {
+                        //control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret, (0.05f / rateOfFire));
+                    }
+                    else
+                    {
+                        //control.ShootBullet(transform.position, (hit.point - transform.position).normalized, thisTurret, 0.075f);
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Reduces the time held down 
+        /// </summary>
+        private void GunCooldown()
+        {
+            if (timeHeldDown >= 0f)
+            {
+                if (coolerEff > 0)
+                {
+                    timeHeldDown -= Time.deltaTime / (6 - coolerEff);
+                }
+                else
+                {
+                    timeHeldDown -= Time.deltaTime / 6;
+                }
+            }
         }
     }
 }
