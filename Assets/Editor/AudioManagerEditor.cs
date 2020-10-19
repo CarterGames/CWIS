@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Linq;
+using UnityEditor.Rendering;
 
 /*
  * 
  *							Audio Manager Editor Script
  *			
  *			Script written by: Jonathan Carter (https://jonathan.carter.games)
- *									Version: 2.3.2
- *							  Last Updated: 20/06/2020						
+ *									Version: 2.3.3
+ *							  Last Updated: 30/07/2020						
  * 
  * 
 */
@@ -38,47 +39,50 @@ namespace CarterGames.Assets.AudioManager
 
         private bool showDirectories = false;
         private bool showClips = true;
-
-
-
-        // When the script first enables - do this stuff!
-        private void OnEnable()
-        {
-            // References the Audio Manager Script
-            audioManagerScript = (AudioManager)target;
-
-            // Adds an Audio Source to the gameobject this script is on if its not already there (used for previewing audio only) 
-            // * Hide flags hides it from the inspector so you don't notice it there *
-            if (audioManagerScript.gameObject.GetComponent<AudioSource>())
-            {
-                audioManagerScript.gameObject.GetComponent<AudioSource>().hideFlags = HideFlags.HideInInspector;
-                audioManagerScript.GetComponent<AudioSource>().playOnAwake = false;
-            }
-            else
-            {
-                audioManagerScript.gameObject.AddComponent<AudioSource>();
-                audioManagerScript.gameObject.GetComponent<AudioSource>().hideFlags = HideFlags.HideInInspector;
-                audioManagerScript.GetComponent<AudioSource>().playOnAwake = false;
-            }
-
-            // Init Setup if needed (makes an audio folder and audio manager file for starts
-            FirstSetup();
-        }
+        private bool isSetup = false;
 
 
 
         // Overrides the Inspector of the Audio Manager Script with this stuff...
         public override void OnInspectorGUI()
         {
+
+            // References the Audio Manager Script
+            audioManagerScript = (AudioManager)target;
+
+
+            if (!isSetup)
+            {
+                // Adds an Audio Source to the gameobject this script is on if its not already there (used for previewing audio only) 
+                // * Hide flags hides it from the inspector so you don't notice it there *
+                if (audioManagerScript.gameObject.GetComponent<AudioSource>())
+                {
+                    audioManagerScript.gameObject.GetComponent<AudioSource>().hideFlags = HideFlags.HideInInspector;
+                    audioManagerScript.GetComponent<AudioSource>().playOnAwake = false;
+                }
+                else
+                {
+                    audioManagerScript.gameObject.AddComponent<AudioSource>();
+                    audioManagerScript.gameObject.GetComponent<AudioSource>().hideFlags = HideFlags.HideInInspector;
+                    audioManagerScript.GetComponent<AudioSource>().playOnAwake = false;
+                }
+
+                // Init Setup if needed (makes an audio folder and audio manager file for starts
+                FirstSetup();
+
+                isSetup = true;
+            }
+
+
             // New in 2.3 - trying to fix erasing of data errors by making sure the script holds all the data
             serializedObject.Update();
+
+            GUILayout.Space(10);
 
 
             showDirectories = serializedObject.FindProperty("shouldShowDir").boolValue;
             showClips = serializedObject.FindProperty("shouldShowClips").boolValue;
 
-
-            GUILayout.Space(10);
 
             // Logo 'n' stuff - moved in 2.3.1 to clean up the method a bit
             HeaderDisplay();
@@ -96,24 +100,16 @@ namespace CarterGames.Assets.AudioManager
             // if file exsists
             if (audioManagerScript.audioManagerFile)
             {
-
                 // if file does not equal the last file inputted
                 if (!audioManagerScript.lastAudioManagerFile)
                 {
                     // make the last file this file
                     audioManagerScript.lastAudioManagerFile = audioManagerScript.audioManagerFile;
-
-                    // Assigns the directory if there is one in the SO, this can still be edited by the user
-                    if (!DoAllDirectoryStringsMatch())
-                    {
-                        audioManagerScript.directory = audioManagerScript.audioManagerFile.directory;
-                    }
                 }
                 else if (audioManagerScript.lastAudioManagerFile != audioManagerScript.audioManagerFile)
                 {
                     audioManagerScript.lastAudioManagerFile = audioManagerScript.audioManagerFile;
-                    audioManagerScript.directory = audioManagerScript.audioManagerFile.directory;
-                    audioManagerScript.UpdateLibrary();
+                    //audioManagerScript.UpdateLibrary();
                 }
 
 
@@ -126,6 +122,7 @@ namespace CarterGames.Assets.AudioManager
                 if (audioManagerScript.soundPrefab)
                 {
                     audioManagerScript.audioManagerFile.soundPrefab = audioManagerScript.soundPrefab;
+                    serializedObject.FindProperty("shouldShowDir").boolValue = true;
                 }
 
                 EditorGUILayout.EndHorizontal();
@@ -188,7 +185,7 @@ namespace CarterGames.Assets.AudioManager
                         EditorGUILayout.Space();
 
                         // controls the directories 
-                        if (audioManagerScript.audioManagerFile.directory.Count > 0)
+                        if (audioManagerScript.audioManagerFile.hasDirectories)
                         {
                             DirectoriesDisplay();
                         }
@@ -206,7 +203,9 @@ namespace CarterGames.Assets.AudioManager
 
                             if (GUILayout.Button("Continue", GUILayout.Width(80)))
                             {
+                                audioManagerScript.audioManagerFile.directory = new List<string>();
                                 AddToDirectories(_newPath);
+                                audioManagerScript.audioManagerFile.hasDirectories = true;
                             }
 
                             GUI.color = Color.white;
@@ -242,29 +241,25 @@ namespace CarterGames.Assets.AudioManager
 
                 if (showClips)
                 {
-
-                    if (audioManagerScript.directory.Count > 0)
+                    if (audioManagerScript.audioManagerFile.hasDirectories)
                     {
 
-                        // Changes the text & colour of the first button based on if you've pressed it before or not
+                      // Changes the text & colour of the first button based on if you've pressed it before or not
                         if (serializedObject.FindProperty("hasScannedOnce").boolValue) { scanButtonString = "Re-Scan"; GUI.color = scannedCol; }
                         else { scanButtonString = "Scan"; GUI.color = scanCol; }
                         
 
                         if (CheckAmount() > 0)
                         {
+                            /*
                             // The actual Scan button - Runs functions to get the audio from the directory and add it to the library on the Audio Manager Script
                             if (GUILayout.Button(scanButtonString, GUILayout.Width(80)))
                             {
+                                
                                 if (!audioManagerScript.audioManagerFile.isPopulated)
                                 {
                                     if (audioManagerScript.audioManagerFile)
                                     {
-                                        if (!DoAllDirectoryStringsMatch())
-                                        {
-                                            audioManagerScript.audioManagerFile.directory = audioManagerScript.directory;
-                                        }
-
                                         audioManagerScript.audioManagerFile.isPopulated = false;
 
                                         // Init Lists
@@ -314,36 +309,35 @@ namespace CarterGames.Assets.AudioManager
 
                                     audioManagerScript.UpdateLibrary();
                                 }
+                                
                             }
                             else
-                            {
-                                if (audioManagerScript.audioManagerFile.isPopulated && audioManagerScript.audioManagerFile.clipName.Count > 0)
-                                {
-                                    serializedObject.FindProperty("hasScannedOnce").boolValue = true;  // Sets the has scanned once to true so the scan button turns into the re-scan button
-                                                                                                       // Init Lists
-                                    audioList = new List<AudioClip>();
-                                    audioStrings = new List<string>();
+                            {*/
+                                serializedObject.FindProperty("hasScannedOnce").boolValue = true;  // Sets the has scanned once to true so the scan button turns into the re-scan button
+                                                                                                   // Init Lists
+                                audioList = new List<AudioClip>();
+                                audioStrings = new List<string>();
 
-                                    // Auto filling the lists 
-                                    AddAudioClips();
-                                    AddStrings();
+                                // Auto filling the lists 
+                                AddAudioClips();
+                                AddStrings();
 
-                                    // Updates the lists
-                                    audioManagerScript.audioManagerFile.clipName = audioStrings;
-                                    audioManagerScript.audioManagerFile.audioClip = audioList;
+                                // Updates the lists
+                                audioManagerScript.audioManagerFile.clipName = audioStrings;
+                                audioManagerScript.audioManagerFile.audioClip = audioList;
 
-                                    audioManagerScript.UpdateLibrary();
-                                }
-                            }
+                                audioManagerScript.UpdateLibrary();
+                            //}
 
 
                             // Resets the color of the GUI
-                            GUI.color = Color.white;
+                            //GUI.color = Color.white;
 
-
+                            /*
                             // The actual Clear button - This just clear the Lists and Library in the Audio Manager Script and resets the Has Scanned bool for the Scan button reverts to green and "Scan"
                             if (GUILayout.Button("Clear", GUILayout.Width(60)))
                             {
+                                
                                 if (audioManagerScript.audioManagerFile)
                                 {
                                     audioManagerScript.soundLibrary.Clear();
@@ -357,7 +351,9 @@ namespace CarterGames.Assets.AudioManager
                                 {
                                     Debug.Log("(*Audio Manager*): No Audio Manager (Audio Manager File) selected, ignoring request.");
                                 }
+                                
                             }
+                            */
 
                             GUI.color = Color.white;
                         }
@@ -400,7 +396,8 @@ namespace CarterGames.Assets.AudioManager
 
 
             serializedObject.ApplyModifiedProperties();
-            serializedObject.Update();
+
+            base.OnInspectorGUI();
         }
 
 
@@ -426,6 +423,7 @@ namespace CarterGames.Assets.AudioManager
                 AudioManagerFile _newAMF = ScriptableObject.CreateInstance<AudioManagerFile>();
                 AssetDatabase.CreateAsset(_newAMF, "Assets/Audio/Files/Audio Manager File.asset");
                 audioManagerScript.audioManagerFile = (AudioManagerFile)AssetDatabase.LoadAssetAtPath("Assets/Audio/Files/Audio Manager File.asset", typeof(AudioManagerFile));
+                audioManagerScript.audioManagerFile.directory = new List<string>();
             }
             else if (((Directory.Exists(Application.dataPath + "/Audio")) && (!Directory.Exists(Application.dataPath + "/Audio/Files"))))
             {
@@ -433,6 +431,7 @@ namespace CarterGames.Assets.AudioManager
                 AudioManagerFile _newAMF = ScriptableObject.CreateInstance<AudioManagerFile>();
                 AssetDatabase.CreateAsset(_newAMF, "Assets/Audio/Files/Audio Manager File.asset");
                 audioManagerScript.audioManagerFile = (AudioManagerFile)AssetDatabase.LoadAssetAtPath("Assets/Audio/Files/Audio Manager File.asset", typeof(AudioManagerFile));
+                audioManagerScript.audioManagerFile.directory = new List<string>();
             }
         }
 
@@ -477,7 +476,7 @@ namespace CarterGames.Assets.AudioManager
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            EditorGUILayout.LabelField("Version: 2.3.2", GUILayout.Width(90f));
+            EditorGUILayout.LabelField("Version: 2.3.3", GUILayout.Width(85f));
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
@@ -489,6 +488,12 @@ namespace CarterGames.Assets.AudioManager
             {
                 Application.OpenURL("http://carter.games/audiomanager/");
             }
+            GUI.color = Color.cyan;
+            if (GUILayout.Button("Discord", GUILayout.Width(65f)))
+            {
+                Application.OpenURL("https://discord.gg/CNjbZzp");
+            }
+            GUI.color = Color.white;
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
@@ -505,7 +510,7 @@ namespace CarterGames.Assets.AudioManager
             int _amount = 0;
             List<string> _allFiles = new List<string>();
 
-            for (int i = 0; i < audioManagerScript.directory.Count; i++)
+            for (int i = 0; i < audioManagerScript.audioManagerFile.directory.Count; i++)
             {
                 if (AreAllDirctoryStringsBlank())
                 {
@@ -513,10 +518,10 @@ namespace CarterGames.Assets.AudioManager
                 }
                 else
                 {
-                    if (Directory.Exists(Application.dataPath + "/audio/" + audioManagerScript.directory[i]))
+                    if (Directory.Exists(Application.dataPath + "/audio/" + audioManagerScript.audioManagerFile.directory[i]))
                     {
                         // 2.3.1 - adds a range so it adds each directory to the asset 1 by 1
-                        _allFiles.AddRange(new List<string>(Directory.GetFiles(Application.dataPath + "/audio/" + audioManagerScript.directory[i])));
+                        _allFiles.AddRange(new List<string>(Directory.GetFiles(Application.dataPath + "/audio/" + audioManagerScript.audioManagerFile.directory[i])));
                     }
                     else
                     {
@@ -528,7 +533,7 @@ namespace CarterGames.Assets.AudioManager
             }
 
             // Checks to see if there is anything in the path, if its empty it will not run the rest of the code and instead put a message in the console
-            if (_allFiles.Any())
+            if (_allFiles.Count > 0)
             {
                 foreach (string Thingy in _allFiles)
                 {
@@ -539,13 +544,7 @@ namespace CarterGames.Assets.AudioManager
                         ++_amount;
                     }
                 }
-
-                audioManagerScript.audioManagerFile.isPopulated = true;
             }
-
-            _amount = _allFiles.Count;
-
-            Debug.Log(_allFiles.Count);
 
             return _amount;
         }
@@ -598,7 +597,7 @@ namespace CarterGames.Assets.AudioManager
 
 
             // as of 2.3.1 - goes through all directories and scans the files before moving to sort them....
-            for (int i = 0; i < audioManagerScript.directory.Count; i++)
+            for (int i = 0; i < audioManagerScript.audioManagerFile.directory.Count; i++)
             {
                 if (AreAllDirctoryStringsBlank())
                 {
@@ -606,15 +605,15 @@ namespace CarterGames.Assets.AudioManager
                 }
                 else
                 {
-                    if (Directory.Exists(Application.dataPath + "/audio/" + audioManagerScript.directory[i]))
+                    if (Directory.Exists(Application.dataPath + "/audio/" + audioManagerScript.audioManagerFile.directory[i]))
                     {
                         // 2.3.1 - adds a range so it adds each directory to the asset 1 by 1
-                        _allFiles.AddRange(new List<string>(Directory.GetFiles(Application.dataPath + "/audio/" + audioManagerScript.directory[i])));
+                        _allFiles.AddRange(new List<string>(Directory.GetFiles(Application.dataPath + "/audio/" + audioManagerScript.audioManagerFile.directory[i])));
                     }
                     else
                     {
                         // !Warning Message - shown in the console should there not be a directory named what the user entered
-                        Debug.LogWarning("(*Audio Manager*): Path does not exist! please make sure you spelt your path correctly: " + Application.dataPath + "/audio/" + audioManagerScript.directory[i]);
+                        Debug.LogWarning("(*Audio Manager*): Path does not exist! please make sure you spelt your path correctly: " + Application.dataPath + "/audio/" + audioManagerScript.audioManagerFile.directory[i]);
                         shouldShowMessage = true;
                     }
                 }
@@ -751,17 +750,25 @@ namespace CarterGames.Assets.AudioManager
         {
             int _check = 0;
 
-            for (int i = 0; i < audioManagerScript.directory.Count; i++)
+            if (audioManagerScript.audioManagerFile.directory.Count > 0)
             {
-                if (audioManagerScript.audioManagerFile.directory[i] == audioManagerScript.directory[i])
+                for (int i = 0; i < audioManagerScript.audioManagerFile.directory.Count; i++)
                 {
-                    ++_check;
+                    if (audioManagerScript.audioManagerFile.directory[i] == audioManagerScript.audioManagerFile.directory[i])
+                    {
+                        ++_check;
+                    }
                 }
-            }
 
-            if (_check == audioManagerScript.audioManagerFile.directory.Count)
-            {
-                return true;
+
+                if (_check == audioManagerScript.audioManagerFile.directory.Count)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -787,7 +794,7 @@ namespace CarterGames.Assets.AudioManager
             }
 
 
-            if (_check == audioManagerScript.directory.Count)
+            if (_check == audioManagerScript.audioManagerFile.directory.Count)
             {
                 return true;
             }
@@ -805,7 +812,6 @@ namespace CarterGames.Assets.AudioManager
         private void AddToDirectories(string value)
         {
             audioManagerScript.audioManagerFile.directory.Add(value);
-            audioManagerScript.directory.Add(value);
         }
 
 
@@ -815,17 +821,16 @@ namespace CarterGames.Assets.AudioManager
         /// </summary>
         private void DirectoriesDisplay()
         {
-            for (int i = 0; i < audioManagerScript.directory.Count; i++)
+            for (int i = 0; i < audioManagerScript.audioManagerFile.directory.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                audioManagerScript.directory[i] = EditorGUILayout.TextField(new GUIContent("Path #" + (i + 1).ToString() + ": "), audioManagerScript.directory[i]);
+                audioManagerScript.audioManagerFile.directory[i] = EditorGUILayout.TextField(new GUIContent("Path #" + (i + 1).ToString() + ": "), audioManagerScript.audioManagerFile.directory[i]);
 
-                if (i != audioManagerScript.directory.Count)
+                if (i != audioManagerScript.audioManagerFile.directory.Count)
                 {
                     GUI.color = scanCol;
                     if (GUILayout.Button("+", GUILayout.Width(25)))
                     {
-                        audioManagerScript.directory.Add("");
                         audioManagerScript.audioManagerFile.directory.Add("");
                     }
                 }
@@ -837,7 +842,6 @@ namespace CarterGames.Assets.AudioManager
                     GUI.color = Color.red;
                     if (GUILayout.Button("-", GUILayout.Width(25)))
                     {
-                        audioManagerScript.directory.RemoveAt(i);
                         audioManagerScript.audioManagerFile.directory.RemoveAt(i);
                     }
                 }
@@ -858,7 +862,7 @@ namespace CarterGames.Assets.AudioManager
 
         private void HelpLabels()
         {
-            if (audioManagerScript.audioManagerFile && audioManagerScript.directory.Count > 0)
+            if (audioManagerScript.audioManagerFile && audioManagerScript.audioManagerFile.directory.Count > 0)
             {
                 if ((audioManagerScript.audioManagerFile.isPopulated))
                 {
@@ -885,13 +889,13 @@ namespace CarterGames.Assets.AudioManager
 
                         string _errorString = null;
 
-                        if (audioManagerScript.directory.Count != 0)
+                        if (audioManagerScript.audioManagerFile.directory.Count != 0)
                         {
                             _errorString = "No clips found in one of these directories, please check you have all directories spelt correctly:\n";
 
-                            for (int i = 0; i < audioManagerScript.directory.Count; i++)
+                            for (int i = 0; i < audioManagerScript.audioManagerFile.directory.Count; i++)
                             {
-                                _errorString = _errorString + "assets/audio/" + audioManagerScript.directory[i] + "\n";
+                                _errorString = _errorString + "assets/audio/" + audioManagerScript.audioManagerFile.directory[i] + "\n";
                             }
                         }
                         else

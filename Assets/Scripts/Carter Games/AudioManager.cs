@@ -8,8 +8,8 @@ using System.Linq;
  *								Audio Manager Script
  *			
  *			Script written by: Jonathan Carter (https://jonathan.carter.games)
- *									Version: 2.3.2
- *							  Last Updated: 20/06/2020
+ *									Version: 2.3.3
+ *							  Last Updated: 30/07/2020
  * 
  * 
 */
@@ -24,16 +24,16 @@ namespace CarterGames.Assets.AudioManager
         [SerializeField] private bool shouldShowClips;
 
         [Tooltip("This should be the Audio Manager File you are working with, if it is not then please change it to the correct one.")]
-        public AudioManagerFile audioManagerFile;
+        [SerializeField] public AudioManagerFile audioManagerFile;
 
-        public AudioManagerFile lastAudioManagerFile;
+        [SerializeField] public AudioManagerFile lastAudioManagerFile;
 
+        [SerializeField]
         [Tooltip("This should be set when you have a audioManagerFile in use, if not please select it and put it here.")]
         public GameObject soundPrefab = null;       // Holds the prefab that plays the sound requested
 
-        public List<string> directory;
-
-        public Dictionary<string, AudioClip> soundLibrary = new Dictionary<string, AudioClip>();       // Dictionary that holds the audio names and clips
+        //[SerializeField] public List<string> directory;
+        [SerializeField] public Dictionary<string, AudioClip> soundLibrary = new Dictionary<string, AudioClip>();       // Dictionary that holds the audio names and clips
 
 
 
@@ -47,11 +47,6 @@ namespace CarterGames.Assets.AudioManager
             }
 
             GetComponent<AudioSource>().hideFlags = HideFlags.HideInInspector;
-
-            for (int i = 0; i < audioManagerFile.clipName.Count; i++)         // For loop that populates the dictionary with all the sound assets in the lists
-            {
-                soundLibrary.Add(audioManagerFile.clipName[i], audioManagerFile.audioClip[i]);
-            }
         }
 
 
@@ -402,23 +397,6 @@ namespace CarterGames.Assets.AudioManager
                 {
                     soundLibrary.Add(audioManagerFile.clipName[i], audioManagerFile.audioClip[i]);
                 }
-            }
-        }
-
-        public void Play(string request)
-        {
-            if (soundLibrary.ContainsKey(request))                                              // If the sound is in the library
-            {
-                GameObject _clip = Instantiate(soundPrefab);                                    // Instantiate a Sound prefab
-                _clip.GetComponent<AudioSource>().clip = soundLibrary[request];                     // Get the prefab and add the requested clip to it
-                _clip.GetComponent<AudioSource>().volume = .75f;  // changes the volume if a it is inputted
-                _clip.GetComponent<AudioSource>().pitch = 1f;      // changes the pitch if a change is inputted
-                _clip.GetComponent<AudioSource>().Play();                                       // play the audio from the prefab
-                Destroy(_clip, _clip.GetComponent<AudioSource>().clip.length);                  // Destroy the prefab once the clip has finished playing
-            }
-            else
-            {
-                Debug.LogWarning("(*Audio Manager*): Could not find clip. Please ensure the clip is scanned and the string you entered is correct (Note the input is CaSe SeNsItIvE).");
             }
         }
     }
