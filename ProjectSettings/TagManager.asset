@@ -11,6 +11,7 @@ TagManager:
   - Shaft
   - crateanchor
   - GameMusic
+  - CIC
   layers:
   - Default
   - TransparentFX

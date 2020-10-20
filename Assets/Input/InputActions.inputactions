@@ -11,7 +11,7 @@
                     "id": "e23ddf8b-0172-4ccf-9a7f-e928c946ce3e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press(pressPoint=0.1,behavior=2)"
                 }
             ],
             "bindings": [
@@ -23,6 +23,128 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "CIC",
+            "id": "8bc92a5c-c640-487f-b327-100491183ff8",
+            "actions": [
+                {
+                    "name": "ToggleWeaponOne",
+                    "type": "PassThrough",
+                    "id": "5724e317-5ca4-4f18-ab09-459957b25e82",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                },
+                {
+                    "name": "ToggleWeaponTwo",
+                    "type": "PassThrough",
+                    "id": "d7b3f88b-6ca2-485e-b812-05cb22eaae99",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                },
+                {
+                    "name": "ToggleWeaponThree",
+                    "type": "PassThrough",
+                    "id": "c1c85238-d7b3-4224-8387-df7a4fd62145",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                },
+                {
+                    "name": "ToggleWeaponFour",
+                    "type": "PassThrough",
+                    "id": "3a68933c-e765-4528-ae4f-c51f64e4263d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                },
+                {
+                    "name": "ToggleWeaponFive",
+                    "type": "PassThrough",
+                    "id": "c6e0ffaf-4d38-4b62-ab53-9916994cbffb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                },
+                {
+                    "name": "ToggleWeaponSix",
+                    "type": "PassThrough",
+                    "id": "461d099b-ac1f-48f1-b273-f5a88aec0959",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "591452a2-8313-400e-83e9-a07d69a90a80",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponSix",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e5043c2-6461-41cb-8426-73ee091ce2fa",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponOne",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97318e8e-8b3b-4ae4-aa7c-13ff82b33c54",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponTwo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "608f40f4-267d-42a9-b4c9-304390332c31",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponThree",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b77a341e-6353-4f46-bbda-2c37aa9265d2",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponFour",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a932e725-2c24-459e-80b5-0611157921ce",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponFive",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

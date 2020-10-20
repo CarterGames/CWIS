@@ -11,24 +11,26 @@ using UnityEngine.InputSystem;
 
 namespace CarterGames.CWIS
 {
-    public class CWIS : Turret
+    public class FiveInch : Turret
     {
         private new void Start()
         {
             base.Start();
         }
 
+
         private new void Update()
         {
             if (thisTurret.Equals(cic.activeCICWeapon))
             {
-                transform.localRotation = base.RotateToMousePos();
+                transform.localRotation = base.RotateToMousePos(-90f);
 
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
                     base.shouldFireBullet = true;
                 else
                     base.shouldFireBullet = false;
+
 
                 base.Update();
             }

@@ -47,6 +47,11 @@ namespace CarterGames.CWIS
         public List<GameObject> objectPool { get; set; }
 
 
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
+
 
         private void Start()
         {
@@ -77,33 +82,33 @@ namespace CarterGames.CWIS
             //    StartCoroutine(Cycle());
             //}
 
-            if (Input.GetButtonDown("Button1") && !isCoR)
-            {
-                activeTurret = Controller.CWIS1;
-                UpdateTurretUI();
-                am.Play("click", .5f);
-            }
+            //if (Input.GetButtonDown("Button1") && !isCoR)
+            //{
+            //    activeTurret = Controller.CWIS1;
+            //    UpdateTurretUI();
+            //    am.Play("click", .5f);
+            //}
 
-            if (Input.GetButtonDown("Button2") && !isCoR)
-            {
-                activeTurret = Controller.CWIS2;
-                UpdateTurretUI();
-                am.Play("click", .5f);
-            }
+            //if (Input.GetButtonDown("Button2") && !isCoR)
+            //{
+            //    activeTurret = Controller.CWIS2;
+            //    UpdateTurretUI();
+            //    am.Play("click", .5f);
+            //}
 
-            if (Input.GetButtonDown("Button3") && !isCoR)
-            {
-                activeTurret = Controller.Shaft;
-                UpdateTurretUI();
-                am.Play("click", .5f);
-            }
+            //if (Input.GetButtonDown("Button3") && !isCoR)
+            //{
+            //    activeTurret = Controller.Shaft;
+            //    UpdateTurretUI();
+            //    am.Play("click", .5f);
+            //}
 
-            if (Input.GetButtonDown("Button4") && !isCoR)
-            {
-                activeTurret = Controller.Missiles;
-                UpdateTurretUI();
-                am.Play("click", .5f);
-            }
+            //if (Input.GetButtonDown("Button4") && !isCoR)
+            //{
+            //    activeTurret = Controller.Missiles;
+            //    UpdateTurretUI();
+            //    am.Play("click", .5f);
+            //}
         }
 
 

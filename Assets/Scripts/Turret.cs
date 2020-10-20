@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/*
+*  Copyright (c) Jonathan Carter
+*  E: jonathan@carter.games
+*  W: https://jonathan.carter.games/
+*/
+
 namespace CarterGames.CWIS
 {
     public class Turret : MonoBehaviour
@@ -11,13 +17,17 @@ namespace CarterGames.CWIS
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private int poolSize;
 
+        public ShipWeapons thisTurret;
         public int maxAmmo;
         public int ammo;
         public float bulletSpeed;
         public float fireRate;
+        public bool shouldFireBullet;
+        public bool shouldFireMissile;
 
+        internal CIC cic;
         private GameObject[] bulletPool;
-        private bool canShoot = true;
+        internal bool canShoot = true;
         internal Actions actions;
 
 
@@ -27,6 +37,7 @@ namespace CarterGames.CWIS
             actions = new Actions();
             actions.Enable();
             canShoot = true;
+            cic = GameObject.FindGameObjectWithTag("CIC").GetComponent<CIC>();
         }
 
 
@@ -51,13 +62,27 @@ namespace CarterGames.CWIS
         }
 
 
+        public void Update()
+        {
+            if (shouldFireBullet)
+            {
+                FireBullet();
+            }
+
+            if (shouldFireMissile)
+            {
+
+            }
+        }
+
+
         /// <summary>
         /// Rotates the turret to the mouse position
         /// </summary>
         /// <param name="_min">Min rotation</param>
         /// <param name="_max">Max rotation</param>
         /// <returns>Quaternion</returns>
-        internal Quaternion RotateToMousePos()
+        internal Quaternion RotateToMousePos(float offset = 0)
         {
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             Plane plane = new Plane(Vector3.up, Vector3.zero);
@@ -68,7 +93,7 @@ namespace CarterGames.CWIS
             {
                 Vector3 target = ray.GetPoint(distance);
                 Vector3 direction = target - transform.position;
-                rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 90f;
+                rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 90f - offset;
             }
 
             return Quaternion.Euler(0, rotation, 0);
@@ -80,18 +105,12 @@ namespace CarterGames.CWIS
         /// </summary>
         internal void FireBullet()
         {
-            RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (canShoot)
             {
-                Debug.Log("raycast called");
-
-                if (canShoot)
-                {
-                    Debug.Log("shoot called");
-                    StartCoroutine(ShootBulletCO(transform.position, (hit.point - transform.position).normalized, fireRate));
-                }
+                Debug.Log("shoot called");
+                StartCoroutine(ShootBulletCO(transform.position, (ray.direction * 1000 - transform.position).normalized, fireRate));
             }
         }
 
@@ -99,7 +118,6 @@ namespace CarterGames.CWIS
 
         private IEnumerator ShootBulletCO(Vector3 spawnPosition, Vector3 direction, float rateOfFire)
         {
-            Debug.Log("co called");
             canShoot = false;
             for (int i = 0; i < poolSize; i++)
             {
@@ -108,6 +126,37 @@ namespace CarterGames.CWIS
                     bulletPool[i].transform.position = spawnPosition;
                     bulletPool[i].transform.rotation = transform.rotation;
                     bulletPool[i].GetComponent<Rigidbody>().velocity = (new Vector3(direction.x, 0, direction.z)).normalized * bulletSpeed;
+                    bulletPool[i].SetActive(true);
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(rateOfFire);
+            canShoot = true;
+        }
+
+
+
+        internal void FireMissile(Transform spawnPosition, float rateOfFire)
+        {
+            if (canShoot)
+            {
+                StartCoroutine(ShootMissileCO(spawnPosition, rateOfFire));
+            }
+        }
+
+
+        private IEnumerator ShootMissileCO(Transform spawnPosition, float rateOfFire)
+        {
+            canShoot = false;
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                if (!bulletPool[i].activeInHierarchy)
+                {
+                    bulletPool[i].transform.position = spawnPosition.position;
+                    bulletPool[i].transform.rotation = transform.rotation;
+                    
                     bulletPool[i].SetActive(true);
                     break;
                 }
