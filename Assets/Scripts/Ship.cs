@@ -20,6 +20,7 @@ namespace CarterGames.CWIS
         private void OnEnable()
         {
             action = new Actions();
+            action.Enable();
         }
 
 
@@ -40,18 +41,18 @@ namespace CarterGames.CWIS
         /// </summary>
         private void ToggleCICWeapon()
         {
-            if (action.CIC.ToggleWeaponOne.triggered)
+            if (action.CIC.ToggleWeaponOne.phase.Equals(InputActionPhase.Performed))
                 _cic.activeCICWeapon = ShipWeapons.FiveInch;
-            else if (action.CIC.ToggleWeaponTwo.triggered)
+            else if (action.CIC.ToggleWeaponTwo.phase.Equals(InputActionPhase.Performed))
                 _cic.activeCICWeapon = ShipWeapons.BowMissiles;
-            else if (action.CIC.ToggleWeaponThree.triggered)
+            else if (action.CIC.ToggleWeaponThree.phase.Equals(InputActionPhase.Performed))
                 _cic.activeCICWeapon = ShipWeapons.BowCWIS;
-            else if (action.CIC.ToggleWeaponFour.triggered)
+            else if (action.CIC.ToggleWeaponFour.phase.Equals(InputActionPhase.Performed))
                 _cic.activeCICWeapon = ShipWeapons.Chafts;
-            else if (action.CIC.ToggleWeaponFive.triggered)
-                _cic.activeCICWeapon = ShipWeapons.BowCWIS;
-            else if (action.CIC.ToggleWeaponSix.triggered)
-                _cic.activeCICWeapon = ShipWeapons.BowMissiles;
+            else if (action.CIC.ToggleWeaponFive.phase.Equals(InputActionPhase.Performed))
+                _cic.activeCICWeapon = ShipWeapons.SternCWIS;
+            else if (action.CIC.ToggleWeaponSix.phase.Equals(InputActionPhase.Performed))
+                _cic.activeCICWeapon = ShipWeapons.SternMissiles;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CarterGames.CWIS
         [SerializeField] private float maxDistance;
 
         private bool isCoR;
-        private ShipController ship;
+        private Ship ship;
 
         public GameObject missilePrefab;
 
@@ -47,7 +47,7 @@ namespace CarterGames.CWIS
                 objectPool.Add(_go);
             }
 
-            ship = FindObjectOfType<ShipController>();
+            ship = FindObjectOfType<Ship>();
             am = FindObjectOfType<AudioManager>();
         }
 
@@ -60,59 +60,59 @@ namespace CarterGames.CWIS
             }
 
 
-            switch (ship.gameTimer)
-            {
-                case 3:
+            //switch (ship.gameTimer)
+            //{
+            //    case 3:
                     minWait = 7f;
                     maxWait = 10f;
-                    break;
-                case 5:
-                    minWait = 6f;
-                    maxWait = 9f;
-                    break;
-                case 10:
-                    minWait = 6f;
-                    maxWait = 8.5f;
-                    break;
-                case 15:
-                    minWait = 5f;
-                    maxWait = 7f;
-                    break;
-                case 20:
-                    minWait = 4f;
-                    maxWait = 7f;
-                    break;
-                case 25:
-                    minWait = 3f;
-                    maxWait = 7f;
-                    break;
-                case 40:
-                    minWait = 2f;
-                    maxWait = 5f;
-                    break;
-                case 55:
-                    minWait = 2f;
-                    maxWait = 4f;
-                    break;
-                case 65:
-                    minWait = 1f;
-                    maxWait = 4f;
-                    break;
-                case 80:
-                    minWait = 1f;
-                    maxWait = 3f;
-                    break;
-                case 90:
-                    minWait = 1f;
-                    maxWait = 2f;
-                    break;
-                case 150:
-                    minWait = .5f;
-                    maxWait = 1f;
-                    break;
-                default:
-                    break;
-            }
+            //        break;
+            //    case 5:
+            //        minWait = 6f;
+            //        maxWait = 9f;
+            //        break;
+            //    case 10:
+            //        minWait = 6f;
+            //        maxWait = 8.5f;
+            //        break;
+            //    case 15:
+            //        minWait = 5f;
+            //        maxWait = 7f;
+            //        break;
+            //    case 20:
+            //        minWait = 4f;
+            //        maxWait = 7f;
+            //        break;
+            //    case 25:
+            //        minWait = 3f;
+            //        maxWait = 7f;
+            //        break;
+            //    case 40:
+            //        minWait = 2f;
+            //        maxWait = 5f;
+            //        break;
+            //    case 55:
+            //        minWait = 2f;
+            //        maxWait = 4f;
+            //        break;
+            //    case 65:
+            //        minWait = 1f;
+            //        maxWait = 4f;
+            //        break;
+            //    case 80:
+            //        minWait = 1f;
+            //        maxWait = 3f;
+            //        break;
+            //    case 90:
+            //        minWait = 1f;
+            //        maxWait = 2f;
+            //        break;
+            //    case 150:
+            //        minWait = .5f;
+            //        maxWait = 1f;
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
 
@@ -126,7 +126,7 @@ namespace CarterGames.CWIS
                 {
                     Vector3 newPos = ChooseSpawnLocation();
                     objectPool[i].transform.position = new Vector3(newPos.x, 4, newPos.z);
-                    Vector3 dir = new Vector3(ship.mast.transform.position.x - objectPool[i].transform.position.x, 0, ship.mast.transform.position.z - objectPool[i].transform.position.z);
+                    Vector3 dir = new Vector3(ship.gameObject.transform.position.x - objectPool[i].transform.position.x, 0, ship.gameObject.transform.position.z - objectPool[i].transform.position.z);
                     objectPool[i].GetComponent<Rigidbody>().velocity = (dir).normalized * 100;
                     objectPool[i].transform.LookAt(dir);
                     objectPool[i].SetActive(true);

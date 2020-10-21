@@ -47,7 +47,7 @@ namespace CarterGames.CWIS
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Bullet") || other.gameObject.CompareTag("Player"))
+            if (other.gameObject.CompareTag("FiveInchRound"))
             {
                 // splits CWIS ammo evenly between both guns
                 int ammoSplit = Mathf.Abs(ammoStandard / 2);

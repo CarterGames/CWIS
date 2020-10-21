@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5478475561133408073}
   - component: {fileID: -8599845750028900549}
   m_Layer: 8
-  m_Name: Bullet
+  m_Name: FiveInchRound
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

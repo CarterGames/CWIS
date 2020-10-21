@@ -12,6 +12,7 @@ TagManager:
   - crateanchor
   - GameMusic
   - CIC
+  - FiveInchRound
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CarterGames.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -66,7 +67,7 @@ namespace CarterGames.CWIS
         {
             if (shouldFireBullet)
             {
-                FireBullet();
+                FireCWISBullet();
             }
 
             if (shouldFireMissile)
@@ -93,7 +94,7 @@ namespace CarterGames.CWIS
             {
                 Vector3 target = ray.GetPoint(distance);
                 Vector3 direction = target - transform.position;
-                rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 90f - offset;
+                rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 180f;
             }
 
             return Quaternion.Euler(0, rotation, 0);
@@ -110,22 +111,60 @@ namespace CarterGames.CWIS
             if (canShoot)
             {
                 Debug.Log("shoot called");
-                StartCoroutine(ShootBulletCO(transform.position, (ray.direction * 1000 - transform.position).normalized, fireRate));
+                StartCoroutine(ShootBulletCO(transform.position, fireRate));
             }
         }
 
 
 
-        private IEnumerator ShootBulletCO(Vector3 spawnPosition, Vector3 direction, float rateOfFire)
+        private IEnumerator ShootBulletCO(Vector3 spawnPosition, float rateOfFire)
         {
             canShoot = false;
+
             for (int i = 0; i < poolSize; i++)
             {
                 if (!bulletPool[i].activeInHierarchy)
                 {
                     bulletPool[i].transform.position = spawnPosition;
                     bulletPool[i].transform.rotation = transform.rotation;
-                    bulletPool[i].GetComponent<Rigidbody>().velocity = (new Vector3(direction.x, 0, direction.z)).normalized * bulletSpeed;
+                    bulletPool[i].GetComponent<Rigidbody>().velocity = -transform.forward * bulletSpeed;
+                    bulletPool[i].SetActive(true);
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(rateOfFire);
+            canShoot = true;
+        }
+
+
+        /// <summary>
+        /// Shoots a bullet if the range is good...
+        /// </summary>
+        internal void FireCWISBullet()
+        {
+            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            if (canShoot)
+            {
+                Debug.Log("shoot called");
+                StartCoroutine(ShootCWISBulletCO(transform.position, fireRate));
+            }
+        }
+
+
+
+        private IEnumerator ShootCWISBulletCO(Vector3 spawnPosition, float rateOfFire)
+        {
+            canShoot = false;
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                if (!bulletPool[i].activeInHierarchy)
+                {
+                    bulletPool[i].transform.position = spawnPosition;
+                    bulletPool[i].transform.rotation = Quaternion.Euler(GetRandom.Vector3(transform.rotation.eulerAngles, 0, 0, 3f, 3f, 0, 0));
+                    bulletPool[i].GetComponent<Rigidbody>().velocity = -bulletPool[i].transform.forward * bulletSpeed;
                     bulletPool[i].SetActive(true);
                     break;
                 }

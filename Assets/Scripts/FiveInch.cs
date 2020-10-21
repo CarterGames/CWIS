@@ -23,7 +23,7 @@ namespace CarterGames.CWIS
         {
             if (thisTurret.Equals(cic.activeCICWeapon))
             {
-                transform.localRotation = base.RotateToMousePos(-90f);
+                transform.localRotation = base.RotateToMousePos();
 
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase == InputActionPhase.Performed)

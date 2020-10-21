@@ -31,10 +31,10 @@ namespace CarterGames.CWIS
                 gm = FindObjectOfType<GameManager>();
             }
 
-            if (!am)
-            {
-                am = FindObjectOfType<AudioManager>();
-            }
+            //if (!am)
+            //{
+            //    am = FindObjectOfType<AudioManager>();
+            //}
 
             if (!ms)
             {
@@ -75,11 +75,11 @@ namespace CarterGames.CWIS
 
                 if (IsVisibleFrom(this.GetComponentInChildren<Renderer>(), Camera.main))
                 {
-                    am.Play("missileHitFar", Random.Range(.2f, .3f), Random.Range(1f, 1.25f));
+                    //am.Play("missileHitFar", Random.Range(.2f, .3f), Random.Range(1f, 1.25f));
                 }
                 else
                 {
-                    am.Play("missileHitFar", Random.Range(.05f, .2f), Random.Range(.75f, .95f));
+                    //am.Play("missileHitFar", Random.Range(.05f, .2f), Random.Range(.75f, .95f));
                 }
 
                 gm.AddToScore(50 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
@@ -95,7 +95,7 @@ namespace CarterGames.CWIS
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
                 _go.GetComponent<ParticleSystem>().Play();
 
-                am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));
+                //am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));
 
                 gm.AddToScore(20 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
                 ms.activeMissiles.Remove(this.gameObject);
@@ -106,7 +106,7 @@ namespace CarterGames.CWIS
 
             if (other.gameObject.CompareTag("Player"))
             {
-                am.Play("hit", .5f);
+                //am.Play("hit", .5f);
                 other.GetComponent<ShipController>().DamageShip(1);
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
                 _go.GetComponent<ParticleSystem>().Play();
