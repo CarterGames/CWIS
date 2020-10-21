@@ -16,7 +16,9 @@ namespace CarterGames.CWIS
         private CIC _cic;
         private Actions action;
 
-        public int shipHealth;
+        // Ship stats 
+        private int[] shipStats;
+        public ShipStats playerStats;
 
 
         private void OnEnable()
@@ -29,6 +31,22 @@ namespace CarterGames.CWIS
         private void OnDisable()
         {
             action.Disable();
+        }
+
+
+        private void Awake()
+        {
+            // ship health setup
+            shipStats = new int[7];
+            shipStats[0] = playerStats.shipHealth;
+
+            // ship ammo
+            shipStats[1] = playerStats.fiveInchAmmo;
+            shipStats[2] = playerStats.bowMissileAmmo;
+            shipStats[3] = playerStats.bowCWISAmmo;
+            shipStats[4] = playerStats.chaftAmmo;
+            shipStats[5] = playerStats.sternCWISAmmo;
+            shipStats[6] = playerStats.sternMissileAmmo;
         }
 
 
@@ -61,6 +79,32 @@ namespace CarterGames.CWIS
                 _cic.activeCICWeapon = ShipWeapons.SternCWIS;
             else if (action.CIC.ToggleWeaponSix.phase.Equals(InputActionPhase.Performed))
                 _cic.activeCICWeapon = ShipWeapons.SternMissiles;
+        }
+
+
+        /// <summary>
+        /// Reset the ship stats to their default values for a new round of the game.
+        /// </summary>
+        public void ResetShip()
+        {
+            shipStats[0] = playerStats.shipHealth;
+            shipStats[1] = playerStats.fiveInchAmmo;
+            shipStats[2] = playerStats.bowMissileAmmo;
+            shipStats[3] = playerStats.bowCWISAmmo;
+            shipStats[4] = playerStats.chaftAmmo;
+            shipStats[5] = playerStats.sternCWISAmmo;
+            shipStats[6] = playerStats.sternMissileAmmo;
+        }
+
+
+        /// <summary>
+        /// Recudes the ship health by the amount entered.
+        /// (Default = 1)
+        /// </summary>
+        /// <param name="value">Int | amount of health to reduce.</param>
+        public void RecuceShipHealth(int value = 1)
+        {
+            shipStats[0] -= value;
         }
     }
 }

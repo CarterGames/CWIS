@@ -6040,7 +6040,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681862764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.381283, y: 24.951178, z: 23.337729}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -17896,7 +17896,8 @@ MonoBehaviour:
   ammo: 20
   bulletSpeed: 300
   fireRate: 2
-  shouldFireBullet: 0
+  shouldFireFiveInch: 0
+  shouldFireCWIS: 0
   shouldFireMissile: 0
 --- !u!23 &1357783948852559443
 MeshRenderer:

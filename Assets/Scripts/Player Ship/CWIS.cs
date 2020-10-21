@@ -26,9 +26,9 @@ namespace CarterGames.CWIS
 
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
-                    base.shouldFireBullet = true;
+                    base.shouldFireCWIS = true;
                 else
-                    base.shouldFireBullet = false;
+                    base.shouldFireCWIS = false;
 
                 base.Update();
             }

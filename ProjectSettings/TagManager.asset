@@ -9,6 +9,7 @@ TagManager:
   - CWISBullet
   - PlayerMissile
   - AudioManager
+  - Chaft
   layers:
   - Default
   - TransparentFX
