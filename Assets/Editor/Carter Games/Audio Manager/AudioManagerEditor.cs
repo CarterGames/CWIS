@@ -15,7 +15,7 @@ using System.Linq;
  *			        Jonathan Carter (https://jonathan.carter.games)
  *			        
  *									Version: 2.3.4
- *						   Last Updated: 03/10/2020 (d/m/y)					
+ *						   Last Updated: 11/10/2020 (d/m/y)					
  * 
 *************************************************************************************/
 
@@ -104,12 +104,16 @@ namespace CarterGames.Assets.AudioManager
                 }
 
                 EditorGUILayout.EndHorizontal();
-                GUILayout.Space(5f);
-                EditorGUILayout.EndVertical();
-
-                GUILayout.Space(10f);
+            }
 
 
+            GUILayout.Space(5f);
+            EditorGUILayout.EndVertical();
+
+            GUILayout.Space(10f);
+
+            if (audioManagerScript.audioManagerFile)
+            {
                 // Directories & Clips Buttons
                 if (audioManagerScript.audioManagerFile.soundPrefab != null)
                 {
@@ -227,35 +231,40 @@ namespace CarterGames.Assets.AudioManager
                     GUILayout.FlexibleSpace();
                     EditorGUILayout.EndHorizontal();
 
-
-                    if (audioManagerScript.audioManagerFile.hasDirectories && CheckAmount() > audioManagerScript.GetNumberOfClips())
+                    if (CheckAmount() > 0)
                     {
-                        serializedObject.FindProperty("hasScannedOnce").boolValue = true;  // Sets the has scanned once to true so the scan button turns into the re-scan button
-                                                                                           // Init Lists
-                        audioList = new List<AudioClip>();
-                        audioStrings = new List<string>();
+                        if (audioManagerScript.audioManagerFile.hasDirectories && CheckAmount() > audioManagerScript.GetNumberOfClips())
+                        {
+                            serializedObject.FindProperty("hasScannedOnce").boolValue = true;  // Sets the has scanned once to true so the scan button turns into the re-scan button
 
-                        // Auto filling the lists 
-                        AddAudioClips();
-                        AddStrings();
+                            // Init Lists
+                            audioList = new List<AudioClip>();
+                            audioStrings = new List<string>();
 
-                        // Updates the lists
-                        audioManagerScript.audioManagerFile.clipName = audioStrings;
-                        audioManagerScript.audioManagerFile.audioClip = audioList;
+                            // Auto filling the lists 
+                            AddAudioClips();
+                            AddStrings();
 
-                        audioManagerScript.UpdateLibrary();
-                        serializedObject.Update();
+                            // Updates the lists
+                            audioManagerScript.audioManagerFile.clipName = audioStrings;
+                            audioManagerScript.audioManagerFile.audioClip = audioList;
 
-                        GUI.color = Color.white;
+                            audioManagerScript.UpdateLibrary();
+                            serializedObject.Update();
+                        }
+                        else if (audioManagerScript.audioManagerFile.hasDirectories && CheckAmount() == audioManagerScript.GetNumberOfClips())
+                        {
+                            DisplayNames();
+                        }
+                        else
+                        {
+                            // *** Labels ***
+                            HelpLabels();
+                        }
                     }
-                    else if (audioManagerScript.audioManagerFile.hasDirectories && CheckAmount() == audioManagerScript.GetNumberOfClips())
+                    else
                     {
-                        DisplayNames();
-                    }
-                    else 
-                    {
-                        // *** Labels ***
-                        HelpLabels();
+                        EditorGUILayout.HelpBox("No audio clips found in your project.", MessageType.Warning);
                     }
 
                     EditorGUILayout.EndVertical();
@@ -269,7 +278,7 @@ namespace CarterGames.Assets.AudioManager
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
             }
-            
+
             // applies and changes to SO's
             serializedObject.ApplyModifiedProperties();
         }

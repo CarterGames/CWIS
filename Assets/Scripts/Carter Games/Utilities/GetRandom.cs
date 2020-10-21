@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine;
 
 /*
 *  Carter Games Utilities Script
@@ -18,6 +19,16 @@ namespace CarterGames.Utilities
     /// </summary>
     public static class GetRandom
     {
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Property | Random Float (user defined min/max, default = 0f, 1f)
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        public static float Float(float _min = 0f, float _max = 1f)
+        {
+            return Random.Range(_min, _max);
+        }
+
         /// ------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Property | Random Color (0-1)

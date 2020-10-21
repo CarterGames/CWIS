@@ -12,7 +12,7 @@ using CarterGames.Assets.AudioManager;
 
 namespace CarterGames.CWIS
 {
-    public class MissileSpawer : MonoBehaviour, IObjectPool<GameObject>
+    public class MissileSpawer : MonoBehaviour
     {
         [SerializeField] private int missilesWanted;
         [SerializeField] private float minDistance;
@@ -58,61 +58,6 @@ namespace CarterGames.CWIS
             {
                 StartCoroutine(FireMissileCo(Random.Range(minWait, maxWait)));
             }
-
-
-            //switch (ship.gameTimer)
-            //{
-            //    case 3:
-                    minWait = 7f;
-                    maxWait = 10f;
-            //        break;
-            //    case 5:
-            //        minWait = 6f;
-            //        maxWait = 9f;
-            //        break;
-            //    case 10:
-            //        minWait = 6f;
-            //        maxWait = 8.5f;
-            //        break;
-            //    case 15:
-            //        minWait = 5f;
-            //        maxWait = 7f;
-            //        break;
-            //    case 20:
-            //        minWait = 4f;
-            //        maxWait = 7f;
-            //        break;
-            //    case 25:
-            //        minWait = 3f;
-            //        maxWait = 7f;
-            //        break;
-            //    case 40:
-            //        minWait = 2f;
-            //        maxWait = 5f;
-            //        break;
-            //    case 55:
-            //        minWait = 2f;
-            //        maxWait = 4f;
-            //        break;
-            //    case 65:
-            //        minWait = 1f;
-            //        maxWait = 4f;
-            //        break;
-            //    case 80:
-            //        minWait = 1f;
-            //        maxWait = 3f;
-            //        break;
-            //    case 90:
-            //        minWait = 1f;
-            //        maxWait = 2f;
-            //        break;
-            //    case 150:
-            //        minWait = .5f;
-            //        maxWait = 1f;
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
 
 
@@ -131,7 +76,6 @@ namespace CarterGames.CWIS
                     objectPool[i].transform.LookAt(dir);
                     objectPool[i].SetActive(true);
                     activeMissiles.Add(objectPool[i]);
-                    //am.PlayFromTime("inbound", .8f, .01f, .9f);
                     break;
                 }
             }

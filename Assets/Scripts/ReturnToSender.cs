@@ -12,20 +12,16 @@ using CarterGames.Assets.AudioManager;
 
 namespace CarterGames.CWIS
 {
-    public class ReturnToSender : MonoBehaviour, IObjectPool<GameObject>
+    public class ReturnToSender : MonoBehaviour
     {
         // Ranks
-        public GameManager.Ranks currentRank;
         public int timesUsed;
         private int[] rankUpRequirements;
-        private GameManager gm;
 
-        [SerializeField] private CWIS_Controller.Controller thisturret;
-        [SerializeField] private CWIS_Controller control;
+
         [SerializeField] private GameObject missilePrafab;
         [SerializeField] private MissileSpawer ms;
 
-        private ShipController ship;
         private AudioManager am;
 
 
@@ -51,8 +47,6 @@ namespace CarterGames.CWIS
                 objectPool.Add(_go);
             }
 
-            ship = FindObjectOfType<ShipController>();
-            gm = FindObjectOfType<GameManager>();
 
             rankUpRequirements = new int[6]
             {
@@ -70,13 +64,13 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-            if (control.activeTurret == thisturret && Input.GetMouseButton(0))
-            {
-                if (ship.shipMissiles > 0)
-                {
-                    ShootMissileBack();
-                }
-            }
+            //if (control.activeTurret == thisturret && Input.GetMouseButton(0))
+            //{
+            //    if (ship.shipMissiles > 0)
+            //    {
+            //        ShootMissileBack();
+            //    }
+            //}
         }
 
 
@@ -105,13 +99,13 @@ namespace CarterGames.CWIS
                         {
                             timesUsed++;
                             CheckForNewRank();
-                            ship.shipMissiles--;
+                            //ship.shipMissiles--;
                             missileFire.Play();
                             objectPool[i].transform.position = new Vector3(transform.position.x, 4, transform.position.z);
                             objectPool[i].GetComponent<Homing>().targetPos = ms.activeMissiles[ms.activeMissiles.Count - 1];
                             ms.activeMissiles.RemoveAt(ms.activeMissiles.Count - 1);
-                            am.Play("missileSmoke", .75f);
-                            am.PlayWithDelay("missileFire", .25f, .5f);
+                            //am.Play("missileSmoke", .75f);
+                            //am.PlayWithDelay("missileFire", .25f, .5f);
                             objectPool[i].SetActive(true);
                             break;
                         }
@@ -127,52 +121,52 @@ namespace CarterGames.CWIS
 
         private void CheckForNewRank()
         {
-            if (timesUsed == rankUpRequirements[0])
-            {
-                currentRank = gm.Rankup(GameManager.Ranks.None);
-                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
-                //flicker.shouldFlicker = true;
-            }
+            //if (timesUsed == rankUpRequirements[0])
+            //{
+            //    currentRank = gm.Rankup(GameManager.Ranks.None);
+            //    am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
+            //    //flicker.shouldFlicker = true;
+            //}
 
-            if (timesUsed == rankUpRequirements[1])
-            {
-                currentRank = gm.Rankup(GameManager.Ranks.Chev1);
-                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
-                missileDelay = 1.75f;
-                //flicker.shouldFlicker = true;
-            }
+            //if (timesUsed == rankUpRequirements[1])
+            //{
+            //    currentRank = gm.Rankup(GameManager.Ranks.Chev1);
+            //    am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
+            //    missileDelay = 1.75f;
+            //    //flicker.shouldFlicker = true;
+            //}
 
-            if (timesUsed == rankUpRequirements[2])
-            {
-                currentRank = gm.Rankup(GameManager.Ranks.Chev2);
-                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
-                missileDelay = 1.5f;
-                //flicker.shouldFlicker = true;
-            }
+            //if (timesUsed == rankUpRequirements[2])
+            //{
+            //    currentRank = gm.Rankup(GameManager.Ranks.Chev2);
+            //    am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
+            //    missileDelay = 1.5f;
+            //    //flicker.shouldFlicker = true;
+            //}
 
-            if (timesUsed == rankUpRequirements[3])
-            {
-                currentRank = gm.Rankup(GameManager.Ranks.Chev3);
-                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
-                missileDelay = 1.25f;
-                //flicker.shouldFlicker = true;
-            }
+            //if (timesUsed == rankUpRequirements[3])
+            //{
+            //    currentRank = gm.Rankup(GameManager.Ranks.Chev3);
+            //    am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
+            //    missileDelay = 1.25f;
+            //    //flicker.shouldFlicker = true;
+            //}
 
-            if (timesUsed == rankUpRequirements[4])
-            {
-                currentRank = gm.Rankup(GameManager.Ranks.Star1);
-                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
-                missileDelay = 1f;
-                //flicker.shouldFlicker = true;
-            }
+            //if (timesUsed == rankUpRequirements[4])
+            //{
+            //    currentRank = gm.Rankup(GameManager.Ranks.Star1);
+            //    am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
+            //    missileDelay = 1f;
+            //    //flicker.shouldFlicker = true;
+            //}
 
-            if (timesUsed == rankUpRequirements[5])
-            {
-                currentRank = gm.Rankup(GameManager.Ranks.Star2);
-                am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
-                missileDelay = .5f;
-                //flicker.shouldFlicker = true;
-            }
+            //if (timesUsed == rankUpRequirements[5])
+            //{
+            //    currentRank = gm.Rankup(GameManager.Ranks.Star2);
+            //    am.Play("levelup", .35f, Random.Range(.85f, 1.15f));
+            //    missileDelay = .5f;
+            //    //flicker.shouldFlicker = true;
+            //}
         }
     }
 }

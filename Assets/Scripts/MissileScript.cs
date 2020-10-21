@@ -15,7 +15,6 @@ namespace CarterGames.CWIS
         [SerializeField] private ParticleSystem explosion;
         [SerializeField] private Transform radarSprite;
 
-        private GameManager gm;
         private AudioManager am;
         private MissileSpawer ms;
 
@@ -26,11 +25,6 @@ namespace CarterGames.CWIS
 
         private void Start()
         {
-            if (!gm)
-            {
-                gm = FindObjectOfType<GameManager>();
-            }
-
             //if (!am)
             //{
             //    am = FindObjectOfType<AudioManager>();
@@ -54,23 +48,12 @@ namespace CarterGames.CWIS
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Bullet"))
+            if (other.gameObject.CompareTag("CWISBullet"))
             {
                 // explosion
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
                 _go.GetComponent<ParticleSystem>().Play();
 
-                switch (other.gameObject.GetComponent<Bullet>().shotBy)
-                {
-                    case 1:
-                        gm.IncrementCWIS1HitCount();
-                        break;
-                    case 2:
-                        gm.IncrementCWIS2HitCount();
-                        break;
-                    default:
-                        break;
-                }
 
 
                 if (IsVisibleFrom(this.GetComponentInChildren<Renderer>(), Camera.main))
@@ -82,14 +65,13 @@ namespace CarterGames.CWIS
                     //am.Play("missileHitFar", Random.Range(.05f, .2f), Random.Range(.75f, .95f));
                 }
 
-                gm.AddToScore(50 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
                 ms.activeMissiles.Remove(this.gameObject);
                 gameObject.SetActive(false);
             }
 
 
 
-            if (other.gameObject.CompareTag("Shaft"))
+            if (other.gameObject.CompareTag("Chaft"))
             {
                 // explosion
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
@@ -97,7 +79,6 @@ namespace CarterGames.CWIS
 
                 //am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));
 
-                gm.AddToScore(20 + (int)(Vector3.Distance(transform.position, Vector3.zero)));
                 ms.activeMissiles.Remove(this.gameObject);
                 gameObject.SetActive(false);
             }
@@ -107,7 +88,6 @@ namespace CarterGames.CWIS
             if (other.gameObject.CompareTag("Player"))
             {
                 //am.Play("hit", .5f);
-                other.GetComponent<ShipController>().DamageShip(1);
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
                 _go.GetComponent<ParticleSystem>().Play();
                 gameObject.SetActive(false);

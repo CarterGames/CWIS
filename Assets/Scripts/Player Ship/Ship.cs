@@ -15,12 +15,20 @@ namespace CarterGames.CWIS
     {
         private CIC _cic;
         private Actions action;
+
         public int shipHealth;
+
 
         private void OnEnable()
         {
             action = new Actions();
             action.Enable();
+        }
+
+
+        private void OnDisable()
+        {
+            action.Disable();
         }
 
 

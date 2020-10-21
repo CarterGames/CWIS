@@ -4,15 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Bullet
-  - Music
-  - AMC
-  - AMN
-  - Shaft
-  - crateanchor
-  - GameMusic
   - CIC
   - FiveInchRound
+  - CWISBullet
+  - PlayerMissile
+  - AudioManager
   layers:
   - Default
   - TransparentFX
