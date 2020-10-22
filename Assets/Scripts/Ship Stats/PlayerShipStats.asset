@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16063fa6216a1234099be26269496485, type: 3}
   m_Name: PlayerShipStats
   m_EditorClassIdentifier: 
-  shipHealth: 0
-  fiveInchAmmo: 0
-  bowMissileAmmo: 0
-  bowCWISAmmo: 0
-  chaftAmmo: 0
-  sternCWISAmmo: 0
-  sternMissileAmmo: 0
+  shipHealth: 5
+  fiveInchAmmo: 24
+  bowMissileAmmo: 21
+  bowCWISAmmo: 200
+  chaftAmmo: 2
+  sternCWISAmmo: 200
+  sternMissileAmmo: 21

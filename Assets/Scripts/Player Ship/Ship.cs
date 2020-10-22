@@ -13,6 +13,8 @@ namespace CarterGames.CWIS
 {
     public class Ship : MonoBehaviour
     {
+        [SerializeField] private UITextElement[] uITextElements;
+
         private CIC _cic;
         private Actions action;
 
@@ -98,13 +100,37 @@ namespace CarterGames.CWIS
 
 
         /// <summary>
-        /// Recudes the ship health by the amount entered.
+        /// Reduces the ship health by the amount entered.
         /// (Default = 1)
         /// </summary>
         /// <param name="value">Int | amount of health to reduce.</param>
-        public void RecuceShipHealth(int value = 1)
+        public void ReduceShipHealth(int value = 1)
         {
+            // Edit health value
             shipStats[0] -= value;
+
+            // Update the health UI
+            uITextElements[0].SetTextValue(shipStats[0].ToString());
+        }
+
+
+        /// <summary>
+        /// Returns the amount of health the ship currently has.
+        /// </summary>
+        /// <returns>Int | The player ship health.</returns>
+        public int GetShipHealth()
+        {
+            return shipStats[0];
+        }
+
+
+        /// <summary>
+        /// Returns the ship stats int array
+        /// </summary>
+        /// <returns>Int Array | The ship stats.</returns>
+        public int[] GetShipStats()
+        {
+            return shipStats;
         }
     }
 }

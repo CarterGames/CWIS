@@ -18,6 +18,7 @@ namespace CarterGames.CWIS
         private AudioManager am;
         private MissileSpawer ms;
 
+
         private void OnEnable()
         {
             radarSprite.localScale = Vector3.zero;
@@ -90,6 +91,12 @@ namespace CarterGames.CWIS
                 //am.Play("hit", .5f);
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
                 _go.GetComponent<ParticleSystem>().Play();
+
+                if (other.gameObject.GetComponent<Ship>())
+                {
+                    other.gameObject.GetComponent<Ship>().ReduceShipHealth();
+                }
+
                 gameObject.SetActive(false);
             }
         }
