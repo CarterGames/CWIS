@@ -18,6 +18,7 @@ namespace CarterGames.CWIS
         
         private GameObject target;
         private LineRenderer lr;
+        private MissileTargeting missileTargeting;
 
 
         private new void Start()
@@ -26,6 +27,8 @@ namespace CarterGames.CWIS
 
             lr = GetComponent<LineRenderer>();
             lr.enabled = false;
+
+            missileTargeting = GetComponent<MissileTargeting>();
         }
 
 
@@ -35,6 +38,9 @@ namespace CarterGames.CWIS
             {
                 if (!lr.enabled)
                     lr.enabled = true;
+
+                if (!missileTargeting.GetActiveStatus())
+                    missileTargeting.EnableTargeting();
 
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
@@ -55,6 +61,9 @@ namespace CarterGames.CWIS
             {
                 if (lr.enabled)
                     lr.enabled = false;
+
+                if (missileTargeting.GetActiveStatus())
+                    missileTargeting.DisableTargeting();
             }
         }
 

@@ -26,10 +26,12 @@ namespace CarterGames.CWIS
         }
 
 
+        /// ------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Sets the sprite colour to a new colour
         /// </summary>
         /// <param name="col">Color | Colour to change to.</param>
+        /// ------------------------------------------------------------------------------------------------------
         public void SetIconColour(Color col)
         {
             defaultCol = spriteRenderers[0].color;

@@ -55,6 +55,8 @@ namespace CarterGames.CWIS
         private void Start()
         {
             _cic = GetComponentInChildren<CIC>();
+
+            Cursor.visible = false;
         }
 
 
