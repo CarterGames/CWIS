@@ -5211,6 +5211,7 @@ GameObject:
   - component: {fileID: 4778831148315039581}
   - component: {fileID: 373261822728472846}
   - component: {fileID: 1980227749044196168}
+  - component: {fileID: 2821350711380958148}
   m_Layer: 11
   m_Name: Missile-Prefab
   m_TagString: Untagged
@@ -5261,8 +5262,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 3
-  m_Height: 6
+  m_Radius: 5
+  m_Height: 12
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1980227749044196168
@@ -5280,3 +5281,15 @@ MonoBehaviour:
   explosion: {fileID: 3834962020347840531, guid: eaede20b32374b6419870f6618b85890,
     type: 3}
   radarSprite: {fileID: 223740367}
+--- !u!114 &2821350711380958148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6745593406842079945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f239f3b89806c4cbc40a8a20a05e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -27,7 +27,6 @@ namespace CarterGames.CWIS
             visualLine = GetComponent<LineRenderer>();
             missileLauncher = GetComponent<MissileLauncher>();
             startPos = new Vector3(transform.position.x, 4, transform.position.z);
-            maxRange = 500f;
         }
 
 
@@ -51,8 +50,8 @@ namespace CarterGames.CWIS
 
             if (Physics.Linecast(startPos, (targetingLine - startPos).normalized * maxRange + targetingLine, out hit))
             {
-                Debug.Log("hellollllll");
-                missileLauncher.SetTarget(hit.collider.gameObject);
+                if (hit.collider.gameObject.GetComponent<RadarIcons>())
+                    missileLauncher.SetTarget(hit.collider.gameObject);
             }
         }
     }
