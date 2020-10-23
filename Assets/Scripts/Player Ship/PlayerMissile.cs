@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CarterGames.CWIS
 {
-    public class Homing : MonoBehaviour
+    public class PlayerMissile : MonoBehaviour
     {
         [SerializeField] private Transform radarIcon;
 
@@ -18,6 +18,11 @@ namespace CarterGames.CWIS
         internal GameObject targetPos;
         public int missileSpd = 150;
 
+
+        private void OnDisable()
+        {
+            targetPos = null;
+        }
 
         private void Start()
         {

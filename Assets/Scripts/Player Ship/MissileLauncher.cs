@@ -15,6 +15,9 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private GameObject[] missileSpawnLocations;
         [SerializeField] private int lastSiloUsed = 0;
+        
+        private GameObject target;
+
 
         private new void Start()
         {
@@ -33,7 +36,7 @@ namespace CarterGames.CWIS
                     {
                         Debug.Log("fire");
                         base.shouldFireMissile = true;
-                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, fireRate);
+                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate);
                         UpdateSiloNumber();
                     }
                 }
@@ -49,6 +52,12 @@ namespace CarterGames.CWIS
                 lastSiloUsed = 0;
             else
                 lastSiloUsed++;
+        }
+
+
+        public void SetTarget(GameObject value)
+        {
+            target = value;
         }
     }
 }

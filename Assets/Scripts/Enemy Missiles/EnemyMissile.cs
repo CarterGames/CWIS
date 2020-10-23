@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace CarterGames.CWIS
 {
-    public class MissileScript : MonoBehaviour
+    public class EnemyMissile : MonoBehaviour
     {
         [SerializeField] private ParticleSystem explosion;
         [SerializeField] private Transform radarSprite;

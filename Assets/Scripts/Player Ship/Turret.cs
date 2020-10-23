@@ -215,11 +215,11 @@ namespace CarterGames.CWIS
         /// <param name="spawnPosition">Vec3 | place to spawn</param>
         /// <param name="rateOfFire">Float | the speed of which the next missile will be allowed</param>
         /// ------------------------------------------------------------------------------------------------------
-        public void FireMissile(Transform spawnPosition, float rateOfFire)
+        public void FireMissile(Transform spawnPosition, GameObject target, float rateOfFire)
         {
             if (canShoot)
             {
-                StartCoroutine(ShootMissileCO(spawnPosition, rateOfFire));
+                StartCoroutine(ShootMissileCO(spawnPosition, target, rateOfFire));
             }
         }
 
@@ -231,7 +231,7 @@ namespace CarterGames.CWIS
         /// <param name="spawnPosition"></param>
         /// <param name="rateOfFire"></param>
         /// ------------------------------------------------------------------------------------------------------
-        private IEnumerator ShootMissileCO(Transform spawnPosition, float rateOfFire)
+        private IEnumerator ShootMissileCO(Transform spawnPosition, GameObject target, float rateOfFire)
         {
             canShoot = false;
 
@@ -241,7 +241,7 @@ namespace CarterGames.CWIS
                 {
                     bulletPool[i].transform.position = spawnPosition.position;
                     bulletPool[i].transform.rotation = transform.rotation;
-                    
+                    bulletPool[i].GetComponent<PlayerMissile>().targetPos = target;             
                     bulletPool[i].SetActive(true);
                     break;
                 }
