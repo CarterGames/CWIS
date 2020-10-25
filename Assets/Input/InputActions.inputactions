@@ -12,6 +12,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(pressPoint=0.1,behavior=2)"
+                },
+                {
+                    "name": "Position",
+                    "type": "PassThrough",
+                    "id": "c25ac0a8-f8b6-4d46-b84b-16a314ae23cf",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -32,8 +40,52 @@
                     "path": "<Touchscreen>/primaryTouch/press",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Mobile",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3fbc9e09-7bd0-4b19-87d6-697b4f8b7cc4",
+                    "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "325a3cbe-e293-4239-86a2-d69eef87ff2a",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3dd681a4-d3da-4b70-8352-d930b95e4235",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mobile",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8377cf4-0e21-4912-be5d-1b79fae32731",
+                    "path": "<XInputController>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Position",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -88,6 +140,14 @@
                     "type": "PassThrough",
                     "id": "461d099b-ac1f-48f1-b273-f5a88aec0959",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1)"
+                },
+                {
+                    "name": "ToggleWesponUD",
+                    "type": "PassThrough",
+                    "id": "7ace7bae-d0c8-46c9-bb5d-6d45d121e863",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "Press(pressPoint=0.1)"
                 }
@@ -158,6 +218,39 @@
                     "action": "ToggleWeaponFive",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Bumpers",
+                    "id": "39003782-4e92-45f6-b938-6493f5918475",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleWesponUD",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "b7bdfdf0-cb81-4fdc-9d2a-8775115a3f1f",
+                    "path": "<XInputController>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "ToggleWesponUD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "a8c1d9f7-e1c4-4e0f-af3c-12f2d2dd49aa",
+                    "path": "<XInputController>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "ToggleWesponUD",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
@@ -185,6 +278,17 @@
             "devices": [
                 {
                     "devicePath": "<Touchscreen>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Xbox Controller",
+            "bindingGroup": "Xbox Controller",
+            "devices": [
+                {
+                    "devicePath": "<XInputController>",
                     "isOptional": false,
                     "isOR": false
                 }
