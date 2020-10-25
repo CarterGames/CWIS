@@ -17,11 +17,18 @@ namespace CarterGames.CWIS
         [SerializeField] private int lastSiloUsed = 0;
         
         private GameObject target;
+        private LineRenderer lr;
+        private MissileTargeting missileTargeting;
 
 
         private new void Start()
         {
             base.Start();
+
+            lr = GetComponent<LineRenderer>();
+            lr.enabled = false;
+
+            missileTargeting = GetComponent<MissileTargeting>();
         }
 
 
@@ -29,11 +36,18 @@ namespace CarterGames.CWIS
         {
             if (thisTurret.Equals(cic.activeCICWeapon))
             {
+                if (!lr.enabled)
+                    lr.enabled = true;
+
+                if (!missileTargeting.GetActiveStatus())
+                    missileTargeting.EnableTargeting();
+
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
                 {
-                    if (!shouldFireMissile && canShoot)
+                    if (!shouldFireMissile && canShoot && target.GetComponent<RadarIcons>())
                     {
+                        target.GetComponent<RadarIcons>().SetIconColour(Color.white);
                         Debug.Log("fire");
                         base.shouldFireMissile = true;
                         FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate);
@@ -42,6 +56,14 @@ namespace CarterGames.CWIS
                 }
                 else
                     base.shouldFireMissile = false;
+            }
+            else
+            {
+                if (lr.enabled)
+                    lr.enabled = false;
+
+                if (missileTargeting.GetActiveStatus())
+                    missileTargeting.DisableTargeting();
             }
         }
 
@@ -57,7 +79,13 @@ namespace CarterGames.CWIS
 
         public void SetTarget(GameObject value)
         {
+            if (target && target.GetComponent<RadarIcons>())
+                target.GetComponent<RadarIcons>().SetIconColour(Color.green);
+
             target = value;
+
+            if (target && target.GetComponent<RadarIcons>())
+                target.GetComponent<RadarIcons>().SetIconColour(Color.red);
         }
     }
 }

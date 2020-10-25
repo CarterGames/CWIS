@@ -21,39 +21,74 @@ namespace CarterGames.CWIS
         private LineRenderer visualLine;
         private MissileLauncher missileLauncher;
 
+        private bool isActive;
+
 
         private void Start()
         {
             visualLine = GetComponent<LineRenderer>();
             missileLauncher = GetComponent<MissileLauncher>();
             startPos = new Vector3(transform.position.x, 4, transform.position.z);
-            maxRange = 500f;
         }
 
 
         private void Update()
         {
-            Plane plane = new Plane(Vector3.up, 0);
-
-            float distance;
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-            if (plane.Raycast(ray, out distance))
+            if (isActive)
             {
-                targetingLine = ray.GetPoint(distance);
-                targetingLine.y = 4;
+                Plane plane = new Plane(Vector3.up, 0);
+
+                float distance;
+                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+                if (plane.Raycast(ray, out distance))
+                {
+                    targetingLine = ray.GetPoint(distance);
+                    targetingLine.y = 4;
+                }
+
+                visualLine.SetPosition(0, startPos);
+                visualLine.SetPosition(1, (targetingLine - startPos).normalized * maxRange + targetingLine);
+
+                RaycastHit hit;
+
+                if (Physics.Linecast(startPos, (targetingLine - startPos).normalized * maxRange + targetingLine, out hit))
+                {
+                    if (hit.collider.gameObject.GetComponent<RadarIcons>())
+                        missileLauncher.SetTarget(hit.collider.gameObject);
+                }
             }
+        }
 
-            visualLine.SetPosition(0, startPos);
-            visualLine.SetPosition(1, (targetingLine - startPos).normalized * maxRange + targetingLine);
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Enables the targeting system for missiles.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        public void EnableTargeting()
+        {
+            isActive = true;
+        }
 
-            RaycastHit hit;
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Dnables the targeting system for missiles.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        public void DisableTargeting()
+        {
+            isActive = false;
+        }
 
-            if (Physics.Linecast(startPos, (targetingLine - startPos).normalized * maxRange + targetingLine, out hit))
-            {
-                Debug.Log("hellollllll");
-                missileLauncher.SetTarget(hit.collider.gameObject);
-            }
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the active status of the targeting system
+        /// </summary>
+        /// <returns>Bool | Is this system active?</returns>
+        /// ------------------------------------------------------------------------------------------------------
+        public bool GetActiveStatus()
+        {
+            return isActive;
         }
     }
 }

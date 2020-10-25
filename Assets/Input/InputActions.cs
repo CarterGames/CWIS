@@ -27,6 +27,14 @@ namespace CarterGames.CWIS
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press(pressPoint=0.1,behavior=2)""
+                },
+                {
+                    ""name"": ""Position"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c25ac0a8-f8b6-4d46-b84b-16a314ae23cf"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -43,12 +51,45 @@ namespace CarterGames.CWIS
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f9b5e067-3bb4-4c3a-a484-f6ad9502627c"",
-                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""id"": ""3fbc9e09-7bd0-4b19-87d6-697b4f8b7cc4"",
+                    ""path"": ""<XInputController>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Xbox Controller"",
                     ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""325a3cbe-e293-4239-86a2-d69eef87ff2a"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3dd681a4-d3da-4b70-8352-d930b95e4235"",
+                    ""path"": ""<Touchscreen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8377cf4-0e21-4912-be5d-1b79fae32731"",
+                    ""path"": ""<XInputController>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Position"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -103,6 +144,14 @@ namespace CarterGames.CWIS
                     ""type"": ""PassThrough"",
                     ""id"": ""461d099b-ac1f-48f1-b273-f5a88aec0959"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(pressPoint=0.1)""
+                },
+                {
+                    ""name"": ""ToggleWesponUD"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""7ace7bae-d0c8-46c9-bb5d-6d45d121e863"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": ""Press(pressPoint=0.1)""
                 }
@@ -173,6 +222,39 @@ namespace CarterGames.CWIS
                     ""action"": ""ToggleWeaponFive"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Bumpers"",
+                    ""id"": ""39003782-4e92-45f6-b938-6493f5918475"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleWesponUD"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b7bdfdf0-cb81-4fdc-9d2a-8775115a3f1f"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""ToggleWesponUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a8c1d9f7-e1c4-4e0f-af3c-12f2d2dd49aa"",
+                    ""path"": ""<XInputController>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""ToggleWesponUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -204,12 +286,24 @@ namespace CarterGames.CWIS
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Xbox Controller"",
+            ""bindingGroup"": ""Xbox Controller"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<XInputController>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
             // Weapons
             m_Weapons = asset.FindActionMap("Weapons", throwIfNotFound: true);
             m_Weapons_Fire = m_Weapons.FindAction("Fire", throwIfNotFound: true);
+            m_Weapons_Position = m_Weapons.FindAction("Position", throwIfNotFound: true);
             // CIC
             m_CIC = asset.FindActionMap("CIC", throwIfNotFound: true);
             m_CIC_ToggleWeaponOne = m_CIC.FindAction("ToggleWeaponOne", throwIfNotFound: true);
@@ -218,6 +312,7 @@ namespace CarterGames.CWIS
             m_CIC_ToggleWeaponFour = m_CIC.FindAction("ToggleWeaponFour", throwIfNotFound: true);
             m_CIC_ToggleWeaponFive = m_CIC.FindAction("ToggleWeaponFive", throwIfNotFound: true);
             m_CIC_ToggleWeaponSix = m_CIC.FindAction("ToggleWeaponSix", throwIfNotFound: true);
+            m_CIC_ToggleWesponUD = m_CIC.FindAction("ToggleWesponUD", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -268,11 +363,13 @@ namespace CarterGames.CWIS
         private readonly InputActionMap m_Weapons;
         private IWeaponsActions m_WeaponsActionsCallbackInterface;
         private readonly InputAction m_Weapons_Fire;
+        private readonly InputAction m_Weapons_Position;
         public struct WeaponsActions
         {
             private @Actions m_Wrapper;
             public WeaponsActions(@Actions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Fire => m_Wrapper.m_Weapons_Fire;
+            public InputAction @Position => m_Wrapper.m_Weapons_Position;
             public InputActionMap Get() { return m_Wrapper.m_Weapons; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -285,6 +382,9 @@ namespace CarterGames.CWIS
                     @Fire.started -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnFire;
                     @Fire.performed -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnFire;
                     @Fire.canceled -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnFire;
+                    @Position.started -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPosition;
+                    @Position.performed -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPosition;
+                    @Position.canceled -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPosition;
                 }
                 m_Wrapper.m_WeaponsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -292,6 +392,9 @@ namespace CarterGames.CWIS
                     @Fire.started += instance.OnFire;
                     @Fire.performed += instance.OnFire;
                     @Fire.canceled += instance.OnFire;
+                    @Position.started += instance.OnPosition;
+                    @Position.performed += instance.OnPosition;
+                    @Position.canceled += instance.OnPosition;
                 }
             }
         }
@@ -306,6 +409,7 @@ namespace CarterGames.CWIS
         private readonly InputAction m_CIC_ToggleWeaponFour;
         private readonly InputAction m_CIC_ToggleWeaponFive;
         private readonly InputAction m_CIC_ToggleWeaponSix;
+        private readonly InputAction m_CIC_ToggleWesponUD;
         public struct CICActions
         {
             private @Actions m_Wrapper;
@@ -316,6 +420,7 @@ namespace CarterGames.CWIS
             public InputAction @ToggleWeaponFour => m_Wrapper.m_CIC_ToggleWeaponFour;
             public InputAction @ToggleWeaponFive => m_Wrapper.m_CIC_ToggleWeaponFive;
             public InputAction @ToggleWeaponSix => m_Wrapper.m_CIC_ToggleWeaponSix;
+            public InputAction @ToggleWesponUD => m_Wrapper.m_CIC_ToggleWesponUD;
             public InputActionMap Get() { return m_Wrapper.m_CIC; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -343,6 +448,9 @@ namespace CarterGames.CWIS
                     @ToggleWeaponSix.started -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponSix;
                     @ToggleWeaponSix.performed -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponSix;
                     @ToggleWeaponSix.canceled -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponSix;
+                    @ToggleWesponUD.started -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWesponUD;
+                    @ToggleWesponUD.performed -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWesponUD;
+                    @ToggleWesponUD.canceled -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWesponUD;
                 }
                 m_Wrapper.m_CICActionsCallbackInterface = instance;
                 if (instance != null)
@@ -365,6 +473,9 @@ namespace CarterGames.CWIS
                     @ToggleWeaponSix.started += instance.OnToggleWeaponSix;
                     @ToggleWeaponSix.performed += instance.OnToggleWeaponSix;
                     @ToggleWeaponSix.canceled += instance.OnToggleWeaponSix;
+                    @ToggleWesponUD.started += instance.OnToggleWesponUD;
+                    @ToggleWesponUD.performed += instance.OnToggleWesponUD;
+                    @ToggleWesponUD.canceled += instance.OnToggleWesponUD;
                 }
             }
         }
@@ -387,9 +498,19 @@ namespace CarterGames.CWIS
                 return asset.controlSchemes[m_MobileSchemeIndex];
             }
         }
+        private int m_XboxControllerSchemeIndex = -1;
+        public InputControlScheme XboxControllerScheme
+        {
+            get
+            {
+                if (m_XboxControllerSchemeIndex == -1) m_XboxControllerSchemeIndex = asset.FindControlSchemeIndex("Xbox Controller");
+                return asset.controlSchemes[m_XboxControllerSchemeIndex];
+            }
+        }
         public interface IWeaponsActions
         {
             void OnFire(InputAction.CallbackContext context);
+            void OnPosition(InputAction.CallbackContext context);
         }
         public interface ICICActions
         {
@@ -399,6 +520,7 @@ namespace CarterGames.CWIS
             void OnToggleWeaponFour(InputAction.CallbackContext context);
             void OnToggleWeaponFive(InputAction.CallbackContext context);
             void OnToggleWeaponSix(InputAction.CallbackContext context);
+            void OnToggleWesponUD(InputAction.CallbackContext context);
         }
     }
 }

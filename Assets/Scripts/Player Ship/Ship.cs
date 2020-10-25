@@ -55,12 +55,20 @@ namespace CarterGames.CWIS
         private void Start()
         {
             _cic = GetComponentInChildren<CIC>();
+
+#if UNITY_ANDROID
+            Cursor.visible = true;
+#else
+            Cursor.visible = false;
+#endif
         }
 
 
         private void Update()
         {
+#if UNITY_STANDALONE
             ToggleCICWeapon();
+#endif
         }
 
 

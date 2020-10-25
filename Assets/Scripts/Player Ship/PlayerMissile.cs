@@ -54,6 +54,7 @@ namespace CarterGames.CWIS
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Missile"))
             {
+                other.gameObject.GetComponent<RadarIcons>().SetIconColour(Color.green);
                 other.gameObject.SetActive(false);
                 gameObject.SetActive(false);
                 am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));

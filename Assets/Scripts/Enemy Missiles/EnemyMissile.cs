@@ -24,6 +24,7 @@ namespace CarterGames.CWIS
             radarSprite.localScale = Vector3.zero;
         }
 
+
         private void Start()
         {
             //if (!am)
