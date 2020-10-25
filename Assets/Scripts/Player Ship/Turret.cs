@@ -98,7 +98,7 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         internal Quaternion RotateToMousePos(float offset = 0)
         {
-            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Ray ray = cam.ScreenPointToRay(actions.Weapons.Position.ReadValue<Vector2>());
             Plane plane = new Plane(Vector3.up, Vector3.zero);
             float distance;
             float rotation = 0;

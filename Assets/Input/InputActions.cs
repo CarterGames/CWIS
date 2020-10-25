@@ -51,17 +51,6 @@ namespace CarterGames.CWIS
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f9b5e067-3bb4-4c3a-a484-f6ad9502627c"",
-                    ""path"": ""<Touchscreen>/primaryTouch/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Mobile"",
-                    ""action"": ""Fire"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3fbc9e09-7bd0-4b19-87d6-697b4f8b7cc4"",
                     ""path"": ""<XInputController>/buttonWest"",
                     ""interactions"": """",
@@ -85,7 +74,7 @@ namespace CarterGames.CWIS
                 {
                     ""name"": """",
                     ""id"": ""3dd681a4-d3da-4b70-8352-d930b95e4235"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""path"": ""<Touchscreen>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mobile"",
