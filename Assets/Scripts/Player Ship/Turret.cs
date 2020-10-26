@@ -15,25 +15,36 @@ namespace CarterGames.CWIS
 {
     public class Turret : MonoBehaviour
     {
-        [SerializeField] private Camera cam;
+        [Header("Turret")]
+        [Tooltip("Which turret is this?")]
+        [SerializeField] internal ShipWeapons thisTurret;      // Only interal due to it being needed in CIC Script
+
+        [Header("Turret Projectile")]
+        [Tooltip("What does this turret shoot?")]
         [SerializeField] private GameObject bulletPrefab;
+
+        [Tooltip("How many of the projectile should the turret have?")]
         [SerializeField] private int poolSize;
 
-        public ShipWeapons thisTurret;
-        public int maxAmmo;
-        public int ammo;
-        public float bulletSpeed;
-        public float fireRate;
-        public bool shouldFireFiveInch;
-        public bool shouldFireCWIS;
-        public bool shouldFireMissile;
+        [Header("Turret Ammo")]
+        [SerializeField] internal int maxAmmo;
+        [SerializeField] internal int ammo;
 
-        internal CIC cic;
-        internal bool canShoot = true;
-        internal Actions actions;
+        [Header("*Optional")]
+        [SerializeField] internal float bulletSpeed;
+        [SerializeField] internal float fireRate;
+        [SerializeField] internal bool notOverheating;
 
+        private Camera cam;
         private GameObject[] bulletPool;
         private AudioManager _audio;
+
+        internal bool canShoot = true;
+        internal bool shouldFireFiveInch;
+        internal bool shouldFireCWIS;
+        internal bool shouldFireMissile;
+        internal Actions actions;
+        internal CIC cic;
 
 
         private void OnEnable()
@@ -66,6 +77,7 @@ namespace CarterGames.CWIS
             }
 
             _audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+            cam = GameObject.FindGameObjectWithTag("GameCam").GetComponent<Camera>();
         }
 
 
@@ -131,7 +143,7 @@ namespace CarterGames.CWIS
 
         /// ------------------------------------------------------------------------------------------------------
         /// <summary>
-        /// Actually shoots the bullet (normally the 5')
+        /// Actually shoots the bullet (normally the 5")
         /// </summary>
         /// <param name="spawnPosition">Vec3 | place to spawn</param>
         /// <param name="rateOfFire">Float | the speed of which the next bullet will be allowed</param>
@@ -215,11 +227,11 @@ namespace CarterGames.CWIS
         /// <param name="spawnPosition">Vec3 | place to spawn</param>
         /// <param name="rateOfFire">Float | the speed of which the next missile will be allowed</param>
         /// ------------------------------------------------------------------------------------------------------
-        public void FireMissile(Transform spawnPosition, GameObject target, float rateOfFire)
+        public void FireMissile(Transform spawnPosition, GameObject target, float rateOfFire, ParticleSystem particle)
         {
             if (canShoot)
             {
-                StartCoroutine(ShootMissileCO(spawnPosition, target, rateOfFire));
+                StartCoroutine(ShootMissileCO(spawnPosition, target, rateOfFire, particle));
             }
         }
 
@@ -231,9 +243,12 @@ namespace CarterGames.CWIS
         /// <param name="spawnPosition"></param>
         /// <param name="rateOfFire"></param>
         /// ------------------------------------------------------------------------------------------------------
-        private IEnumerator ShootMissileCO(Transform spawnPosition, GameObject target, float rateOfFire)
+        private IEnumerator ShootMissileCO(Transform spawnPosition, GameObject target, float rateOfFire, ParticleSystem particle)
         {
             canShoot = false;
+            particle.Play();
+            yield return new WaitForSeconds(.75f);
+            particle.Stop();
 
             for (int i = 0; i < poolSize; i++)
             {
@@ -241,7 +256,7 @@ namespace CarterGames.CWIS
                 {
                     bulletPool[i].transform.position = spawnPosition.position;
                     bulletPool[i].transform.rotation = transform.rotation;
-                    bulletPool[i].GetComponent<PlayerMissile>().targetPos = target;             
+                    bulletPool[i].GetComponent<PlayerMissile>().targetPos = target;
                     bulletPool[i].SetActive(true);
                     break;
                 }

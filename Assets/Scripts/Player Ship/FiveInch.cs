@@ -13,9 +13,18 @@ namespace CarterGames.CWIS
 {
     public class FiveInch : Turret
     {
+        [Header("5-Inch Custom Settings")]
+        [Range(0f, 5f)]
+        [SerializeField] private float rotSpeed = .3f;
+
+        private ParticleSystem barrelParticles;
+
+
         private new void Start()
         {
             base.Start();
+
+            barrelParticles = transform.GetChild(2).GetComponentInChildren<ParticleSystem>();
         }
 
 
@@ -23,11 +32,14 @@ namespace CarterGames.CWIS
         {
             if (thisTurret.Equals(cic.activeCICWeapon))
             {
-                transform.localRotation = base.RotateToMousePos();
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, base.RotateToMousePos(), rotSpeed);
 
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
+                {
+                    barrelParticles.Play();
                     base.shouldFireFiveInch = true;
+                }
                 else
                     base.shouldFireFiveInch = false;
 

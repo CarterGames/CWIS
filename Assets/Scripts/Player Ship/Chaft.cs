@@ -12,6 +12,7 @@ namespace CarterGames.CWIS
 {
     public class Chaft : Turret
     {
+        [Header("Chaft Custom Settings")]
         [SerializeField] private ParticleSystem[] particles;
         [SerializeField] private bool canUseChaft;
         private WaitForSeconds wait;

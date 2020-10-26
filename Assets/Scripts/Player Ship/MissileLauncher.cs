@@ -13,12 +13,14 @@ namespace CarterGames.CWIS
 {
     public class MissileLauncher : Turret
     {
+        [Header("Missile Launcher Custom Settings")]
         [SerializeField] private GameObject[] missileSpawnLocations;
         [SerializeField] private int lastSiloUsed = 0;
-        
+
         private GameObject target;
         private LineRenderer lr;
         private MissileTargeting missileTargeting;
+        private ParticleSystem particles;
 
 
         private new void Start()
@@ -29,6 +31,7 @@ namespace CarterGames.CWIS
             lr.enabled = false;
 
             missileTargeting = GetComponent<MissileTargeting>();
+            particles = GetComponentInChildren<ParticleSystem>();
         }
 
 
@@ -50,7 +53,7 @@ namespace CarterGames.CWIS
                         target.GetComponent<RadarIcons>().SetIconColour(Color.white);
                         Debug.Log("fire");
                         base.shouldFireMissile = true;
-                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate);
+                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate, particles);
                         UpdateSiloNumber();
                     }
                 }

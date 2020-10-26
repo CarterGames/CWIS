@@ -66,9 +66,9 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-#if UNITY_STANDALONE
+//#if UNITY_STANDALONE
             ToggleCICWeapon();
-#endif
+//#endif
         }
 
 
