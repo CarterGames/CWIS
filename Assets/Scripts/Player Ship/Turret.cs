@@ -29,6 +29,7 @@ namespace CarterGames.CWIS
         [Header("Turret Ammo")]
         [SerializeField] internal int maxAmmo;
         [SerializeField] internal int ammo;
+        [SerializeField] private UITextElement ammoCounter;
 
         [Header("*Optional")]
         [SerializeField] internal float bulletSpeed;
@@ -92,11 +93,14 @@ namespace CarterGames.CWIS
 
         public void Update()
         {
+            // Five Inch Firing
             if (shouldFireFiveInch)
             {
                 FireBullet();
             }
 
+
+            // CWIS Weapon Firing 
             if (shouldFireCWIS && !CheckGunOverheating())
             {
                 FireCWISBullet();
@@ -107,6 +111,9 @@ namespace CarterGames.CWIS
             else if (firingTimer > 0f && !shouldFireCWIS)
                 DecrementFiringTimer();
 
+            // Update Ammo Counters
+            if (!IsAmmoCountCorrect(ammo, ammoCounter.GetTextValue()))
+                ammoCounter.SetTextValue(ammo.ToString());
         }
 
 
@@ -325,6 +332,23 @@ namespace CarterGames.CWIS
         private bool CheckGunOverheating()
         {
             if (firingTimer < maxFiringTime)
+                return false;
+            else
+                return true;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Checks to see if the ammo count is correct, avoids updating it when not needed.
+        /// </summary>
+        /// <returns></returns>
+        /// ------------------------------------------------------------------------------------------------------
+        private bool IsAmmoCountCorrect(int ammo, string toCheck)
+        {
+            int _toCheckAsInt = int.Parse(toCheck);
+
+            if (!ammo.Equals(_toCheckAsInt))
                 return false;
             else
                 return true;

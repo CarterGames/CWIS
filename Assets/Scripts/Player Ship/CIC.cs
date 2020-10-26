@@ -17,7 +17,7 @@ namespace CarterGames.CWIS
 
     public class CIC : MonoBehaviour
     {
-        private Turret[] shipWeapons; 
+        private Turret[] shipWeapons;
 
         /// <summary>
         /// The active weapon 
@@ -39,6 +39,9 @@ namespace CarterGames.CWIS
         {
             activeCICWeapon = (ShipWeapons)weapon;
         }
+
+
+        
 
 
         public void FireWeapon()
