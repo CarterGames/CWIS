@@ -33,11 +33,13 @@ namespace CarterGames.CWIS
         [Header("*Optional")]
         [SerializeField] internal float bulletSpeed;
         [SerializeField] internal float fireRate;
-        [SerializeField] internal bool notOverheating;
 
         private Camera cam;
         private GameObject[] bulletPool;
         private AudioManager _audio;
+        [SerializeField] private float firingTimer = 0f;
+        [SerializeField] private float maxFiringTime = 10f;
+
 
         internal bool canShoot = true;
         internal bool shouldFireFiveInch;
@@ -45,6 +47,7 @@ namespace CarterGames.CWIS
         internal bool shouldFireMissile;
         internal Actions actions;
         internal CIC cic;
+        internal Ship ship;
 
 
         private void OnEnable()
@@ -54,6 +57,7 @@ namespace CarterGames.CWIS
             actions.Enable();
             canShoot = true;
             cic = GameObject.FindGameObjectWithTag("CIC").GetComponent<CIC>();
+            ship = GameObject.FindGameObjectWithTag("Player").GetComponent<Ship>();
         }
 
 
@@ -78,6 +82,11 @@ namespace CarterGames.CWIS
 
             _audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
             cam = GameObject.FindGameObjectWithTag("GameCam").GetComponent<Camera>();
+
+            firingTimer = 0f;
+            maxFiringTime = 5f;
+
+            AmmoSetup(thisTurret);
         }
 
 
@@ -86,17 +95,18 @@ namespace CarterGames.CWIS
             if (shouldFireFiveInch)
             {
                 FireBullet();
-            }            
-            
-            if (shouldFireCWIS)
-            {
-                FireCWISBullet();
             }
 
-            if (shouldFireMissile)
+            if (shouldFireCWIS && !CheckGunOverheating())
             {
-                //FireMissile();
+                FireCWISBullet();
+                IncrementFiringTimer();
             }
+            else if (shouldFireCWIS && CheckGunOverheating())
+                IncrementFiringTimer();
+            else if (firingTimer > 0f && !shouldFireCWIS)
+                DecrementFiringTimer();
+
         }
 
 
@@ -133,7 +143,7 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         public void FireBullet()
         {
-            if (canShoot)
+            if (canShoot && ammo > 0)
             {
                 Debug.Log("shoot called");
                 StartCoroutine(ShootBulletCO(transform.position, fireRate));
@@ -161,7 +171,7 @@ namespace CarterGames.CWIS
                     bulletPool[i].transform.rotation = transform.rotation;
                     bulletPool[i].GetComponent<Rigidbody>().velocity = -transform.forward * bulletSpeed;
                     bulletPool[i].SetActive(true);
-
+                    ammo -= 1;
                     // Audio on shoot
                     //_audio.PlayFromTime("cwisShoot", .65f, GetRandom.Float(.2f, .3f), GetRandom.Float(.6f, .75f));
 
@@ -180,7 +190,7 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         public void FireCWISBullet()
         {
-            if (canShoot)
+            if (canShoot && ammo > 0)
             {
                 Debug.Log("shoot called");
                 StartCoroutine(ShootCWISBulletCO(transform.position, fireRate));
@@ -208,6 +218,7 @@ namespace CarterGames.CWIS
                     bulletPool[i].transform.rotation = Quaternion.Euler(GetRandom.Vector3(transform.rotation.eulerAngles, 0, 0, 3f, 3f, 0, 0));
                     bulletPool[i].GetComponent<Rigidbody>().velocity = -bulletPool[i].transform.forward * bulletSpeed;
                     bulletPool[i].SetActive(true);
+                    ammo -= 1;
 
                     // Audio on shoot
                     _audio.PlayFromTime("cwisShoot", .65f, GetRandom.Float(.2f, .3f), GetRandom.Float(.6f, .75f));
@@ -229,7 +240,7 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         public void FireMissile(Transform spawnPosition, GameObject target, float rateOfFire, ParticleSystem particle)
         {
-            if (canShoot)
+            if (canShoot && ammo > 0)
             {
                 StartCoroutine(ShootMissileCO(spawnPosition, target, rateOfFire, particle));
             }
@@ -258,12 +269,65 @@ namespace CarterGames.CWIS
                     bulletPool[i].transform.rotation = transform.rotation;
                     bulletPool[i].GetComponent<PlayerMissile>().targetPos = target;
                     bulletPool[i].SetActive(true);
+                    ammo -= 1;
                     break;
                 }
             }
 
             yield return new WaitForSeconds(rateOfFire);
             canShoot = true;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Sets up the amount of ammo this gun has automatically from the ship stats.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        private void AmmoSetup(ShipWeapons gun)
+        {
+            int _toGet = (int)gun;
+            int[] _weaponStats = ship.GetWeaponAmmo(_toGet);
+            maxAmmo = _weaponStats[0];
+            ammo = _weaponStats[1];
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Increments the gun overheat timer, which stops guns working when fired too often.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        private void IncrementFiringTimer()
+        {
+            firingTimer += Time.deltaTime;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Decrements the gun overheat timer, which stops guns working when fired too often.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        private void DecrementFiringTimer()
+        {
+            if (firingTimer > 0f)
+                firingTimer -= (Time.deltaTime / 2);
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Check to see if the gun is overheating.
+        /// </summary>
+        /// <returns>true or false</returns>
+        /// ------------------------------------------------------------------------------------------------------
+        private bool CheckGunOverheating()
+        {
+            if (firingTimer < maxFiringTime)
+                return false;
+            else
+                return true;
         }
     }
 }

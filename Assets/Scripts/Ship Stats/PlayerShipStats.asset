@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PlayerShipStats
   m_EditorClassIdentifier: 
   shipHealth: 5
-  fiveInchAmmo: 24
-  bowMissileAmmo: 21
-  bowCWISAmmo: 200
-  chaftAmmo: 2
-  sternCWISAmmo: 200
-  sternMissileAmmo: 21
+  fiveInchAmmo: 1e0000001e000000
+  bowMissileAmmo: 150000000f000000
+  bowCWISAmmo: f4010000c8000000
+  chaftAmmo: 0a00000005000000
+  sternCWISAmmo: f4010000c8000000
+  sternMissileAmmo: 150000000f000000
