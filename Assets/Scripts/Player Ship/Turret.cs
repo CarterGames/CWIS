@@ -15,25 +15,40 @@ namespace CarterGames.CWIS
 {
     public class Turret : MonoBehaviour
     {
-        [SerializeField] private Camera cam;
+        [Header("Turret")]
+        [Tooltip("Which turret is this?")]
+        [SerializeField] internal ShipWeapons thisTurret;      // Only interal due to it being needed in CIC Script
+
+        [Header("Turret Projectile")]
+        [Tooltip("What does this turret shoot?")]
         [SerializeField] private GameObject bulletPrefab;
+
+        [Tooltip("How many of the projectile should the turret have?")]
         [SerializeField] private int poolSize;
 
-        public ShipWeapons thisTurret;
-        public int maxAmmo;
-        public int ammo;
-        public float bulletSpeed;
-        public float fireRate;
-        public bool shouldFireFiveInch;
-        public bool shouldFireCWIS;
-        public bool shouldFireMissile;
+        [Header("Turret Ammo")]
+        [SerializeField] internal int maxAmmo;
+        [SerializeField] internal int ammo;
+        [SerializeField] private UITextElement ammoCounter;
 
-        internal CIC cic;
-        internal bool canShoot = true;
-        internal Actions actions;
+        [Header("*Optional")]
+        [SerializeField] internal float bulletSpeed;
+        [SerializeField] internal float fireRate;
 
+        private Camera cam;
         private GameObject[] bulletPool;
         private AudioManager _audio;
+        [SerializeField] private float firingTimer = 0f;
+        [SerializeField] private float maxFiringTime = 10f;
+
+
+        internal bool canShoot = true;
+        internal bool shouldFireFiveInch;
+        internal bool shouldFireCWIS;
+        internal bool shouldFireMissile;
+        internal Actions actions;
+        internal CIC cic;
+        internal Ship ship;
 
 
         private void OnEnable()
@@ -43,6 +58,7 @@ namespace CarterGames.CWIS
             actions.Enable();
             canShoot = true;
             cic = GameObject.FindGameObjectWithTag("CIC").GetComponent<CIC>();
+            ship = GameObject.FindGameObjectWithTag("Player").GetComponent<Ship>();
         }
 
 
@@ -66,25 +82,38 @@ namespace CarterGames.CWIS
             }
 
             _audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+            cam = GameObject.FindGameObjectWithTag("GameCam").GetComponent<Camera>();
+
+            firingTimer = 0f;
+            maxFiringTime = 5f;
+
+            AmmoSetup(thisTurret);
         }
 
 
         public void Update()
         {
+            // Five Inch Firing
             if (shouldFireFiveInch)
             {
                 FireBullet();
-            }            
-            
-            if (shouldFireCWIS)
-            {
-                FireCWISBullet();
             }
 
-            if (shouldFireMissile)
+
+            // CWIS Weapon Firing 
+            if (shouldFireCWIS && !CheckGunOverheating())
             {
-                //FireMissile();
+                FireCWISBullet();
+                IncrementFiringTimer();
             }
+            else if (shouldFireCWIS && CheckGunOverheating())
+                IncrementFiringTimer();
+            else if (firingTimer > 0f && !shouldFireCWIS)
+                DecrementFiringTimer();
+
+            // Update Ammo Counters
+            if (!IsAmmoCountCorrect(ammo, ammoCounter.GetTextValue()))
+                ammoCounter.SetTextValue(ammo.ToString());
         }
 
 
@@ -121,7 +150,7 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         public void FireBullet()
         {
-            if (canShoot)
+            if (canShoot && ammo > 0)
             {
                 Debug.Log("shoot called");
                 StartCoroutine(ShootBulletCO(transform.position, fireRate));
@@ -131,7 +160,7 @@ namespace CarterGames.CWIS
 
         /// ------------------------------------------------------------------------------------------------------
         /// <summary>
-        /// Actually shoots the bullet (normally the 5')
+        /// Actually shoots the bullet (normally the 5")
         /// </summary>
         /// <param name="spawnPosition">Vec3 | place to spawn</param>
         /// <param name="rateOfFire">Float | the speed of which the next bullet will be allowed</param>
@@ -149,7 +178,7 @@ namespace CarterGames.CWIS
                     bulletPool[i].transform.rotation = transform.rotation;
                     bulletPool[i].GetComponent<Rigidbody>().velocity = -transform.forward * bulletSpeed;
                     bulletPool[i].SetActive(true);
-
+                    ammo -= 1;
                     // Audio on shoot
                     //_audio.PlayFromTime("cwisShoot", .65f, GetRandom.Float(.2f, .3f), GetRandom.Float(.6f, .75f));
 
@@ -168,7 +197,7 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         public void FireCWISBullet()
         {
-            if (canShoot)
+            if (canShoot && ammo > 0)
             {
                 Debug.Log("shoot called");
                 StartCoroutine(ShootCWISBulletCO(transform.position, fireRate));
@@ -196,6 +225,7 @@ namespace CarterGames.CWIS
                     bulletPool[i].transform.rotation = Quaternion.Euler(GetRandom.Vector3(transform.rotation.eulerAngles, 0, 0, 3f, 3f, 0, 0));
                     bulletPool[i].GetComponent<Rigidbody>().velocity = -bulletPool[i].transform.forward * bulletSpeed;
                     bulletPool[i].SetActive(true);
+                    ammo -= 1;
 
                     // Audio on shoot
                     _audio.PlayFromTime("cwisShoot", .65f, GetRandom.Float(.2f, .3f), GetRandom.Float(.6f, .75f));
@@ -215,11 +245,11 @@ namespace CarterGames.CWIS
         /// <param name="spawnPosition">Vec3 | place to spawn</param>
         /// <param name="rateOfFire">Float | the speed of which the next missile will be allowed</param>
         /// ------------------------------------------------------------------------------------------------------
-        public void FireMissile(Transform spawnPosition, GameObject target, float rateOfFire)
+        public void FireMissile(Transform spawnPosition, GameObject target, float rateOfFire, ParticleSystem particle)
         {
-            if (canShoot)
+            if (canShoot && ammo > 0)
             {
-                StartCoroutine(ShootMissileCO(spawnPosition, target, rateOfFire));
+                StartCoroutine(ShootMissileCO(spawnPosition, target, rateOfFire, particle));
             }
         }
 
@@ -231,9 +261,12 @@ namespace CarterGames.CWIS
         /// <param name="spawnPosition"></param>
         /// <param name="rateOfFire"></param>
         /// ------------------------------------------------------------------------------------------------------
-        private IEnumerator ShootMissileCO(Transform spawnPosition, GameObject target, float rateOfFire)
+        private IEnumerator ShootMissileCO(Transform spawnPosition, GameObject target, float rateOfFire, ParticleSystem particle)
         {
             canShoot = false;
+            particle.Play();
+            yield return new WaitForSeconds(.75f);
+            particle.Stop();
 
             for (int i = 0; i < poolSize; i++)
             {
@@ -241,14 +274,84 @@ namespace CarterGames.CWIS
                 {
                     bulletPool[i].transform.position = spawnPosition.position;
                     bulletPool[i].transform.rotation = transform.rotation;
-                    bulletPool[i].GetComponent<PlayerMissile>().targetPos = target;             
+                    bulletPool[i].GetComponent<PlayerMissile>().targetPos = target;
                     bulletPool[i].SetActive(true);
+                    ammo -= 1;
                     break;
                 }
             }
 
             yield return new WaitForSeconds(rateOfFire);
             canShoot = true;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Sets up the amount of ammo this gun has automatically from the ship stats.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        private void AmmoSetup(ShipWeapons gun)
+        {
+            int _toGet = (int)gun;
+            int[] _weaponStats = ship.GetWeaponAmmo(_toGet);
+            maxAmmo = _weaponStats[0];
+            ammo = _weaponStats[1];
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Increments the gun overheat timer, which stops guns working when fired too often.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        private void IncrementFiringTimer()
+        {
+            firingTimer += Time.deltaTime;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Decrements the gun overheat timer, which stops guns working when fired too often.
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        private void DecrementFiringTimer()
+        {
+            if (firingTimer > 0f)
+                firingTimer -= (Time.deltaTime / 2);
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Check to see if the gun is overheating.
+        /// </summary>
+        /// <returns>true or false</returns>
+        /// ------------------------------------------------------------------------------------------------------
+        private bool CheckGunOverheating()
+        {
+            if (firingTimer < maxFiringTime)
+                return false;
+            else
+                return true;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Checks to see if the ammo count is correct, avoids updating it when not needed.
+        /// </summary>
+        /// <returns></returns>
+        /// ------------------------------------------------------------------------------------------------------
+        private bool IsAmmoCountCorrect(int ammo, string toCheck)
+        {
+            int _toCheckAsInt = int.Parse(toCheck);
+
+            if (!ammo.Equals(_toCheckAsInt))
+                return false;
+            else
+                return true;
         }
     }
 }

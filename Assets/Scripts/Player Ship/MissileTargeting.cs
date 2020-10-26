@@ -20,15 +20,27 @@ namespace CarterGames.CWIS
         private Vector3 targetingLine;
         private LineRenderer visualLine;
         private MissileLauncher missileLauncher;
-
         private bool isActive;
+        private Actions actions;
 
+
+        private void OnEnable()
+        {
+            actions = new Actions();
+            actions.Enable();
+        }
+
+        private void OnDisable()
+        {
+            actions.Disable();
+        }
 
         private void Start()
         {
             visualLine = GetComponent<LineRenderer>();
             missileLauncher = GetComponent<MissileLauncher>();
             startPos = new Vector3(transform.position.x, 4, transform.position.z);
+            cam = GameObject.FindGameObjectWithTag("GameCam").GetComponent<Camera>();
         }
 
 
@@ -39,7 +51,7 @@ namespace CarterGames.CWIS
                 Plane plane = new Plane(Vector3.up, 0);
 
                 float distance;
-                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+                Ray ray = cam.ScreenPointToRay(actions.Weapons.Position.ReadValue<Vector2>());
 
                 if (plane.Raycast(ray, out distance))
                 {

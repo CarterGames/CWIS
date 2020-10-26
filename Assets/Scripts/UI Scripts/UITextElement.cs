@@ -32,5 +32,14 @@ namespace CarterGames.CWIS
         {
             _text.text = value;
         }
+
+        /// <summary>
+        /// Gets the current text value.
+        /// </summary>
+        /// <returns>String | The current text.</returns>
+        public string GetTextValue()
+        {
+            return _text.text;
+        }
     }
 }

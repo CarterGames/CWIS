@@ -19,7 +19,8 @@ namespace CarterGames.CWIS
         private Actions action;
 
         // Ship stats 
-        private int[] shipStats;
+        private int shipHealth;
+        private int[,] shipStats;
         public ShipStats playerStats;
 
 
@@ -39,16 +40,21 @@ namespace CarterGames.CWIS
         private void Awake()
         {
             // ship health setup
-            shipStats = new int[7];
-            shipStats[0] = playerStats.shipHealth;
+            shipStats = new int[6,2];
 
             // ship ammo
-            shipStats[1] = playerStats.fiveInchAmmo;
-            shipStats[2] = playerStats.bowMissileAmmo;
-            shipStats[3] = playerStats.bowCWISAmmo;
-            shipStats[4] = playerStats.chaftAmmo;
-            shipStats[5] = playerStats.sternCWISAmmo;
-            shipStats[6] = playerStats.sternMissileAmmo;
+            shipStats[0,0] = playerStats.fiveInchAmmo[0];
+            shipStats[0,1] = playerStats.fiveInchAmmo[1];
+            shipStats[1,0] = playerStats.bowMissileAmmo[0];
+            shipStats[1,1] = playerStats.bowMissileAmmo[1];
+            shipStats[2,0] = playerStats.bowCWISAmmo[0];
+            shipStats[2,1] = playerStats.bowCWISAmmo[1];
+            shipStats[3,0] = playerStats.chaftAmmo[0];
+            shipStats[3,1] = playerStats.chaftAmmo[1];
+            shipStats[4,0] = playerStats.sternCWISAmmo[0];
+            shipStats[4,1] = playerStats.sternCWISAmmo[1];
+            shipStats[5,0] = playerStats.sternMissileAmmo[0];
+            shipStats[5,1] = playerStats.sternMissileAmmo[1];
         }
 
 
@@ -66,9 +72,9 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-#if UNITY_STANDALONE
+//#if UNITY_STANDALONE
             ToggleCICWeapon();
-#endif
+//#endif
         }
 
 
@@ -97,13 +103,18 @@ namespace CarterGames.CWIS
         /// </summary>
         public void ResetShip()
         {
-            shipStats[0] = playerStats.shipHealth;
-            shipStats[1] = playerStats.fiveInchAmmo;
-            shipStats[2] = playerStats.bowMissileAmmo;
-            shipStats[3] = playerStats.bowCWISAmmo;
-            shipStats[4] = playerStats.chaftAmmo;
-            shipStats[5] = playerStats.sternCWISAmmo;
-            shipStats[6] = playerStats.sternMissileAmmo;
+            shipStats[0, 0] = playerStats.fiveInchAmmo[0];
+            shipStats[0, 1] = playerStats.fiveInchAmmo[1];
+            shipStats[1, 0] = playerStats.bowMissileAmmo[0];
+            shipStats[1, 1] = playerStats.bowMissileAmmo[1];
+            shipStats[2, 0] = playerStats.bowCWISAmmo[0];
+            shipStats[2, 1] = playerStats.bowCWISAmmo[1];
+            shipStats[3, 0] = playerStats.chaftAmmo[0];
+            shipStats[3, 1] = playerStats.chaftAmmo[1];
+            shipStats[4, 0] = playerStats.sternCWISAmmo[0];
+            shipStats[4, 1] = playerStats.sternCWISAmmo[1];
+            shipStats[5, 0] = playerStats.sternMissileAmmo[0];
+            shipStats[5, 1] = playerStats.sternMissileAmmo[1];
         }
 
 
@@ -115,10 +126,10 @@ namespace CarterGames.CWIS
         public void ReduceShipHealth(int value = 1)
         {
             // Edit health value
-            shipStats[0] -= value;
+            shipHealth -= value;
 
             // Update the health UI
-            uITextElements[0].SetTextValue(shipStats[0].ToString());
+            uITextElements[0].SetTextValue(shipHealth.ToString());
         }
 
 
@@ -128,17 +139,28 @@ namespace CarterGames.CWIS
         /// <returns>Int | The player ship health.</returns>
         public int GetShipHealth()
         {
-            return shipStats[0];
+            return shipHealth;
         }
 
 
         /// <summary>
-        /// Returns the ship stats int array
+        /// Returns the ship stats int array.
         /// </summary>
         /// <returns>Int Array | The ship stats.</returns>
-        public int[] GetShipStats()
+        public int[,] GetShipStats()
         {
             return shipStats;
+        }
+
+
+        /// <summary>
+        /// Retruns the max and default ammo for the ship weapon.
+        /// </summary>
+        /// <param name="Weapon">Weapon to check</param>
+        /// <returns>Int[] with the max followed by the default ammo.</returns>
+        public int[] GetWeaponAmmo(int Weapon)
+        {
+            return new int[2] { shipStats[Weapon, 0], shipStats[Weapon, 1] };
         }
     }
 }

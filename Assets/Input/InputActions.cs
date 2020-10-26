@@ -30,7 +30,7 @@ namespace CarterGames.CWIS
                 },
                 {
                     ""name"": ""Position"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""c25ac0a8-f8b6-4d46-b84b-16a314ae23cf"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -63,7 +63,7 @@ namespace CarterGames.CWIS
                 {
                     ""name"": """",
                     ""id"": ""325a3cbe-e293-4239-86a2-d69eef87ff2a"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",

@@ -13,11 +13,11 @@ namespace CarterGames.CWIS
     /// <summary>
     /// A collection of all the avalible weapons on the ship
     /// </summary>
-    public enum ShipWeapons { FiveInch, BowCWIS, BowMissiles, Chafts, SternCWIS, SternMissiles }
+    public enum ShipWeapons { FiveInch, BowMissiles, BowCWIS, Chafts, SternCWIS, SternMissiles }
 
     public class CIC : MonoBehaviour
     {
-        private Turret[] shipWeapons; 
+        private Turret[] shipWeapons;
 
         /// <summary>
         /// The active weapon 
@@ -39,6 +39,9 @@ namespace CarterGames.CWIS
         {
             activeCICWeapon = (ShipWeapons)weapon;
         }
+
+
+        
 
 
         public void FireWeapon()

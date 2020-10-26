@@ -13,12 +13,14 @@ namespace CarterGames.CWIS
 {
     public class MissileLauncher : Turret
     {
+        [Header("Missile Launcher Custom Settings")]
         [SerializeField] private GameObject[] missileSpawnLocations;
         [SerializeField] private int lastSiloUsed = 0;
-        
+
         private GameObject target;
         private LineRenderer lr;
         private MissileTargeting missileTargeting;
+        private ParticleSystem particles;
 
 
         private new void Start()
@@ -29,6 +31,7 @@ namespace CarterGames.CWIS
             lr.enabled = false;
 
             missileTargeting = GetComponent<MissileTargeting>();
+            particles = GetComponentInChildren<ParticleSystem>();
         }
 
 
@@ -48,14 +51,10 @@ namespace CarterGames.CWIS
                     if (!shouldFireMissile && canShoot && target.GetComponent<RadarIcons>())
                     {
                         target.GetComponent<RadarIcons>().SetIconColour(Color.white);
-                        Debug.Log("fire");
-                        base.shouldFireMissile = true;
-                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate);
+                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate, particles);
                         UpdateSiloNumber();
                     }
                 }
-                else
-                    base.shouldFireMissile = false;
             }
             else
             {
@@ -68,6 +67,9 @@ namespace CarterGames.CWIS
         }
 
 
+        /// <summary>
+        /// Updates the silo number used.
+        /// </summary>
         private void UpdateSiloNumber()
         {
             if ((lastSiloUsed + 1).Equals(missileSpawnLocations.Length))
@@ -77,6 +79,10 @@ namespace CarterGames.CWIS
         }
 
 
+        /// <summary>
+        /// Sets the target for the missile and updates the radar icon colour to match.
+        /// </summary>
+        /// <param name="value">Target GameObject</param>
         public void SetTarget(GameObject value)
         {
             if (target && target.GetComponent<RadarIcons>())

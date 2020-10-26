@@ -17,6 +17,7 @@ namespace CarterGames.CWIS
 
         private AudioManager am;
         private MissileSpawer ms;
+        private Camera cam;
 
 
         private void OnEnable()
@@ -35,6 +36,11 @@ namespace CarterGames.CWIS
             if (!ms)
             {
                 ms = FindObjectOfType<MissileSpawer>();
+            }
+
+            if (!cam)
+            {
+                cam = GameObject.FindGameObjectWithTag("GameCam").GetComponent<Camera>();
             }
         }
 
@@ -58,7 +64,7 @@ namespace CarterGames.CWIS
 
 
 
-                if (IsVisibleFrom(this.GetComponentInChildren<Renderer>(), Camera.main))
+                if (IsVisibleFrom(this.GetComponentInChildren<Renderer>(), cam))
                 {
                     //am.Play("missileHitFar", Random.Range(.2f, .3f), Random.Range(1f, 1.25f));
                 }
