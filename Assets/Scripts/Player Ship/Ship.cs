@@ -55,6 +55,8 @@ namespace CarterGames.CWIS
             shipStats[4,1] = playerStats.sternCWISAmmo[1];
             shipStats[5,0] = playerStats.sternMissileAmmo[0];
             shipStats[5,1] = playerStats.sternMissileAmmo[1];
+
+            shipHealth = 5;
         }
 
 

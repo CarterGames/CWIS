@@ -119,7 +119,7 @@ namespace CarterGames.CWIS
 
         /// ------------------------------------------------------------------------------------------------------
         /// <summary>
-        /// Rotates the turret to the mouse position
+        /// Rotates the turret to the mouse position.
         /// </summary>
         /// <param name="_min">Min rotation</param>
         /// <param name="_max">Max rotation</param>
