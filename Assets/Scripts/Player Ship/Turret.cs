@@ -38,9 +38,9 @@ namespace CarterGames.CWIS
         private Camera cam;
         private GameObject[] bulletPool;
         private AudioManager _audio;
-        [SerializeField] private float firingTimer = 0f;
-        [SerializeField] private float maxFiringTime = 10f;
 
+        [SerializeField] internal float firingTimer = 0f;
+        [SerializeField] internal float maxFiringTime = 10f;
 
         internal bool canShoot = true;
         internal bool shouldFireFiveInch;

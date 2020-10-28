@@ -46,7 +46,7 @@ namespace CarterGames.CWIS
                     missileTargeting.EnableTargeting();
 
                 // Shoot bullet...
-                if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
+                if (actions.Weapons.Fire.phase.Equals(InputActionPhase.Performed))
                 {
                     if (!shouldFireMissile && canShoot && target.GetComponent<RadarIcons>())
                     {
@@ -55,6 +55,8 @@ namespace CarterGames.CWIS
                         UpdateSiloNumber();
                     }
                 }
+
+                base.Update();
             }
             else
             {
