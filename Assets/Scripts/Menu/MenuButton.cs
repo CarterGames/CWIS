@@ -15,5 +15,11 @@ namespace CarterGames.CWIS
         {
             SceneManager.LoadSceneAsync(sceneName);
         }
+
+
+        public void QuitApplication()
+        {
+            Application.Quit();
+        }
     }
 }

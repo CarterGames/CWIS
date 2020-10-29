@@ -8,22 +8,22 @@
 
 namespace CarterGames.CWIS.Menu
 {
-    public class QuitGame : MonoBehaviour
+    public class PanelController : MonoBehaviour
     {
-        [SerializeField] private GameObject quitPanel;
+        [SerializeField] private Canvas panel;
 
         private bool isPanelOpen;
 
 
         public void OpenPanel()
         {
-            quitPanel.SetActive(true);
+            panel.enabled = true;
         }
 
 
         public void ClosePanel()
         {
-            quitPanel.SetActive(false);
+            panel.enabled = false;
         }
     }
 }
