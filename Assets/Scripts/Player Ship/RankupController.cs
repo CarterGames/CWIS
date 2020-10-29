@@ -10,8 +10,8 @@ namespace CarterGames.CWIS
 {
     public class RankupController : MonoBehaviour
     {
-        [SerializeField] private Ranks[] weaponRanks;
-        [SerializeField] private int[] usesKills;
+        [SerializeField] private Ranks[] weaponRanks = default;
+        [SerializeField] private int[] usesKills = default;
 
 
         /// <summary>

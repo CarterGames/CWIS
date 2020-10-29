@@ -12,8 +12,8 @@ namespace CarterGames.CWIS
 {
     public class EnemyMissile : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem explosion;
-        [SerializeField] private Transform radarSprite;
+        [SerializeField] private ParticleSystem explosion = default;
+        [SerializeField] private Transform radarSprite = default;
 
         private AudioManager am;
         private MissileSpawer ms;

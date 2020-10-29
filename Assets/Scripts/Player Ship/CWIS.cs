@@ -17,9 +17,8 @@ namespace CarterGames.CWIS
         [Header("C.W.I.S Custom Settings")]
         [Range(0f, 10f)]
         [SerializeField] private float rotSpeed = 1.5f;
-        [SerializeField] private Slider tempSlider;
-        [SerializeField] private ParticleSystem gunSmoke;
-
+        [SerializeField] private Slider tempSlider = default;
+        [SerializeField] private ParticleSystem gunSmoke = default;
 
         private new void Start()
         {
@@ -40,12 +39,12 @@ namespace CarterGames.CWIS
                 if (actions.Weapons.Fire.phase.Equals(InputActionPhase.Performed))
                 {
                     base.shouldFireCWIS = true;
-                    gunSmoke.Play();
+                    //gunSmoke.Play();
                 }
                 else
                 {
                     base.shouldFireCWIS = false;
-                    gunSmoke.Stop();
+                    //gunSmoke.Stop();
                 }
 
                 base.Update();

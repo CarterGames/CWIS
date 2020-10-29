@@ -14,10 +14,10 @@ namespace CarterGames.Assets.LeaderboardManager
 {
     public class LeaderboardDisplay : MonoBehaviour
     {
-        [SerializeField] private LeaderboardData[] data;
-        [SerializeField] private GameObject rowAnchor;
-        [SerializeField] private GameObject rowPrefab;
-        [SerializeField] private GameObject loading;
+        [SerializeField] private LeaderboardData[] data = null;
+        [SerializeField] private GameObject rowAnchor = null;
+        [SerializeField] private GameObject rowPrefab = null;
+        [SerializeField] private GameObject loading = null;
 
         public bool updateLeaderboard;
         public bool useOnline;

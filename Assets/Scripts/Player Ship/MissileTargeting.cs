@@ -11,10 +11,10 @@ namespace CarterGames.CWIS
 {
     public class MissileTargeting : MonoBehaviour
     {
-        [SerializeField] private Camera cam;
-        [SerializeField] private MissileSpawer activeEnemyMisisles;
-        [SerializeField] private bool hasTarget;
-        [SerializeField] private float maxRange;
+        [SerializeField] private Camera cam = default;
+        [SerializeField] private MissileSpawer activeEnemyMisisles = default;
+        [SerializeField] private bool hasTarget = default;
+        [SerializeField] private float maxRange = default;
 
         private Vector3 startPos;
         private Vector3 targetingLine;

@@ -11,7 +11,7 @@ namespace CarterGames.CWIS
 {
     public class PauseGameController : MonoBehaviour
     {
-        [SerializeField] private Canvas pauseUI;
+        [SerializeField] private Canvas pauseUI = default;
         private Actions actions;
 
 

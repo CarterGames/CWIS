@@ -14,13 +14,19 @@ namespace CarterGames.CWIS
     public class Chaft : Turret
     {
         [Header("Chaft Custom Settings")]
-        [SerializeField] private ParticleSystem[] particles;
-        [SerializeField] private bool canUseChaft;
-        [SerializeField] private Image timerSlider;
+        [SerializeField] private ParticleSystem[] particles = default;
+        [SerializeField] private bool canUseChaft = default;
+        [SerializeField] private Image timerSlider = default;
 
         private float waitTime = 15f;
         private float timer = 15f;
         private bool startTimer;
+
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
 
 
         private new void Start()
@@ -48,6 +54,8 @@ namespace CarterGames.CWIS
                         {
                             particles[i].Play();
                         }
+
+                        StartCoroutine(Cooldown());
 
                         timer = 0f;
                         base.ammo--;
@@ -98,6 +106,17 @@ namespace CarterGames.CWIS
                 return _toConvert / _max;
             else
                 return _toConvert - _min / _min - _max;
+        }
+
+
+        /// <summary>
+        /// Coroutine - Cooldown.....
+        /// </summary>
+        private IEnumerator Cooldown()
+        {
+            ship.ToggleShipHitAbility(true);
+            yield return new WaitForSeconds(1.5f);
+            ship.ToggleShipHitAbility(false);
         }
     }
 }

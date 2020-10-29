@@ -14,7 +14,7 @@ namespace CarterGames.CWIS
     public class MissileLauncher : Turret
     {
         [Header("Missile Launcher Custom Settings")]
-        [SerializeField] private GameObject[] missileSpawnLocations;
+        [SerializeField] private GameObject[] missileSpawnLocations = default;
         [SerializeField] private int lastSiloUsed = 0;
 
         private GameObject target;
@@ -48,11 +48,14 @@ namespace CarterGames.CWIS
                 // Shoot bullet...
                 if (actions.Weapons.Fire.phase.Equals(InputActionPhase.Performed))
                 {
-                    if (!shouldFireMissile && canShoot && target.GetComponent<RadarIcons>())
+                    if (target)
                     {
-                        target.GetComponent<RadarIcons>().SetIconColour(Color.white);
-                        FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate, particles);
-                        UpdateSiloNumber();
+                        if (!shouldFireMissile && canShoot && target.GetComponent<RadarIcons>())
+                        {
+                            target.GetComponent<RadarIcons>().SetIconColour(Color.white);
+                            FireMissile(missileSpawnLocations[lastSiloUsed].transform, target, fireRate, particles);
+                            UpdateSiloNumber();
+                        }
                     }
                 }
 

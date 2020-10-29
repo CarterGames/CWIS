@@ -14,9 +14,9 @@ namespace CarterGames.CWIS
 {
     public class MissileSpawer : MonoBehaviour
     {
-        [SerializeField] private int missilesWanted;
-        [SerializeField] private float minDistance;
-        [SerializeField] private float maxDistance;
+        [SerializeField] private int missilesWanted = 0;
+        [SerializeField] private float minDistance = 2500;
+        [SerializeField] private float maxDistance = 5000;
 
         private bool isCoR;
         private Ship ship;

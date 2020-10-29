@@ -10,7 +10,7 @@ namespace CarterGames.CWIS.Menu
 {
     public class PanelController : MonoBehaviour
     {
-        [SerializeField] private Canvas panel;
+        [SerializeField] private Canvas panel = default;
 
         private bool isPanelOpen;
 

@@ -17,35 +17,36 @@ namespace CarterGames.CWIS
     {
         [Header("Turret")]
         [Tooltip("Which turret is this?")]
-        [SerializeField] internal ShipWeapons thisTurret;      // Only interal due to it being needed in CIC Script
+        [SerializeField] internal ShipWeapons thisTurret = ShipWeapons.Null;      // Only interal due to it being needed in CIC Script
 
         [Header("Turret Projectile")]
         [Tooltip("What does this turret shoot?")]
-        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private GameObject bulletPrefab = default;
 
         [Tooltip("How many of the projectile should the turret have?")]
-        [SerializeField] private int poolSize;
+        [SerializeField] private int poolSize = default;
 
         [Header("Turret Ammo")]
-        [SerializeField] internal int maxAmmo;
-        [SerializeField] internal int ammo;
-        [SerializeField] private UITextElement ammoCounter;
+        [SerializeField] internal int maxAmmo = default;
+        [SerializeField] internal int ammo = default;
+        [SerializeField] private UITextElement ammoCounter = default;
 
         [Header("*Optional")]
-        [SerializeField] internal float bulletSpeed;
-        [SerializeField] internal float fireRate;
-
+        [SerializeField] internal float bulletSpeed = default;
+        [SerializeField] internal float fireRate = default;
+        [SerializeField] internal GameObject bulletSpawnPoint = default;
+ 
         private Camera cam;
         private GameObject[] bulletPool;
         private AudioManager _audio;
 
-        [SerializeField] internal float firingTimer = 0f;
-        [SerializeField] internal float maxFiringTime = 10f;
+        internal float firingTimer = 0f;
+        internal float maxFiringTime = 10f;
 
         internal bool canShoot = true;
         internal bool shouldFireFiveInch;
         internal bool shouldFireCWIS;
-        internal bool shouldFireMissile;
+        internal bool shouldFireMissile = default;
         internal Actions actions;
         internal CIC cic;
         internal Ship ship;
@@ -152,8 +153,10 @@ namespace CarterGames.CWIS
         {
             if (canShoot && ammo > 0)
             {
-                Debug.Log("shoot called");
-                StartCoroutine(ShootBulletCO(transform.position, fireRate));
+                if (bulletSpawnPoint)
+                    StartCoroutine(ShootBulletCO(bulletSpawnPoint.transform.position, fireRate));
+                else
+                    StartCoroutine(ShootBulletCO(transform.position, fireRate));
             }
         }
 
@@ -199,8 +202,10 @@ namespace CarterGames.CWIS
         {
             if (canShoot && ammo > 0)
             {
-                Debug.Log("shoot called");
-                StartCoroutine(ShootCWISBulletCO(transform.position, fireRate));
+                if (bulletSpawnPoint)
+                    StartCoroutine(ShootCWISBulletCO(bulletSpawnPoint.transform.position, fireRate));
+                else
+                    StartCoroutine(ShootCWISBulletCO(transform.position, fireRate));
             }
         }
 

@@ -94,6 +94,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7258331908860400274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5637324697605823693}
+  m_Layer: 0
+  m_Name: BulletSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5637324697605823693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7258331908860400274}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.15, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2554983678326248926}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7401446689223179993
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +247,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.45, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 0.5, z: 0.5}
-  m_Children: []
+  m_Children:
+  - {fileID: 5637324697605823693}
   m_Father: {fileID: 4305230958699690368}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -326,14 +357,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51818a8b87a4fc4f86d3473a8591bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
+  thisTurret: 1
   bulletPrefab: {fileID: 5478475561133408070, guid: 353d7dc206b5f4e47a9570ce17a8664e,
     type: 3}
   poolSize: 200
-  thisTurret: 1
   maxAmmo: 200
   ammo: 200
+  ammoCounter: {fileID: 0}
   bulletSpeed: 80
   fireRate: 0.05
-  shouldFireBullet: 0
-  shouldFireMissile: 0
+  firingTimer: 0
+  maxFiringTime: 10
+  rotSpeed: 1.5
+  tempSlider: {fileID: 0}
+  gunSmoke: {fileID: 0}

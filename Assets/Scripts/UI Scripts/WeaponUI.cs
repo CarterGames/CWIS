@@ -10,7 +10,7 @@ namespace CarterGames.CWIS
 {
     public class WeaponUI : MonoBehaviour
     {
-        [SerializeField] private GameObject[] weaponUI;
+        [SerializeField] private GameObject[] weaponUI = default;
         private CIC cic;
         private ShipWeapons shipWeapon;
 
