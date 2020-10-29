@@ -21,5 +21,17 @@ namespace CarterGames.CWIS
         {
             Application.Quit();
         }
+
+
+        public void PauseTime()
+        {
+            Time.timeScale = 0;
+        }
+
+
+        public void ResumeTime()
+        {
+            Time.timeScale = 1;
+        }
     }
 }
