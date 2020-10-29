@@ -13,7 +13,7 @@ namespace CarterGames.CWIS
     /// <summary>
     /// A collection of all the avalible weapons on the ship
     /// </summary>
-    public enum ShipWeapons { FiveInch, BowMissiles, BowCWIS, Chafts, SternCWIS, SternMissiles }
+    public enum ShipWeapons { FiveInch, BowMissiles, BowCWIS, Chafts, SternCWIS, SternMissiles, Null }
 
     public class CIC : MonoBehaviour
     {

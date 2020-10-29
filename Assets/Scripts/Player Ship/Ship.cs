@@ -13,10 +13,13 @@ namespace CarterGames.CWIS
 {
     public class Ship : MonoBehaviour
     {
-        [SerializeField] private UITextElement[] uITextElements;
+        [SerializeField] private UITextElement[] uITextElements = default;
 
         private CIC _cic;
         private Actions action;
+        [SerializeField] private BoxCollider boxCollider = default;
+
+        private bool canBeHit = true;
 
         // Ship stats 
         private int shipHealth;
@@ -55,6 +58,8 @@ namespace CarterGames.CWIS
             shipStats[4,1] = playerStats.sternCWISAmmo[1];
             shipStats[5,0] = playerStats.sternMissileAmmo[0];
             shipStats[5,1] = playerStats.sternMissileAmmo[1];
+
+            shipHealth = 5;
         }
 
 
@@ -62,11 +67,11 @@ namespace CarterGames.CWIS
         {
             _cic = GetComponentInChildren<CIC>();
 
-#if UNITY_ANDROID
-            Cursor.visible = true;
-#else
-            Cursor.visible = false;
-#endif
+            //#if UNITY_ANDROID
+            //            Cursor.visible = true;
+            //#else
+            //            Cursor.visible = false;
+            //#endif
         }
 
 
@@ -74,7 +79,7 @@ namespace CarterGames.CWIS
         {
 //#if UNITY_STANDALONE
             ToggleCICWeapon();
-//#endif
+            //#endif
         }
 
 
@@ -125,11 +130,14 @@ namespace CarterGames.CWIS
         /// <param name="value">Int | amount of health to reduce.</param>
         public void ReduceShipHealth(int value = 1)
         {
-            // Edit health value
-            shipHealth -= value;
+            if (canBeHit)
+            {
+                // Edit health value
+                shipHealth -= value;
 
-            // Update the health UI
-            uITextElements[0].SetTextValue(shipHealth.ToString());
+                // Update the health UI
+                uITextElements[0].SetTextValue(shipHealth.ToString());
+            }
         }
 
 
@@ -161,6 +169,21 @@ namespace CarterGames.CWIS
         public int[] GetWeaponAmmo(int Weapon)
         {
             return new int[2] { shipStats[Weapon, 0], shipStats[Weapon, 1] };
+        }
+
+
+        /// <summary>
+        /// Make it so the ship can or cannot get hit.
+        /// </summary>
+        /// <param name="value"/>The value to change to.</param>
+        public void ToggleShipHitAbility(bool value)
+        {
+            canBeHit = value;
+
+            if (value)
+                boxCollider.enabled = true;
+            else
+                boxCollider.enabled = false;
         }
     }
 }

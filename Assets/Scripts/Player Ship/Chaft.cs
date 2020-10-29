@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -13,10 +14,14 @@ namespace CarterGames.CWIS
     public class Chaft : Turret
     {
         [Header("Chaft Custom Settings")]
-        [SerializeField] private ParticleSystem[] particles;
-        [SerializeField] private bool canUseChaft;
-        private WaitForSeconds wait;
+        [SerializeField] private ParticleSystem[] particles = default;
+        [SerializeField] private bool canUseChaft = default;
+        [SerializeField] private Image timerSlider = default;
+
         private float waitTime = 15f;
+        private float timer = 15f;
+        private bool startTimer;
+
 
         private void OnDisable()
         {
@@ -26,9 +31,12 @@ namespace CarterGames.CWIS
 
         private new void Start()
         {
-            wait = new WaitForSeconds(waitTime);
             particles = GetComponentsInChildren<ParticleSystem>();
             canUseChaft = true;
+
+            if (timerSlider)
+                timerSlider.fillAmount = 1f;
+            
 
             base.Start();
         }
@@ -38,36 +46,77 @@ namespace CarterGames.CWIS
         {
             if (thisTurret.Equals(cic.activeCICWeapon))
             {
-                if (canUseChaft)
+                if (actions.Weapons.Fire.phase.Equals(InputActionPhase.Performed))
                 {
-                    if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
+                    if (canUseChaft && base.ammo > 0)
                     {
                         for (int i = 0; i < particles.Length; i++)
                         {
                             particles[i].Play();
                         }
-                    }
 
-                    StartCoroutine(Cooldown());
+                        StartCoroutine(Cooldown());
+
+                        timer = 0f;
+                        base.ammo--;
+                        startTimer = true;
+                    }
                 }
 
                 base.Update();
             }
+
+            if (!timerSlider.fillAmount.Equals(NormaliseFloat(timer, 0f, 15f)))
+                timerSlider.fillAmount = NormaliseFloat(timer, 0f, 15f);
+
+
+            if (startTimer)
+                RechargeTimer();
         }
 
 
-        public void ChangeWaitTime(float value)
+        /// <summary>
+        /// Runs the chaft recharge timer....
+        /// </summary>
+        private void RechargeTimer()
         {
-            waitTime = value;
-            wait = new WaitForSeconds(waitTime);
+            if (timer < waitTime)
+            {
+                canUseChaft = false;
+                timer += Time.deltaTime;
+            }
+            else if (timer >= waitTime)
+            {
+                canUseChaft = true;
+                startTimer = false;
+            }
         }
 
 
+        /// <summary>
+        /// Normilises a float to a value between the min and max value
+        /// </summary>
+        /// <param name="_toConvert">The value to convert</param>
+        /// <param name="_min">The min value</param>
+        /// <param name="_max">The max value</param>
+        /// <returns>the result of the maths xD</returns>
+        private float NormaliseFloat(float _toConvert, float _min, float _max)
+        {
+            if (_min.Equals(0))
+                return _toConvert / _max;
+            else
+                return _toConvert - _min / _min - _max;
+        }
+
+
+        /// <summary>
+        /// Coroutine - Cooldown.....
+        /// </summary>
         private IEnumerator Cooldown()
         {
-            canUseChaft = false;
-            yield return wait;
-            canUseChaft = true;
+            ship.ToggleShipHitAbility(true);
+            yield return new WaitForSeconds(1.5f);
+            ship.ToggleShipHitAbility(false);
         }
     }
 }

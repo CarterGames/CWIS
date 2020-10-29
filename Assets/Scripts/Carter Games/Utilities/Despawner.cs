@@ -14,9 +14,9 @@ namespace CarterGames.Utilities
         [Header("Despawn Delay")][Tooltip("Set this to define how long the object will wait before despawning. Default Value = 1")]
         [SerializeField] private float despawnTime = 1f;
         [Header("Despawn Choices")][Tooltip("Tick this if the object should be disabled when the timer runs out.")]
-        [SerializeField] private bool disable;
+        [SerializeField] private bool disable = false;
         [Tooltip("Tick this if the object should be destroyed when the timer runs out.")]
-        [SerializeField] private bool destroy;
+        [SerializeField] private bool destroy = false;
 
 
         /// <summary>

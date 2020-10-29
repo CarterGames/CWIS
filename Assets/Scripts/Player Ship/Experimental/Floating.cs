@@ -12,8 +12,8 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private float subDepth = 1f;
         [SerializeField] private float displacementAmount = 3f;
-        [SerializeField] private Rigidbody rB;
-        [SerializeField] private int floaters;
+        [SerializeField] private Rigidbody rB = default;
+        [SerializeField] private int floaters = default;
         [SerializeField] private float drag = .99f;
         [SerializeField] private float angularDrag = .5f;
 

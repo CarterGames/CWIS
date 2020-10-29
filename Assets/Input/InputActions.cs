@@ -257,6 +257,44 @@ namespace CarterGames.CWIS
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""7ddfc234-1695-4a34-a281-881c97f2f40a"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""037818ea-5148-4c00-9168-af14761d2de1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""46707c99-f34a-4f51-b8fe-19e5df1dabc4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d8034a4-a989-4b95-99ce-940932985365"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -313,6 +351,9 @@ namespace CarterGames.CWIS
             m_CIC_ToggleWeaponFive = m_CIC.FindAction("ToggleWeaponFive", throwIfNotFound: true);
             m_CIC_ToggleWeaponSix = m_CIC.FindAction("ToggleWeaponSix", throwIfNotFound: true);
             m_CIC_ToggleWesponUD = m_CIC.FindAction("ToggleWesponUD", throwIfNotFound: true);
+            // Menu
+            m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+            m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -480,6 +521,39 @@ namespace CarterGames.CWIS
             }
         }
         public CICActions @CIC => new CICActions(this);
+
+        // Menu
+        private readonly InputActionMap m_Menu;
+        private IMenuActions m_MenuActionsCallbackInterface;
+        private readonly InputAction m_Menu_Pause;
+        public struct MenuActions
+        {
+            private @Actions m_Wrapper;
+            public MenuActions(@Actions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Pause => m_Wrapper.m_Menu_Pause;
+            public InputActionMap Get() { return m_Wrapper.m_Menu; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+            public void SetCallbacks(IMenuActions instance)
+            {
+                if (m_Wrapper.m_MenuActionsCallbackInterface != null)
+                {
+                    @Pause.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
+                    @Pause.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
+                    @Pause.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
+                }
+                m_Wrapper.m_MenuActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Pause.started += instance.OnPause;
+                    @Pause.performed += instance.OnPause;
+                    @Pause.canceled += instance.OnPause;
+                }
+            }
+        }
+        public MenuActions @Menu => new MenuActions(this);
         private int m_PCSchemeIndex = -1;
         public InputControlScheme PCScheme
         {
@@ -521,6 +595,10 @@ namespace CarterGames.CWIS
             void OnToggleWeaponFive(InputAction.CallbackContext context);
             void OnToggleWeaponSix(InputAction.CallbackContext context);
             void OnToggleWesponUD(InputAction.CallbackContext context);
+        }
+        public interface IMenuActions
+        {
+            void OnPause(InputAction.CallbackContext context);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace CarterGames.CWIS
 {
     public class PlayerMissile : MonoBehaviour
     {
-        [SerializeField] private Transform radarIcon;
+        [SerializeField] private Transform radarIcon = default;
 
         private AudioManager am;
         private Rigidbody rb;
