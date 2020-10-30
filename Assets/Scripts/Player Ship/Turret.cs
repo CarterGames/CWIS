@@ -47,6 +47,7 @@ namespace CarterGames.CWIS
         internal bool shouldFireFiveInch;
         internal bool shouldFireCWIS;
         internal bool shouldFireMissile = default;
+        internal bool shouldFireSmallArms = default;
         internal Actions actions;
         internal CIC cic;
         internal Ship ship;
@@ -88,7 +89,8 @@ namespace CarterGames.CWIS
             firingTimer = 0f;
             maxFiringTime = 5f;
 
-            AmmoSetup(thisTurret);
+            if (!thisTurret.Equals(ShipWeapons.Null))
+                AmmoSetup(thisTurret);
         }
 
 
@@ -98,6 +100,11 @@ namespace CarterGames.CWIS
             if (shouldFireFiveInch)
             {
                 FireBullet();
+            }
+
+            if (shouldFireSmallArms)
+            {
+                FireSmallBullet();
             }
 
 
@@ -113,8 +120,11 @@ namespace CarterGames.CWIS
                 DecrementFiringTimer();
 
             // Update Ammo Counters
-            if (!IsAmmoCountCorrect(ammo, ammoCounter.GetTextValue()))
-                ammoCounter.SetTextValue(ammo.ToString());
+            if (ammoCounter)
+            {
+                if (!IsAmmoCountCorrect(ammo, ammoCounter.GetTextValue()))
+                    ammoCounter.SetTextValue(ammo.ToString());
+            }
         }
 
 
@@ -192,6 +202,56 @@ namespace CarterGames.CWIS
             yield return new WaitForSeconds(rateOfFire);
             canShoot = true;
         }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Shoots a bullet if the range is good...
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        public void FireSmallBullet()
+        {
+            if (canShoot)
+            {
+                if (bulletSpawnPoint)
+                    StartCoroutine(ShootSmallBulletCO(bulletSpawnPoint.transform.position, fireRate));
+                else
+                    StartCoroutine(ShootSmallBulletCO(transform.position, fireRate));
+            }
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Actually shoots the bullet
+        /// </summary>
+        /// <param name="spawnPosition">Vec3 | place to spawn</param>
+        /// <param name="rateOfFire">Float | the speed of which the next bullet will be allowed</param>
+        /// ------------------------------------------------------------------------------------------------------
+        private IEnumerator ShootSmallBulletCO(Vector3 spawnPosition, float rateOfFire)
+        {
+            canShoot = false;
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                if (!bulletPool[i].activeInHierarchy)
+                {
+                    // Place and spawn
+                    bulletPool[i].transform.position = spawnPosition;
+                    bulletPool[i].transform.rotation = transform.rotation;
+                    bulletPool[i].GetComponent<Rigidbody>().velocity = -transform.forward * bulletSpeed;
+                    bulletPool[i].SetActive(true);
+                    // Audio on shoot
+                    //_audio.PlayFromTime("cwisShoot", .65f, GetRandom.Float(.2f, .3f), GetRandom.Float(.6f, .75f));
+
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(rateOfFire);
+            canShoot = true;
+        }
+
 
         /// ------------------------------------------------------------------------------------------------------
         /// <summary>

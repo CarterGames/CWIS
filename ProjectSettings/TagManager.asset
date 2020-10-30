@@ -11,6 +11,8 @@ TagManager:
   - AudioManager
   - Chaft
   - GameCam
+  - Target
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -24,7 +26,7 @@ TagManager:
   - Radar
   - Friendly
   - Missile
-  - 
+  - Target
   - 
   - 
   - 

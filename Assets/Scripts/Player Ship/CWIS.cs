@@ -20,6 +20,7 @@ namespace CarterGames.CWIS
         [SerializeField] private Slider tempSlider = default;
         [SerializeField] private ParticleSystem gunSmoke = default;
 
+
         private new void Start()
         {
             base.Start();

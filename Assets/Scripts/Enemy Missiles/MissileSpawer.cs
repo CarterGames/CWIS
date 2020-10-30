@@ -72,9 +72,9 @@ namespace CarterGames.CWIS
                     Vector3 newPos = ChooseSpawnLocation();
                     objectPool[i].transform.position = new Vector3(newPos.x, 4, newPos.z);
                     Vector3 dir = new Vector3(ship.gameObject.transform.position.x - objectPool[i].transform.position.x, 0, ship.gameObject.transform.position.z - objectPool[i].transform.position.z);
-                    objectPool[i].GetComponent<Rigidbody>().velocity = (dir).normalized * 100;
                     objectPool[i].transform.LookAt(dir);
                     objectPool[i].SetActive(true);
+                    objectPool[i].GetComponent<EnemyMissile>().target = ship.gameObject;
                     activeMissiles.Add(objectPool[i]);
                     break;
                 }

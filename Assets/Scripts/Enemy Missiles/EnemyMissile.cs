@@ -14,10 +14,13 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private ParticleSystem explosion = default;
         [SerializeField] private Transform radarSprite = default;
+        [SerializeField] private float missileSpd = 150f;
 
         private AudioManager am;
         private MissileSpawer ms;
         private Camera cam;
+
+        internal GameObject target;
 
 
         private void OnEnable()
@@ -51,6 +54,12 @@ namespace CarterGames.CWIS
             {
                 radarSprite.localScale += new Vector3(1, 1, 0) * Time.deltaTime * 30;
             }
+
+            Vector3 dir = new Vector3(target.gameObject.transform.position.x - transform.position.x, 0, target.gameObject.transform.position.z - transform.position.z);
+            GetComponent<Rigidbody>().velocity = (dir).normalized * missileSpd;
+            Vector3 _dir = target.transform.position - transform.position;
+            float _rot = Mathf.Atan2(_dir.x, _dir.z) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, _rot, 0), 10f);
         }
 
 
