@@ -48,6 +48,8 @@ namespace CarterGames.CWIS
         {
             if (isActive)
             {
+                startPos = new Vector3(transform.position.x, 4, transform.position.z);
+
                 Plane plane = new Plane(Vector3.up, 0);
 
                 float distance;

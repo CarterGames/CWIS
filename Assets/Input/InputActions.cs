@@ -295,6 +295,132 @@ namespace CarterGames.CWIS
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Driver"",
+            ""id"": ""032f47d4-00c2-46a0-921b-a28b1bedbf9a"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""1c16f2e3-4e37-4913-8709-ee375084a672"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""4b483c9f-9d73-4aa4-a838-a0c42d2f3df5"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6021d7e8-5950-458f-85ba-ace62aee00ce"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d246bc2c-86a7-4931-8b60-da4fd6518ab9"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e94a554b-5a69-4c5b-9c76-41fb3bd00128"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""99c19fd1-26a6-41aa-b76b-280aa1f99149"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Controller"",
+                    ""id"": ""74e57515-cc1c-476b-a437-4b1e272915ca"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9d02bc03-d126-4e7a-a3ec-1ad12c7326fe"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""28bc4b6a-8ab3-45b3-9eff-b0722197cb1e"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""5cf5b853-8ea3-4de8-95ff-ea268b83cb3e"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""03a02b98-8048-413d-b2c3-7393c50a0b91"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -354,6 +480,9 @@ namespace CarterGames.CWIS
             // Menu
             m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
             m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
+            // Driver
+            m_Driver = asset.FindActionMap("Driver", throwIfNotFound: true);
+            m_Driver_Movement = m_Driver.FindAction("Movement", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -554,6 +683,39 @@ namespace CarterGames.CWIS
             }
         }
         public MenuActions @Menu => new MenuActions(this);
+
+        // Driver
+        private readonly InputActionMap m_Driver;
+        private IDriverActions m_DriverActionsCallbackInterface;
+        private readonly InputAction m_Driver_Movement;
+        public struct DriverActions
+        {
+            private @Actions m_Wrapper;
+            public DriverActions(@Actions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Movement => m_Wrapper.m_Driver_Movement;
+            public InputActionMap Get() { return m_Wrapper.m_Driver; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(DriverActions set) { return set.Get(); }
+            public void SetCallbacks(IDriverActions instance)
+            {
+                if (m_Wrapper.m_DriverActionsCallbackInterface != null)
+                {
+                    @Movement.started -= m_Wrapper.m_DriverActionsCallbackInterface.OnMovement;
+                    @Movement.performed -= m_Wrapper.m_DriverActionsCallbackInterface.OnMovement;
+                    @Movement.canceled -= m_Wrapper.m_DriverActionsCallbackInterface.OnMovement;
+                }
+                m_Wrapper.m_DriverActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Movement.started += instance.OnMovement;
+                    @Movement.performed += instance.OnMovement;
+                    @Movement.canceled += instance.OnMovement;
+                }
+            }
+        }
+        public DriverActions @Driver => new DriverActions(this);
         private int m_PCSchemeIndex = -1;
         public InputControlScheme PCScheme
         {
@@ -599,6 +761,10 @@ namespace CarterGames.CWIS
         public interface IMenuActions
         {
             void OnPause(InputAction.CallbackContext context);
+        }
+        public interface IDriverActions
+        {
+            void OnMovement(InputAction.CallbackContext context);
         }
     }
 }
