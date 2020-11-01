@@ -18,7 +18,7 @@ namespace CarterGames.CWIS
 
     public class CIC : MonoBehaviour
     {
-        private Turret[] shipWeapons;
+        [SerializeField] internal Turret[] shipWeapons;
         internal Actions action;
 
         /// <summary>
@@ -37,12 +37,6 @@ namespace CarterGames.CWIS
         private void OnDisable()
         {
             action.Disable();
-        }
-
-
-        private void Start()
-        {
-            shipWeapons = GetComponentsInChildren<Turret>();
         }
 
 

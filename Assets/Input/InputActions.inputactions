@@ -7,11 +7,11 @@
             "actions": [
                 {
                     "name": "Fire",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "e23ddf8b-0172-4ccf-9a7f-e928c946ce3e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.1,behavior=2)"
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Position",
@@ -272,7 +272,15 @@
                     "id": "037818ea-5148-4c00-9168-af14761d2de1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Map",
+                    "type": "Button",
+                    "id": "5104ffac-9387-45c1-bef5-e2cbd491aa23",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -295,6 +303,28 @@
                     "processors": "",
                     "groups": "Xbox Controller",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5de94cb7-af61-4b79-a49e-761682ec69f9",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e282dc0b-20f0-466c-a10d-59c7d64d2e93",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Map",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

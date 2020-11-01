@@ -43,6 +43,7 @@ namespace CarterGames.CWIS
         internal float firingTimer = 0f;
         internal float maxFiringTime = 10f;
 
+        internal bool isPaused;
         internal bool canShoot = true;
         internal bool shouldFireFiveInch;
         internal bool shouldFireCWIS;
@@ -97,34 +98,37 @@ namespace CarterGames.CWIS
 
         public void Update()
         {
-            // Five Inch Firing
-            if (shouldFireFiveInch)
+            if (!isPaused)
             {
-                FireBullet();
-            }
+                // Five Inch Firing
+                if (shouldFireFiveInch)
+                {
+                    FireBullet();
+                }
 
-            if (shouldFireSmallArms)
-            {
-                FireSmallBullet();
-            }
+                if (shouldFireSmallArms)
+                {
+                    FireSmallBullet();
+                }
 
 
-            // CWIS Weapon Firing 
-            if (shouldFireCWIS && !CheckGunOverheating())
-            {
-                FireCWISBullet();
-                IncrementFiringTimer();
-            }
-            else if (shouldFireCWIS && CheckGunOverheating())
-                IncrementFiringTimer();
-            else if (firingTimer > 0f && !shouldFireCWIS)
-                DecrementFiringTimer();
+                // CWIS Weapon Firing 
+                if (shouldFireCWIS && !CheckGunOverheating())
+                {
+                    FireCWISBullet();
+                    IncrementFiringTimer();
+                }
+                else if (shouldFireCWIS && CheckGunOverheating())
+                    IncrementFiringTimer();
+                else if (firingTimer > 0f && !shouldFireCWIS)
+                    DecrementFiringTimer();
 
-            // Update Ammo Counters
-            if (ammoCounter)
-            {
-                if (!IsAmmoCountCorrect(ammo, ammoCounter.GetTextValue()))
-                    ammoCounter.SetTextValue(ammo.ToString());
+                // Update Ammo Counters
+                if (ammoCounter)
+                {
+                    if (!IsAmmoCountCorrect(ammo, ammoCounter.GetTextValue()))
+                        ammoCounter.SetTextValue(ammo.ToString());
+                }
             }
         }
 

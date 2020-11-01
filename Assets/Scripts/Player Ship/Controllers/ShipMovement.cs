@@ -65,13 +65,11 @@ namespace CarterGames.CWIS
 
             if (actions.Driver.Movement.ReadValue<Vector2>().x > .1f)
             {
-                Debug.Log("Right | " + new Vector3(0, (actions.Driver.Movement.ReadValue<Vector2>().x * rotSpd * Time.deltaTime), 0));
-                transform.Rotate(new Vector3(0, actions.Driver.Movement.ReadValue<Vector2>().x * rotSpd * Time.deltaTime, 0));
+                transform.Rotate(new Vector3(0, rotSpd * Time.deltaTime, 0));
             }
             else if (actions.Driver.Movement.ReadValue<Vector2>().x < -.1f)
             {
-                Debug.Log("Left | " + new Vector3(0, -(actions.Driver.Movement.ReadValue<Vector2>().x * rotSpd * Time.deltaTime), 0));
-                transform.Rotate(new Vector3(0, -(actions.Driver.Movement.ReadValue<Vector2>().x * rotSpd * Time.deltaTime), 0));
+                transform.Rotate(new Vector3(0, -rotSpd * Time.deltaTime, 0));
             }
 
         }

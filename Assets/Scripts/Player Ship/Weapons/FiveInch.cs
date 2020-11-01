@@ -35,10 +35,13 @@ namespace CarterGames.CWIS
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, base.RotateToMousePos(), rotSpeed);
 
                 // Shoot bullet...
-                if (actions.Weapons.Fire.phase == InputActionPhase.Performed)
+                if (canShoot)
                 {
-                    barrelParticles.Play();
-                    base.shouldFireFiveInch = true;
+                    if (base.actions.Weapons.Fire.phase.Equals(InputActionPhase.Performed))
+                    {
+                        barrelParticles.Play();
+                        base.shouldFireFiveInch = true;
+                    }
                 }
                 else
                     base.shouldFireFiveInch = false;

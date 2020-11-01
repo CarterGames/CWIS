@@ -139,12 +139,12 @@ namespace CarterGames.CWIS
                 if ((setting + 1).Equals(MissileSetting.TripleShot + 1))
                 {
                     setting = 0;
-                    base.StartInputCooldown(.5f);
+                    base.StartInputCooldown(.25f);
                 }
                 else
                 {
                     ++setting;
-                    base.StartInputCooldown(.5f);
+                    base.StartInputCooldown(.25f);
                 }
             }
         }
