@@ -838,6 +838,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144755883}
   m_CullTransparentMesh: 0
+--- !u!114 &177410753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6013637273970133020, guid: 27843fbe9ed923a4bb081a009f041f2e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6018894264399376260}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833ca1c89be619f4f831d2aaa6b5e5ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &206033543
 GameObject:
   m_ObjectHideFlags: 0
@@ -10179,6 +10191,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapPanel: {fileID: 1530601068}
+  pause: {fileID: 177410753}
+  canTab: 0
 --- !u!114 &1530601066
 MonoBehaviour:
   m_ObjectHideFlags: 0
