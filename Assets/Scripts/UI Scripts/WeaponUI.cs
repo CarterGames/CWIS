@@ -21,6 +21,8 @@ namespace CarterGames.CWIS
 
             weaponUI[0].SetActive(true);
             shipWeapon = cic.activeCICWeapon;
+
+            WeaponUISetup();
         }
 
 
@@ -31,6 +33,9 @@ namespace CarterGames.CWIS
         }
 
 
+        /// <summary>
+        /// Changes the weapon ui without doing a for loop.
+        /// </summary>
         private void ChangeActiveWeaponUI()
         {
             int _pos = (int)cic.activeCICWeapon;
@@ -38,6 +43,19 @@ namespace CarterGames.CWIS
             weaponUI[_pos].SetActive(true);
             weaponUI[_lastPos].SetActive(false);
             shipWeapon = cic.activeCICWeapon;
+        }
+
+
+        /// <summary>
+        /// Sets up the weapon UI so the references work. 
+        /// </summary>
+        private void WeaponUISetup()
+        {
+            for (int i = 0; i < weaponUI.Length; i++)
+            {
+                if (!i.Equals(0))
+                    weaponUI[i].SetActive(false);
+            }
         }
     }
 }

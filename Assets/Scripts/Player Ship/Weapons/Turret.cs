@@ -48,6 +48,7 @@ namespace CarterGames.CWIS
         internal bool shouldFireCWIS;
         internal bool shouldFireMissile = default;
         internal bool shouldFireSmallArms = default;
+        internal bool isCoR = false;
         internal Actions actions;
         internal CIC cic;
         internal Ship ship;
@@ -411,12 +412,42 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         private bool IsAmmoCountCorrect(int ammo, string toCheck)
         {
-            int _toCheckAsInt = int.Parse(toCheck);
+            int _toCheckAsInt = 0;
+
+            if (!toCheck.Equals(""))
+                _toCheckAsInt = int.Parse(toCheck);
 
             if (!ammo.Equals(_toCheckAsInt))
                 return false;
             else
                 return true;
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Starts the input cooldown for a button press toggle.
+        /// </summary>
+        /// <param name="timeDelay">Float | How long is the delay?</param>
+        /// ------------------------------------------------------------------------------------------------------
+        internal void StartInputCooldown(float timeDelay)
+        {
+            if (!isCoR)
+                StartCoroutine(InputCooldownCO(timeDelay));
+        }
+
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Runs the actual cooldown
+        /// </summary>
+        /// <param name="time">Float | how long should the cooldown be?</param>
+        /// ------------------------------------------------------------------------------------------------------
+        private IEnumerator InputCooldownCO(float time)
+        {
+            isCoR = true;
+            yield return new WaitForSeconds(time);
+            isCoR = false;
         }
     }
 }

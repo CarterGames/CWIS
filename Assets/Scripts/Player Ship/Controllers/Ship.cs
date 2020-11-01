@@ -15,8 +15,7 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private UITextElement[] uITextElements = default;
 
-        private CIC _cic;
-        private Actions action;
+        internal Actions action;
         [SerializeField] private BoxCollider boxCollider = default;
 
         private bool canBeHit = true;
@@ -61,47 +60,6 @@ namespace CarterGames.CWIS
 
             shipHealth = 5;
         }
-
-
-        private void Start()
-        {
-            _cic = GetComponentInChildren<CIC>();
-
-            //#if UNITY_ANDROID
-            //            Cursor.visible = true;
-            //#else
-            //            Cursor.visible = false;
-            //#endif
-        }
-
-
-        private void Update()
-        {
-//#if UNITY_STANDALONE
-            ToggleCICWeapon();
-            //#endif
-        }
-
-
-        /// <summary>
-        /// Toggles the CIC active weapon based on the 1-6 input.
-        /// </summary>
-        private void ToggleCICWeapon()
-        {
-            if (action.CIC.ToggleWeaponOne.phase.Equals(InputActionPhase.Performed))
-                _cic.activeCICWeapon = ShipWeapons.FiveInch;
-            else if (action.CIC.ToggleWeaponTwo.phase.Equals(InputActionPhase.Performed))
-                _cic.activeCICWeapon = ShipWeapons.BowMissiles;
-            else if (action.CIC.ToggleWeaponThree.phase.Equals(InputActionPhase.Performed))
-                _cic.activeCICWeapon = ShipWeapons.BowCWIS;
-            else if (action.CIC.ToggleWeaponFour.phase.Equals(InputActionPhase.Performed))
-                _cic.activeCICWeapon = ShipWeapons.Chafts;
-            else if (action.CIC.ToggleWeaponFive.phase.Equals(InputActionPhase.Performed))
-                _cic.activeCICWeapon = ShipWeapons.SternCWIS;
-            else if (action.CIC.ToggleWeaponSix.phase.Equals(InputActionPhase.Performed))
-                _cic.activeCICWeapon = ShipWeapons.SternMissiles;
-        }
-
 
         /// <summary>
         /// Reset the ship stats to their default values for a new round of the game.

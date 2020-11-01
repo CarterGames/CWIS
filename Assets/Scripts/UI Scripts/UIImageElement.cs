@@ -32,5 +32,24 @@ namespace CarterGames.CWIS
         {
             _image.sprite = value;
         }
+
+        /// <summary>
+        /// Sets the UI Image Colour to the inputted value.
+        /// </summary>
+        /// <param name="value">Color | colour to change to.</param>
+        public void SetImageColour(Color value)
+        {
+            _image.color = value;
+        }
+
+
+        /// <summary>
+        /// Gets the current image colour
+        /// </summary>
+        /// <returns>Color | The colour the image currently is.</returns>
+        public Color GetImageColour()
+        {
+            return _image.color;
+        }
     }
 }

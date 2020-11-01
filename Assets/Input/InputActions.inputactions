@@ -70,7 +70,7 @@
                 {
                     "name": "",
                     "id": "a8377cf4-0e21-4912-be5d-1b79fae32731",
-                    "path": "<XInputController>/leftStick",
+                    "path": "<XInputController>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "Xbox Controller",
@@ -138,7 +138,15 @@
                     "id": "7ace7bae-d0c8-46c9-bb5d-6d45d121e863",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.1)"
+                    "interactions": "Press(pressPoint=0.5)"
+                },
+                {
+                    "name": "ToggleWeaponAbility",
+                    "type": "Button",
+                    "id": "c2b5ab47-b0f6-48c7-a362-b38fca44039b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.5)"
                 }
             ],
             "bindings": [
@@ -240,6 +248,17 @@
                     "action": "ToggleWesponUD",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "41c692ca-965c-4d11-9774-e50cf9f7b0b0",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleWeaponAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

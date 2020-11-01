@@ -85,7 +85,7 @@ namespace CarterGames.CWIS
                 {
                     ""name"": """",
                     ""id"": ""a8377cf4-0e21-4912-be5d-1b79fae32731"",
-                    ""path"": ""<XInputController>/leftStick"",
+                    ""path"": ""<XInputController>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Controller"",
@@ -153,7 +153,15 @@ namespace CarterGames.CWIS
                     ""id"": ""7ace7bae-d0c8-46c9-bb5d-6d45d121e863"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
-                    ""interactions"": ""Press(pressPoint=0.1)""
+                    ""interactions"": ""Press(pressPoint=0.5)""
+                },
+                {
+                    ""name"": ""ToggleWeaponAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2b5ab47-b0f6-48c7-a362-b38fca44039b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(pressPoint=0.5)""
                 }
             ],
             ""bindings"": [
@@ -255,6 +263,17 @@ namespace CarterGames.CWIS
                     ""action"": ""ToggleWesponUD"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41c692ca-965c-4d11-9774-e50cf9f7b0b0"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ToggleWeaponAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -477,6 +496,7 @@ namespace CarterGames.CWIS
             m_CIC_ToggleWeaponFive = m_CIC.FindAction("ToggleWeaponFive", throwIfNotFound: true);
             m_CIC_ToggleWeaponSix = m_CIC.FindAction("ToggleWeaponSix", throwIfNotFound: true);
             m_CIC_ToggleWesponUD = m_CIC.FindAction("ToggleWesponUD", throwIfNotFound: true);
+            m_CIC_ToggleWeaponAbility = m_CIC.FindAction("ToggleWeaponAbility", throwIfNotFound: true);
             // Menu
             m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
             m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
@@ -580,6 +600,7 @@ namespace CarterGames.CWIS
         private readonly InputAction m_CIC_ToggleWeaponFive;
         private readonly InputAction m_CIC_ToggleWeaponSix;
         private readonly InputAction m_CIC_ToggleWesponUD;
+        private readonly InputAction m_CIC_ToggleWeaponAbility;
         public struct CICActions
         {
             private @Actions m_Wrapper;
@@ -591,6 +612,7 @@ namespace CarterGames.CWIS
             public InputAction @ToggleWeaponFive => m_Wrapper.m_CIC_ToggleWeaponFive;
             public InputAction @ToggleWeaponSix => m_Wrapper.m_CIC_ToggleWeaponSix;
             public InputAction @ToggleWesponUD => m_Wrapper.m_CIC_ToggleWesponUD;
+            public InputAction @ToggleWeaponAbility => m_Wrapper.m_CIC_ToggleWeaponAbility;
             public InputActionMap Get() { return m_Wrapper.m_CIC; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -621,6 +643,9 @@ namespace CarterGames.CWIS
                     @ToggleWesponUD.started -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWesponUD;
                     @ToggleWesponUD.performed -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWesponUD;
                     @ToggleWesponUD.canceled -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWesponUD;
+                    @ToggleWeaponAbility.started -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponAbility;
+                    @ToggleWeaponAbility.performed -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponAbility;
+                    @ToggleWeaponAbility.canceled -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponAbility;
                 }
                 m_Wrapper.m_CICActionsCallbackInterface = instance;
                 if (instance != null)
@@ -646,6 +671,9 @@ namespace CarterGames.CWIS
                     @ToggleWesponUD.started += instance.OnToggleWesponUD;
                     @ToggleWesponUD.performed += instance.OnToggleWesponUD;
                     @ToggleWesponUD.canceled += instance.OnToggleWesponUD;
+                    @ToggleWeaponAbility.started += instance.OnToggleWeaponAbility;
+                    @ToggleWeaponAbility.performed += instance.OnToggleWeaponAbility;
+                    @ToggleWeaponAbility.canceled += instance.OnToggleWeaponAbility;
                 }
             }
         }
@@ -757,6 +785,7 @@ namespace CarterGames.CWIS
             void OnToggleWeaponFive(InputAction.CallbackContext context);
             void OnToggleWeaponSix(InputAction.CallbackContext context);
             void OnToggleWesponUD(InputAction.CallbackContext context);
+            void OnToggleWeaponAbility(InputAction.CallbackContext context);
         }
         public interface IMenuActions
         {

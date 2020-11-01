@@ -12,6 +12,8 @@ namespace CarterGames.CWIS
     public class PauseGameController : MonoBehaviour
     {
         [SerializeField] private Canvas pauseUI = default;
+        [SerializeField] private Ship ship;
+        [SerializeField] private MissileTargeting[] missileTargeting;
         private Actions actions;
 
 
@@ -30,8 +32,15 @@ namespace CarterGames.CWIS
         {
             if (actions.Menu.Pause.phase.Equals(InputActionPhase.Performed))
             {
-                pauseUI.enabled = true;
-                Time.timeScale = 0;
+                if (!pauseUI.enabled)
+                {
+                    pauseUI.enabled = true;
+                    ship.action.Disable();
+                    ship.GetComponentInChildren<CIC>().action.Disable();
+                    missileTargeting[0].DisableTargeting();
+                    missileTargeting[1].DisableTargeting();
+                    Time.timeScale = 0;
+                }
             }
         }
     }

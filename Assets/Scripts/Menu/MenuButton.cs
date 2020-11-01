@@ -11,8 +11,14 @@ namespace CarterGames.CWIS
 {
     public class MenuButton : MonoBehaviour
     {
+        [SerializeField] private bool shouldResumeTimeScale = false;
+
+
         public void ChangeScene(string sceneName)
         {
+            if (shouldResumeTimeScale)
+                Time.timeScale = 1;
+
             SceneManager.LoadSceneAsync(sceneName);
         }
 
