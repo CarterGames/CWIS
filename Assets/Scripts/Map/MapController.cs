@@ -33,19 +33,15 @@ namespace CarterGames.CWIS.Map
         {
             mapPanel.enabled = false; 
             isMapOpen = false;
-            canTab = true;
-
-            //if (action.Menu.Map.performed += context => action.Menu.Map.ReadValue<float>() == 1f)
-            //{
-            //    canTab = !canTab;
-            //}
         }
 
 
         private void Update()
         {
-
-
+            if (action.Menu.Map.ReadValue<float>() > .3f)
+            {
+                canTab = true;
+            }
 
             if (!isMapOpen && canTab)
             {
@@ -53,7 +49,7 @@ namespace CarterGames.CWIS.Map
                 isMapOpen = true;
                 pause.PauseGame(false);
             }
-            else if (isMapOpen && canTab)
+            else if (isMapOpen && !canTab)
             {
                 mapPanel.enabled = false;
                 isMapOpen = false;
