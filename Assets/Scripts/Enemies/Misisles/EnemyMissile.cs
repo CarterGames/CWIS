@@ -19,6 +19,7 @@ namespace CarterGames.CWIS
         private AudioManager am;
         private MissileSpawer ms;
         private Camera cam;
+        private bool isTargeted;
 
         internal GameObject target;
 
@@ -26,6 +27,7 @@ namespace CarterGames.CWIS
         private void OnEnable()
         {
             radarSprite.localScale = Vector3.zero;
+            isTargeted = false;
         }
 
 
@@ -50,9 +52,12 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-            if (radarSprite.localScale.x < 30f)
+            if (!isTargeted)
             {
-                radarSprite.localScale += new Vector3(1, 1, 0) * Time.deltaTime * 30;
+                if (radarSprite.localScale.x > 0f)
+                {
+                    radarSprite.localScale += new Vector3(-1, -1, 0) * Time.deltaTime * 10;
+                }
             }
 
             Vector3 dir = new Vector3(target.gameObject.transform.position.x - transform.position.x, 0, target.gameObject.transform.position.z - transform.position.z);
@@ -114,6 +119,13 @@ namespace CarterGames.CWIS
                 }
 
                 gameObject.SetActive(false);
+            }
+
+
+
+            if (other.gameObject.CompareTag("Radar"))
+            {
+                radarSprite.localScale = Vector3.one * 50;
             }
         }
 

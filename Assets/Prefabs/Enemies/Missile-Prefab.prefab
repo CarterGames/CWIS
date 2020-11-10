@@ -4948,7 +4948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6887583037773966198
 Transform:
   m_ObjectHideFlags: 0
@@ -5281,6 +5281,7 @@ MonoBehaviour:
   explosion: {fileID: 3834962020347840531, guid: eaede20b32374b6419870f6618b85890,
     type: 3}
   radarSprite: {fileID: 223740367}
+  missileSpd: 150
 --- !u!114 &2821350711380958148
 MonoBehaviour:
   m_ObjectHideFlags: 0
