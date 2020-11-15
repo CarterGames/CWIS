@@ -19,6 +19,9 @@ namespace CarterGames.CWIS
     public class CIC : MonoBehaviour
     {
         [SerializeField] internal Turret[] shipWeapons;
+
+        private WaitForSeconds wait;
+        private bool isCoR;
         internal Actions action;
 
         /// <summary>
@@ -37,6 +40,12 @@ namespace CarterGames.CWIS
         private void OnDisable()
         {
             action.Disable();
+        }
+
+
+        private void Start()
+        {
+            wait = new WaitForSeconds(.35f);
         }
 
 
@@ -82,21 +91,36 @@ namespace CarterGames.CWIS
         /// </summary>
         private void ToggleCICWeaponController()
         {
-            if (action.CIC.ToggleWesponUD.ReadValue<float>() > .1f && action.CIC.ToggleWesponUD.phase.Equals(InputActionPhase.Performed))
+            if (!isCoR)
             {
-                if (activeCICWeapon + 1 > ShipWeapons.SternMissiles)
+                if (action.CIC.ToggleWesponUD.ReadValue<float>() > .1f && action.CIC.ToggleWesponUD.phase.Equals(InputActionPhase.Performed))
                 {
-                    activeCICWeapon = 0;
+                    if (activeCICWeapon + 1 > ShipWeapons.SternMissiles)
+                    {
+                        activeCICWeapon = 0;
+                        StartCoroutine(ToggleCooldown());
+                    }
+                    else
+                    {
+                        activeCICWeapon++;
+                        StartCoroutine(ToggleCooldown());
+                    }
                 }
-                else
+                else if (action.CIC.ToggleWesponUD.ReadValue<float>() < -.1f)
                 {
-                    activeCICWeapon++;
+                    activeCICWeapon--;
+                    StartCoroutine(ToggleCooldown());
                 }
             }
-            else if (action.CIC.ToggleWesponUD.ReadValue<float>() < -.1f)
-            {
-                activeCICWeapon--;
-            }
+        }
+
+
+
+        private IEnumerator ToggleCooldown()
+        {
+            isCoR = true;
+            yield return wait;
+            isCoR = false;
         }
 
 

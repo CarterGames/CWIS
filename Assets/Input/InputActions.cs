@@ -44,6 +44,14 @@ namespace CarterGames.CWIS
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PositionJoystick"",
+                    ""type"": ""Button"",
+                    ""id"": ""2dc2e39a-c3ef-435a-8ad5-3a9e76c64e83"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -61,7 +69,7 @@ namespace CarterGames.CWIS
                 {
                     ""name"": """",
                     ""id"": ""3fbc9e09-7bd0-4b19-87d6-697b4f8b7cc4"",
-                    ""path"": ""<XInputController>/buttonWest"",
+                    ""path"": ""<XInputController>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Controller"",
@@ -87,7 +95,7 @@ namespace CarterGames.CWIS
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mobile"",
-                    ""action"": ""Position"",
+                    ""action"": ""PositionJoystick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -98,7 +106,7 @@ namespace CarterGames.CWIS
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Controller"",
-                    ""action"": ""Position"",
+                    ""action"": ""PositionJoystick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -526,6 +534,7 @@ namespace CarterGames.CWIS
             m_Weapons = asset.FindActionMap("Weapons", throwIfNotFound: true);
             m_Weapons_Fire = m_Weapons.FindAction("Fire", throwIfNotFound: true);
             m_Weapons_Position = m_Weapons.FindAction("Position", throwIfNotFound: true);
+            m_Weapons_PositionJoystick = m_Weapons.FindAction("PositionJoystick", throwIfNotFound: true);
             // CIC
             m_CIC = asset.FindActionMap("CIC", throwIfNotFound: true);
             m_CIC_ToggleWeaponOne = m_CIC.FindAction("ToggleWeaponOne", throwIfNotFound: true);
@@ -604,12 +613,14 @@ namespace CarterGames.CWIS
         private IWeaponsActions m_WeaponsActionsCallbackInterface;
         private readonly InputAction m_Weapons_Fire;
         private readonly InputAction m_Weapons_Position;
+        private readonly InputAction m_Weapons_PositionJoystick;
         public struct WeaponsActions
         {
             private @Actions m_Wrapper;
             public WeaponsActions(@Actions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Fire => m_Wrapper.m_Weapons_Fire;
             public InputAction @Position => m_Wrapper.m_Weapons_Position;
+            public InputAction @PositionJoystick => m_Wrapper.m_Weapons_PositionJoystick;
             public InputActionMap Get() { return m_Wrapper.m_Weapons; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -625,6 +636,9 @@ namespace CarterGames.CWIS
                     @Position.started -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPosition;
                     @Position.performed -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPosition;
                     @Position.canceled -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPosition;
+                    @PositionJoystick.started -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPositionJoystick;
+                    @PositionJoystick.performed -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPositionJoystick;
+                    @PositionJoystick.canceled -= m_Wrapper.m_WeaponsActionsCallbackInterface.OnPositionJoystick;
                 }
                 m_Wrapper.m_WeaponsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -635,6 +649,9 @@ namespace CarterGames.CWIS
                     @Position.started += instance.OnPosition;
                     @Position.performed += instance.OnPosition;
                     @Position.canceled += instance.OnPosition;
+                    @PositionJoystick.started += instance.OnPositionJoystick;
+                    @PositionJoystick.performed += instance.OnPositionJoystick;
+                    @PositionJoystick.canceled += instance.OnPositionJoystick;
                 }
             }
         }
@@ -833,6 +850,7 @@ namespace CarterGames.CWIS
         {
             void OnFire(InputAction.CallbackContext context);
             void OnPosition(InputAction.CallbackContext context);
+            void OnPositionJoystick(InputAction.CallbackContext context);
         }
         public interface ICICActions
         {

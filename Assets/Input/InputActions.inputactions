@@ -20,6 +20,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "PositionJoystick",
+                    "type": "Button",
+                    "id": "2dc2e39a-c3ef-435a-8ad5-3a9e76c64e83",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -37,7 +45,7 @@
                 {
                     "name": "",
                     "id": "3fbc9e09-7bd0-4b19-87d6-697b4f8b7cc4",
-                    "path": "<XInputController>/buttonWest",
+                    "path": "<XInputController>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Xbox Controller",
@@ -63,7 +71,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mobile",
-                    "action": "Position",
+                    "action": "PositionJoystick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -74,7 +82,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Xbox Controller",
-                    "action": "Position",
+                    "action": "PositionJoystick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

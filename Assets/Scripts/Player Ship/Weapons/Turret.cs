@@ -143,20 +143,28 @@ namespace CarterGames.CWIS
         /// ------------------------------------------------------------------------------------------------------
         internal Quaternion RotateToMousePos(float offset = 0)
         {
-            Ray ray = cam.ScreenPointToRay(actions.Weapons.Position.ReadValue<Vector2>());
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-            float distance;
-            float rotation = 0;
-
-            if (plane.Raycast(ray, out distance))
+            if (actions.Weapons.Position.phase.Equals(InputActionPhase.Performed))
             {
-                Vector3 target = ray.GetPoint(distance);
-                Vector3 direction = target - transform.position;
-                rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 180f;
-            }
+                Ray ray = cam.ScreenPointToRay(actions.Weapons.Position.ReadValue<Vector2>());
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                float distance;
+                float rotation = 0;
 
-            return Quaternion.Euler(0, rotation, 0);
+                if (plane.Raycast(ray, out distance))
+                {
+                    Vector3 target = ray.GetPoint(distance);
+                    Vector3 direction = target - transform.position;
+                    rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 180f;
+                }
+
+                return Quaternion.Euler(0, rotation, 0);
+            }
+            else
+            {
+                return Quaternion.Euler(0, Mathf.Atan2(actions.Weapons.PositionJoystick.ReadValue<Vector2>().x, actions.Weapons.PositionJoystick.ReadValue<Vector2>().y) * Mathf.Rad2Deg, 0);
+            }
         }
+
 
 
         /// ------------------------------------------------------------------------------------------------------
