@@ -22,6 +22,7 @@ namespace CarterGames.CWIS
         private MissileLauncher missileLauncher;
         private bool isActive;
         private Actions actions;
+        private InputDevice device;
 
 
         private void OnEnable()
@@ -30,15 +31,17 @@ namespace CarterGames.CWIS
             actions.Enable();
         }
 
+
         private void OnDisable()
         {
             actions.Disable();
         }
 
+
         private void Start()
         {
-            visualLine = GetComponent<LineRenderer>();
-            missileLauncher = GetComponent<MissileLauncher>();
+            visualLine = GetComponentInParent<LineRenderer>();
+            missileLauncher = GetComponentInParent<MissileLauncher>();
             startPos = new Vector3(transform.position.x, 4, transform.position.z);
             cam = GameObject.FindGameObjectWithTag("GameCam").GetComponent<Camera>();
         }
@@ -52,25 +55,64 @@ namespace CarterGames.CWIS
 
                 Plane plane = new Plane(Vector3.up, 0);
 
-                float distance;
-                Ray ray = cam.ScreenPointToRay(actions.Weapons.Position.ReadValue<Vector2>());
 
-                if (plane.Raycast(ray, out distance))
+                InputSystem.onActionChange += (obj, change) =>
                 {
-                    targetingLine = ray.GetPoint(distance);
-                    targetingLine.y = 4;
+                    if (change == InputActionChange.ActionPerformed)
+                    {
+                        var inputAction = (InputAction)obj;
+                        var lastControl = inputAction.activeControl;
+                        device = lastControl.device;
+                    }
+                };
+
+                Ray ray = new Ray();
+
+                if (device != null)
+                {
+                    if (device.displayName.Equals("Mouse"))
+                    {
+                        ray = cam.ScreenPointToRay(actions.Weapons.Position.ReadValue<Vector2>());
+
+                        float distance;
+
+                        if (plane.Raycast(ray, out distance))
+                        {
+                            targetingLine = ray.GetPoint(distance);
+                            targetingLine.y = 4;
+                        }
+
+                        visualLine.SetPosition(0, startPos);
+                        visualLine.SetPosition(1, (targetingLine - startPos).normalized * maxRange + targetingLine);
+
+                        RaycastHit hit;
+
+                        if (Physics.Linecast(startPos, (targetingLine - startPos).normalized * maxRange + targetingLine, out hit))
+                        {
+                            if (hit.collider.gameObject.GetComponent<RadarIcons>())
+                                missileLauncher.SetTarget(hit.collider.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        ray = cam.ScreenPointToRay(actions.Weapons.PositionJoystick.ReadValue<Vector2>());
+
+                        visualLine.SetPosition(0, startPos);
+                        visualLine.SetPosition(1, transform.forward * 1000);
+
+                        transform.rotation = Quaternion.Euler(0, Mathf.Atan2(actions.Weapons.PositionJoystick.ReadValue<Vector2>().x, actions.Weapons.PositionJoystick.ReadValue<Vector2>().y) * Mathf.Rad2Deg + 180f, 0);
+
+                        RaycastHit hit;
+
+                        if (Physics.Linecast(startPos, transform.forward * maxRange + targetingLine, out hit))
+                        {
+                            if (hit.collider.gameObject.GetComponent<RadarIcons>())
+                                missileLauncher.SetTarget(hit.collider.gameObject);
+                        }
+                    }
                 }
 
-                visualLine.SetPosition(0, startPos);
-                visualLine.SetPosition(1, (targetingLine - startPos).normalized * maxRange + targetingLine);
 
-                RaycastHit hit;
-
-                if (Physics.Linecast(startPos, (targetingLine - startPos).normalized * maxRange + targetingLine, out hit))
-                {
-                    if (hit.collider.gameObject.GetComponent<RadarIcons>())
-                        missileLauncher.SetTarget(hit.collider.gameObject);
-                }
             }
         }
 

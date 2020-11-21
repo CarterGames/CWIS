@@ -38,7 +38,7 @@ namespace CarterGames.CWIS
             lr = GetComponent<LineRenderer>();
             lr.enabled = false;
 
-            missileTargeting = GetComponent<MissileTargeting>();
+            missileTargeting = GetComponentInChildren<MissileTargeting>();
             particles = GetComponentInChildren<ParticleSystem>();
 
             wait = new WaitForSeconds(.2f);

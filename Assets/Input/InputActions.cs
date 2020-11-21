@@ -47,9 +47,9 @@ namespace CarterGames.CWIS
                 },
                 {
                     ""name"": ""PositionJoystick"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""2dc2e39a-c3ef-435a-8ad5-3a9e76c64e83"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -307,6 +307,14 @@ namespace CarterGames.CWIS
                     ""interactions"": ""Press""
                 },
                 {
+                    ""name"": ""Joystick"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c4a032fa-63d9-41a9-9ca0-29b94e1aba44"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Map"",
                     ""type"": ""Button"",
                     ""id"": ""5104ffac-9387-45c1-bef5-e2cbd491aa23"",
@@ -359,6 +367,61 @@ namespace CarterGames.CWIS
                     ""action"": ""Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Controller"",
+                    ""id"": ""03cd093a-c720-4c8d-a362-852439b01605"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d03b6276-4698-4a7b-910d-5aab74af18af"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""bef528e2-26c1-454e-b1b1-7d1f53374b93"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""81fd4d6f-f3f5-420f-a3c7-4f641a5d2fd1"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4779025c-3b24-4ee4-a65e-f7154a577188"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -548,6 +611,7 @@ namespace CarterGames.CWIS
             // Menu
             m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
             m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
+            m_Menu_Joystick = m_Menu.FindAction("Joystick", throwIfNotFound: true);
             m_Menu_Map = m_Menu.FindAction("Map", throwIfNotFound: true);
             // Driver
             m_Driver = asset.FindActionMap("Driver", throwIfNotFound: true);
@@ -750,12 +814,14 @@ namespace CarterGames.CWIS
         private readonly InputActionMap m_Menu;
         private IMenuActions m_MenuActionsCallbackInterface;
         private readonly InputAction m_Menu_Pause;
+        private readonly InputAction m_Menu_Joystick;
         private readonly InputAction m_Menu_Map;
         public struct MenuActions
         {
             private @Actions m_Wrapper;
             public MenuActions(@Actions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Pause => m_Wrapper.m_Menu_Pause;
+            public InputAction @Joystick => m_Wrapper.m_Menu_Joystick;
             public InputAction @Map => m_Wrapper.m_Menu_Map;
             public InputActionMap Get() { return m_Wrapper.m_Menu; }
             public void Enable() { Get().Enable(); }
@@ -769,6 +835,9 @@ namespace CarterGames.CWIS
                     @Pause.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
                     @Pause.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
                     @Pause.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnPause;
+                    @Joystick.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnJoystick;
+                    @Joystick.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnJoystick;
+                    @Joystick.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnJoystick;
                     @Map.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMap;
                     @Map.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMap;
                     @Map.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMap;
@@ -779,6 +848,9 @@ namespace CarterGames.CWIS
                     @Pause.started += instance.OnPause;
                     @Pause.performed += instance.OnPause;
                     @Pause.canceled += instance.OnPause;
+                    @Joystick.started += instance.OnJoystick;
+                    @Joystick.performed += instance.OnJoystick;
+                    @Joystick.canceled += instance.OnJoystick;
                     @Map.started += instance.OnMap;
                     @Map.performed += instance.OnMap;
                     @Map.canceled += instance.OnMap;
@@ -866,6 +938,7 @@ namespace CarterGames.CWIS
         public interface IMenuActions
         {
             void OnPause(InputAction.CallbackContext context);
+            void OnJoystick(InputAction.CallbackContext context);
             void OnMap(InputAction.CallbackContext context);
         }
         public interface IDriverActions

@@ -23,9 +23,9 @@
                 },
                 {
                     "name": "PositionJoystick",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "2dc2e39a-c3ef-435a-8ad5-3a9e76c64e83",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 }
@@ -283,6 +283,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Joystick",
+                    "type": "PassThrough",
+                    "id": "c4a032fa-63d9-41a9-9ca0-29b94e1aba44",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Map",
                     "type": "Button",
                     "id": "5104ffac-9387-45c1-bef5-e2cbd491aa23",
@@ -335,6 +343,61 @@
                     "action": "Map",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Controller",
+                    "id": "03cd093a-c720-4c8d-a362-852439b01605",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Joystick",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "d03b6276-4698-4a7b-910d-5aab74af18af",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Joystick",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "bef528e2-26c1-454e-b1b1-7d1f53374b93",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Joystick",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "81fd4d6f-f3f5-420f-a3c7-4f641a5d2fd1",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Joystick",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "4779025c-3b24-4ee4-a65e-f7154a577188",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Joystick",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

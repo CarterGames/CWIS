@@ -108,8 +108,16 @@ namespace CarterGames.CWIS
                 }
                 else if (action.CIC.ToggleWesponUD.ReadValue<float>() < -.1f)
                 {
-                    activeCICWeapon--;
-                    StartCoroutine(ToggleCooldown());
+                    if (((int)activeCICWeapon - 1).Equals(-1))
+                    {
+                        activeCICWeapon = ShipWeapons.SternMissiles;
+                        StartCoroutine(ToggleCooldown());
+                    }
+                    else
+                    {
+                        activeCICWeapon--;
+                        StartCoroutine(ToggleCooldown());
+                    }
                 }
             }
         }

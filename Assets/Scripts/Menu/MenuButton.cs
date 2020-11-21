@@ -13,7 +13,6 @@ namespace CarterGames.CWIS
     {
         [SerializeField] private bool shouldResumeTimeScale = false;
 
-
         public void ChangeScene(string sceneName)
         {
             if (shouldResumeTimeScale)

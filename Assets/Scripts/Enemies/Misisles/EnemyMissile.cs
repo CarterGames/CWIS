@@ -26,7 +26,7 @@ namespace CarterGames.CWIS
 
         private void OnEnable()
         {
-            radarSprite.localScale = Vector3.zero;
+            //radarSprite.localScale = Vector3.zero;
             isTargeted = false;
         }
 
@@ -52,13 +52,13 @@ namespace CarterGames.CWIS
 
         private void Update()
         {
-            if (!isTargeted)
-            {
-                if (radarSprite.localScale.x > 0f)
-                {
-                    radarSprite.localScale += new Vector3(-1, -1, 0) * Time.deltaTime * 10;
-                }
-            }
+            //if (!isTargeted)
+            //{
+            //    if (radarSprite.localScale.x > 0f)
+            //    {
+            //        radarSprite.localScale += new Vector3(-1, -1, 0) * Time.deltaTime * 10;
+            //    }
+            //}
 
             Vector3 dir = new Vector3(target.gameObject.transform.position.x - transform.position.x, 0, target.gameObject.transform.position.z - transform.position.z);
             GetComponent<Rigidbody>().velocity = (dir).normalized * missileSpd;
