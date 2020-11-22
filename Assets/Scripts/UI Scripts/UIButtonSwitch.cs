@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Collections;
 
@@ -14,13 +15,19 @@ namespace CarterGames.CWIS.Menu
     {
         [Header("UI Buttons")]
         [SerializeField] private GameObject[] buttons;
+        [SerializeField] private bool isUD;
 
         [Header("Scaling Settings")]
         [SerializeField] private bool shouldScaleOnHover;
         [SerializeField] private float scaleFactor;
 
-        private int pos;
-        private int maxPos;
+        [Header("Colour Change Setting")]
+        [SerializeField] private bool shouldChangeColour;
+        [SerializeField] private Color defaultColour;
+        [SerializeField] private Color hoverColour;
+
+        [SerializeField] private int pos;
+        [SerializeField] private int maxPos;
         private bool isCoR;
         private Actions action;
         public InputDevice currentActiveDevice;
@@ -48,7 +55,10 @@ namespace CarterGames.CWIS.Menu
 
             if (currentActiveDevice != null)
                 if (currentActiveDevice.displayName.Contains("Xbox") || currentActiveDevice.displayName.Contains("Play"))
+                {
                     HoverButton();
+                    ChangeColour();
+                }
         }
 
 
@@ -60,13 +70,33 @@ namespace CarterGames.CWIS.Menu
                 {
                     if (!isCoR)
                     {
-                        if (action.Menu.Joystick.ReadValue<Vector2>().y > .1f)
+                        if (isUD)
                         {
-                            UpdatePos(1);
+                            if (action.Menu.Joystick.ReadValue<Vector2>().y > .1f)
+                            {
+                                UpdatePos(1);
+                            }
+                            else if (action.Menu.Joystick.ReadValue<Vector2>().y < -.1f)
+                            {
+                                UpdatePos(-1);
+                            }
                         }
-                        else if (action.Menu.Joystick.ReadValue<Vector2>().y < -.1f)
+                        else
                         {
-                            UpdatePos(-1);
+                            if (action.Menu.Joystick.ReadValue<Vector2>().x > .1f)
+                            {
+                                UpdatePos(1);
+                            }
+                            else if (action.Menu.Joystick.ReadValue<Vector2>().x < -.1f)
+                            {
+                                UpdatePos(-1);
+                            }
+                        }
+
+                        if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+                        {
+                            buttons[pos].GetComponent<Button>().onClick.Invoke();
+                            StartCoroutine(ButtonDelay());
                         }
                     }
                 }
@@ -107,7 +137,10 @@ namespace CarterGames.CWIS.Menu
 
             if (currentActiveDevice != null)
                 if (currentActiveDevice.displayName.Contains("Xbox") || currentActiveDevice.displayName.Contains("Play"))
+                {
                     HoverButton();
+                    ChangeColour();
+                }
 
             StartCoroutine(ButtonDelay());
         }
@@ -120,20 +153,34 @@ namespace CarterGames.CWIS.Menu
         {
             if (shouldScaleOnHover)
             {
-                buttons[pos].transform.localScale = Vector3.one * scaleFactor;
-
-                if (!(pos - 1).Equals(-1))
+                for (int i = 0; i < buttons.Length; i++)
                 {
-                    if (!buttons[pos - 1].transform.localScale.Equals(Vector3.one))
+                    if (!i.Equals(pos))
                     {
-                        buttons[pos - 1].transform.localScale = Vector3.one;
+                        buttons[i].transform.localScale = Vector3.one;
+                    }
+                    else
+                    {
+                        buttons[i].transform.localScale = Vector3.one * scaleFactor;
                     }
                 }
-                else if (!(pos + 1).Equals(maxPos + 1))
+            }
+        }
+
+
+        private void ChangeColour()
+        {
+            if (shouldChangeColour)
+            {
+                for (int i = 0; i < buttons.Length; i++)
                 {
-                    if (!buttons[pos + 1].transform.localScale.Equals(Vector3.one))
+                    if (!i.Equals(pos))
                     {
-                        buttons[pos + 1].transform.localScale = Vector3.one;
+                        buttons[i].GetComponent<Image>().color = defaultColour;
+                    }
+                    else
+                    {
+                        buttons[i].GetComponent<Image>().color = hoverColour;
                     }
                 }
             }
@@ -146,7 +193,7 @@ namespace CarterGames.CWIS.Menu
         private IEnumerator ButtonDelay()
         {
             isCoR = true;
-            yield return new WaitForSeconds(.3f);
+            yield return new WaitForSecondsRealtime(.3f);
             isCoR = false;
         }
     }

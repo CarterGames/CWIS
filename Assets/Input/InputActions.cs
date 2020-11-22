@@ -321,6 +321,22 @@ namespace CarterGames.CWIS
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)""
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""115e0a45-453e-4f3c-955d-5b3490700c8f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
+                },
+                {
+                    ""name"": ""Accept"",
+                    ""type"": ""Button"",
+                    ""id"": ""e28b566f-d152-44b7-93e4-cb72f33abbd6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [
@@ -422,6 +438,28 @@ namespace CarterGames.CWIS
                     ""action"": ""Joystick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44451973-052a-4df0-97be-679ed715ec64"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2170628d-63d3-46aa-9d66-55572ce1e085"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -613,6 +651,8 @@ namespace CarterGames.CWIS
             m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
             m_Menu_Joystick = m_Menu.FindAction("Joystick", throwIfNotFound: true);
             m_Menu_Map = m_Menu.FindAction("Map", throwIfNotFound: true);
+            m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
+            m_Menu_Accept = m_Menu.FindAction("Accept", throwIfNotFound: true);
             // Driver
             m_Driver = asset.FindActionMap("Driver", throwIfNotFound: true);
             m_Driver_Movement = m_Driver.FindAction("Movement", throwIfNotFound: true);
@@ -816,6 +856,8 @@ namespace CarterGames.CWIS
         private readonly InputAction m_Menu_Pause;
         private readonly InputAction m_Menu_Joystick;
         private readonly InputAction m_Menu_Map;
+        private readonly InputAction m_Menu_Back;
+        private readonly InputAction m_Menu_Accept;
         public struct MenuActions
         {
             private @Actions m_Wrapper;
@@ -823,6 +865,8 @@ namespace CarterGames.CWIS
             public InputAction @Pause => m_Wrapper.m_Menu_Pause;
             public InputAction @Joystick => m_Wrapper.m_Menu_Joystick;
             public InputAction @Map => m_Wrapper.m_Menu_Map;
+            public InputAction @Back => m_Wrapper.m_Menu_Back;
+            public InputAction @Accept => m_Wrapper.m_Menu_Accept;
             public InputActionMap Get() { return m_Wrapper.m_Menu; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -841,6 +885,12 @@ namespace CarterGames.CWIS
                     @Map.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMap;
                     @Map.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMap;
                     @Map.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMap;
+                    @Back.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                    @Back.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                    @Back.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                    @Accept.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnAccept;
+                    @Accept.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnAccept;
+                    @Accept.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnAccept;
                 }
                 m_Wrapper.m_MenuActionsCallbackInterface = instance;
                 if (instance != null)
@@ -854,6 +904,12 @@ namespace CarterGames.CWIS
                     @Map.started += instance.OnMap;
                     @Map.performed += instance.OnMap;
                     @Map.canceled += instance.OnMap;
+                    @Back.started += instance.OnBack;
+                    @Back.performed += instance.OnBack;
+                    @Back.canceled += instance.OnBack;
+                    @Accept.started += instance.OnAccept;
+                    @Accept.performed += instance.OnAccept;
+                    @Accept.canceled += instance.OnAccept;
                 }
             }
         }
@@ -940,6 +996,8 @@ namespace CarterGames.CWIS
             void OnPause(InputAction.CallbackContext context);
             void OnJoystick(InputAction.CallbackContext context);
             void OnMap(InputAction.CallbackContext context);
+            void OnBack(InputAction.CallbackContext context);
+            void OnAccept(InputAction.CallbackContext context);
         }
         public interface IDriverActions
         {

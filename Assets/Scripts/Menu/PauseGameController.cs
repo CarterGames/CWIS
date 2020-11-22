@@ -47,6 +47,13 @@ namespace CarterGames.CWIS
                     PauseGame();
                 }
             }
+            else if (isOpen && actions.Menu.Back.phase.Equals(InputActionPhase.Performed))
+            {
+                if (pauseUI.enabled)
+                {
+                    ResumeGame();
+                }
+            }
         }
 
         /// <summary>
