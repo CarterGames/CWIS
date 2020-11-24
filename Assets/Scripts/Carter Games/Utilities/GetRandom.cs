@@ -29,6 +29,17 @@ namespace CarterGames.Utilities
             return Random.Range(_min, _max);
         }
 
+
+        /// ------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Property | Random Int (user defined min/max, default = 0, 1)
+        /// </summary>
+        /// ------------------------------------------------------------------------------------------------------
+        public static int Int(int _min = 0, int _max = 1)
+        {
+            return Random.Range(_min, _max);
+        }
+
         /// ------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Property | Random Color (0-1)

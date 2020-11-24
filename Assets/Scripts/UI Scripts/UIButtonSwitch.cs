@@ -14,22 +14,16 @@ namespace CarterGames.CWIS.Menu
     public class UIButtonSwitch : MonoBehaviour
     {
         [Header("UI Buttons")]
-        [SerializeField] private GameObject[] buttons;
+        [SerializeField] internal GameObject[] buttons;
         [SerializeField] private bool isUD;
 
-        [Header("Scaling Settings")]
-        [SerializeField] private bool shouldScaleOnHover;
-        [SerializeField] private float scaleFactor;
-
-        [Header("Colour Change Setting")]
-        [SerializeField] private bool shouldChangeColour;
-        [SerializeField] private Color defaultColour;
-        [SerializeField] private Color hoverColour;
-
-        [SerializeField] private int pos;
-        [SerializeField] private int maxPos;
         private bool isCoR;
         private Actions action;
+
+        internal bool isUsingController;
+        internal int pos;
+        internal int maxPos;
+
         public InputDevice currentActiveDevice;
 
 
@@ -47,57 +41,49 @@ namespace CarterGames.CWIS.Menu
         }
 
 
-        private void Start()
+        public virtual void Start()
         {
             pos = 0;
             maxPos = buttons.Length - 1;
             isCoR = false;
-
-            if (currentActiveDevice != null)
-                if (currentActiveDevice.displayName.Contains("Xbox") || currentActiveDevice.displayName.Contains("Play"))
-                {
-                    HoverButton();
-                    ChangeColour();
-                }
         }
 
 
         private void Update()
         {
-            if (currentActiveDevice != null)
-            {
-                if (currentActiveDevice.displayName.Contains("Xbox") || currentActiveDevice.displayName.Contains("Play"))
-                {
-                    if (!isCoR)
-                    {
-                        if (isUD)
-                        {
-                            if (action.Menu.Joystick.ReadValue<Vector2>().y > .1f)
-                            {
-                                UpdatePos(1);
-                            }
-                            else if (action.Menu.Joystick.ReadValue<Vector2>().y < -.1f)
-                            {
-                                UpdatePos(-1);
-                            }
-                        }
-                        else
-                        {
-                            if (action.Menu.Joystick.ReadValue<Vector2>().x > .1f)
-                            {
-                                UpdatePos(1);
-                            }
-                            else if (action.Menu.Joystick.ReadValue<Vector2>().x < -.1f)
-                            {
-                                UpdatePos(-1);
-                            }
-                        }
+            isUsingController = IsControllerActive();
 
-                        if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+            if (isUsingController)
+            {
+                if (!isCoR)
+                {
+                    if (isUD)
+                    {
+                        if (action.Menu.Joystick.ReadValue<Vector2>().y > .1f)
                         {
-                            buttons[pos].GetComponent<Button>().onClick.Invoke();
-                            StartCoroutine(ButtonDelay());
+                            UpdatePos(1);
                         }
+                        else if (action.Menu.Joystick.ReadValue<Vector2>().y < -.1f)
+                        {
+                            UpdatePos(-1);
+                        }
+                    }
+                    else
+                    {
+                        if (action.Menu.Joystick.ReadValue<Vector2>().x > .1f)
+                        {
+                            UpdatePos(1);
+                        }
+                        else if (action.Menu.Joystick.ReadValue<Vector2>().x < -.1f)
+                        {
+                            UpdatePos(-1);
+                        }
+                    }
+
+                    if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+                    {
+                        buttons[pos].GetComponent<Button>().onClick.Invoke();
+                        StartCoroutine(ButtonDelay());
                     }
                 }
             }
@@ -119,10 +105,10 @@ namespace CarterGames.CWIS.Menu
 
 
         /// <summary>
-        /// Updates the position 
+        /// Updates the position in the menu.
         /// </summary>
         /// <param name="value">value to change to.</param>
-        private void UpdatePos(int value)
+        public virtual void UpdatePos(int value)
         {
             pos += value;
 
@@ -135,55 +121,22 @@ namespace CarterGames.CWIS.Menu
                 pos = maxPos;
             }
 
-            if (currentActiveDevice != null)
-                if (currentActiveDevice.displayName.Contains("Xbox") || currentActiveDevice.displayName.Contains("Play"))
-                {
-                    HoverButton();
-                    ChangeColour();
-                }
-
             StartCoroutine(ButtonDelay());
         }
 
-
         /// <summary>
-        /// Controls the hover factor.
+        /// Checks to see if a controller (either XB or PS is plugged in).
         /// </summary>
-        private void HoverButton()
+        /// <returns>True if there is a supported controller plugged in, false if not.</returns>
+        private bool IsControllerActive()
         {
-            if (shouldScaleOnHover)
-            {
-                for (int i = 0; i < buttons.Length; i++)
-                {
-                    if (!i.Equals(pos))
-                    {
-                        buttons[i].transform.localScale = Vector3.one;
-                    }
-                    else
-                    {
-                        buttons[i].transform.localScale = Vector3.one * scaleFactor;
-                    }
-                }
-            }
-        }
-
-
-        private void ChangeColour()
-        {
-            if (shouldChangeColour)
-            {
-                for (int i = 0; i < buttons.Length; i++)
-                {
-                    if (!i.Equals(pos))
-                    {
-                        buttons[i].GetComponent<Image>().color = defaultColour;
-                    }
-                    else
-                    {
-                        buttons[i].GetComponent<Image>().color = hoverColour;
-                    }
-                }
-            }
+            if (currentActiveDevice != null)
+                if (currentActiveDevice.displayName.Contains("Xbox") || currentActiveDevice.displayName.Contains("Play"))
+                    return true;
+                else
+                    return false;
+            else
+                return false;
         }
 
 

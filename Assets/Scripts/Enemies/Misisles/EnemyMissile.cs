@@ -1,4 +1,5 @@
 ﻿using CarterGames.Assets.AudioManager;
+using CarterGames.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -76,18 +77,10 @@ namespace CarterGames.CWIS
                 GameObject _go = Instantiate(explosion.gameObject, transform.position, transform.rotation);
                 _go.GetComponent<ParticleSystem>().Play();
 
-
-
-                if (IsVisibleFrom(this.GetComponentInChildren<Renderer>(), cam))
-                {
-                    //am.Play("missileHitFar", Random.Range(.2f, .3f), Random.Range(1f, 1.25f));
-                }
-                else
-                {
-                    //am.Play("missileHitFar", Random.Range(.05f, .2f), Random.Range(.75f, .95f));
-                }
+                // play audio here....
 
                 ms.activeMissiles.Remove(this.gameObject);
+                ms.scoring.IncrementScore(GetRandom.Int(95, 100));
                 gameObject.SetActive(false);
             }
 
@@ -102,6 +95,7 @@ namespace CarterGames.CWIS
                 //am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));
 
                 ms.activeMissiles.Remove(this.gameObject);
+                ms.scoring.IncrementScore(GetRandom.Int(150, 200));
                 gameObject.SetActive(false);
             }
 
@@ -118,6 +112,7 @@ namespace CarterGames.CWIS
                     other.gameObject.GetComponent<Ship>().ReduceShipHealth();
                 }
 
+                ms.scoring.DecrementScore(500);
                 gameObject.SetActive(false);
             }
 
@@ -127,20 +122,6 @@ namespace CarterGames.CWIS
             {
                 radarSprite.localScale = Vector3.one * 50;
             }
-        }
-
-
-
-        /// <summary>
-        /// Checks to see if the inputted camera can see the object
-        /// </summary>
-        /// <param name="renderer">Renderer to check</param>
-        /// <param name="camera">Camera view to check</param>
-        /// <returns>true / false</returns>
-        private bool IsVisibleFrom(Renderer renderer, Camera camera)
-        {
-            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
-            return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
         }
     }
 }

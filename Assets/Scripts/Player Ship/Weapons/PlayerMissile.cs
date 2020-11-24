@@ -1,4 +1,5 @@
 ﻿using CarterGames.Assets.AudioManager;
+using CarterGames.Utilities;
 using UnityEngine;
 
 /*
@@ -15,7 +16,10 @@ namespace CarterGames.CWIS
 
         private AudioManager am;
         private Rigidbody rb;
+
         internal GameObject targetPos;
+        internal Score scoring;
+
         public int missileSpd = 150;
 
 
@@ -28,6 +32,7 @@ namespace CarterGames.CWIS
         {
             rb = GetComponent<Rigidbody>();
             am = FindObjectOfType<AudioManager>();
+            scoring = GameObject.FindGameObjectWithTag("GameController").GetComponent<Score>();
         }
 
 
@@ -56,8 +61,9 @@ namespace CarterGames.CWIS
             {
                 other.gameObject.GetComponent<RadarIcons>().SetIconColour(Color.green);
                 other.gameObject.SetActive(false);
-                gameObject.SetActive(false);
                 am.Play("missileHitFar", .25f, Random.Range(.75f, .95f));
+                scoring.IncrementScore(GetRandom.Int(150, 175));
+                gameObject.SetActive(false);
             }
         }
     }

@@ -22,15 +22,15 @@ namespace CarterGames.CWIS
 
         public GameObject missilePrefab;
 
-        public int objectLimit { get; set; }
-        public List<GameObject> objectPool { get; set; }
-
+        public int objectLimit;
+        public List<GameObject> objectPool;
         public List<GameObject> activeMissiles;
 
         public float minWait;
         public float maxWait;
 
         private AudioManager am;
+        internal Score scoring;
         
 
         private void Start()
@@ -48,6 +48,7 @@ namespace CarterGames.CWIS
 
             ship = FindObjectOfType<Ship>();
             am = FindObjectOfType<AudioManager>();
+            scoring = GameObject.FindGameObjectWithTag("GameController").GetComponent<Score>();
         }
 
 

@@ -54,6 +54,7 @@ namespace CarterGames.CWIS
         internal Actions actions;
         internal CIC cic;
         internal Ship ship;
+        internal Score scoring;
 
 
         private void OnEnable()
@@ -64,6 +65,7 @@ namespace CarterGames.CWIS
             canShoot = true;
             cic = GameObject.FindGameObjectWithTag("CIC").GetComponent<CIC>();
             ship = GameObject.FindGameObjectWithTag("Player").GetComponent<Ship>();
+            scoring = GameObject.FindGameObjectWithTag("GameController").GetComponent<Score>();
         }
 
 
@@ -120,7 +122,10 @@ namespace CarterGames.CWIS
                     IncrementFiringTimer();
                 }
                 else if (shouldFireCWIS && CheckGunOverheating())
+                {
                     IncrementFiringTimer();
+                    scoring.DecrementScore(GetRandom.Int(1, 3));
+                }
                 else if (firingTimer > 0f && !shouldFireCWIS)
                     DecrementFiringTimer();
 

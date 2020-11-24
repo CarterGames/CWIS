@@ -1376,8 +1376,9 @@ GameObject:
   - component: {fileID: 7054639074342788783}
   - component: {fileID: 422141976109865713}
   - component: {fileID: 6599927983129114099}
+  - component: {fileID: 2354652117710102248}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Score-BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1443,6 +1444,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 00000000
+--- !u!114 &2354652117710102248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755881337788642904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce92ad359f2f6c4cb76aff6f80e6d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1776051283440128210
 GameObject:
   m_ObjectHideFlags: 0
@@ -4661,7 +4674,7 @@ GameObject:
   - component: {fileID: 1611005911089604655}
   - component: {fileID: 6481949193796498275}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8784,7 +8797,7 @@ GameObject:
   - component: {fileID: 8041377716622987757}
   - component: {fileID: 8278600566282871441}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Score-Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9662,7 +9675,7 @@ GameObject:
   - component: {fileID: 409867930064770893}
   - component: {fileID: 7799243129828306579}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Score-Title-BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
