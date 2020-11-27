@@ -16,6 +16,7 @@ namespace CarterGames.CWIS.Menu
         [Header("UI Buttons")]
         [SerializeField] internal GameObject[] buttons;
         [SerializeField] private bool isUD;
+        [SerializeField] private bool isKeyboard;
 
         private bool isCoR;
         private Actions action;
@@ -79,13 +80,41 @@ namespace CarterGames.CWIS.Menu
                             UpdatePos(-1);
                         }
                     }
-
-                    if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+                }
+            }
+            else
+            {
+                if (!isCoR)
+                {
+                    if (isUD)
                     {
-                        buttons[pos].GetComponent<Button>().onClick.Invoke();
-                        StartCoroutine(ButtonDelay());
+                        if (isKeyboard && action.Menu.Keys.ReadValue<Vector2>().y > .1f)
+                        {
+                            UpdatePos(1);
+                        }
+                        else if (isKeyboard && action.Menu.Keys.ReadValue<Vector2>().y < -.1f)
+                        {
+                            UpdatePos(-1);
+                        }
+                    }
+                    else
+                    {
+                        if (isKeyboard && action.Menu.Keys.ReadValue<Vector2>().x > .1f)
+                        {
+                            UpdatePos(1);
+                        }
+                        else if (isKeyboard && action.Menu.Keys.ReadValue<Vector2>().x < -.1f)
+                        {
+                            UpdatePos(-1);
+                        }
                     }
                 }
+            }
+
+            if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+            {
+                buttons[pos].GetComponent<Button>().onClick.Invoke();
+                StartCoroutine(ButtonDelay());
             }
         }
 
