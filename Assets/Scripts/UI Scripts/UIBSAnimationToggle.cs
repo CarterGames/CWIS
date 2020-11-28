@@ -8,24 +8,25 @@
 
 namespace CarterGames.CWIS.Menu
 {
-    public class UIBSAnimationToggle : UIButtonSwitch
+    public class UIBSAnimationToggle : MonoBehaviour
     {
         [Header("Animation Toggle Settings")]
         [SerializeField] private Animator[] anims;
 
+        private UIButtonSwitch uibs;
 
-        public override void Start()
+
+        private void Awake()
         {
-            base.Start();
-            ToggleAnimation();
+            uibs = GetComponent<UIButtonSwitch>();
         }
 
 
-        private void ToggleAnimation()
+        public void AnimationToggle()
         {
             for (int i = 0; i < anims.Length; i++)
             {
-                if (i.Equals(pos))
+                if (i.Equals(uibs.pos))
                 {
                     anims[i].ResetTrigger("CloseCard");
                     anims[i].SetTrigger("OpenCard");
@@ -39,10 +40,13 @@ namespace CarterGames.CWIS.Menu
         }
 
 
-        public override void UpdatePos(int value)
+        public void RevertEffects()
         {
-            base.UpdatePos(value);
-            ToggleAnimation();
+            for (int i = 0; i < anims.Length; i++)
+            {
+                anims[i].ResetTrigger("OpenCard");
+                anims[i].SetTrigger("CloseCard");
+            }
         }
     }
 }

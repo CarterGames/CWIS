@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -7374,6 +7374,8 @@ MonoBehaviour:
   maxDistance: 2000
   missilePrefab: {fileID: 6745593406842079945, guid: 9d256858dea2d2949a0cccf77866f155,
     type: 3}
+  objectLimit: 0
+  objectPool: []
   activeMissiles: []
   minWait: 3
   maxWait: 7.5
@@ -9108,13 +9110,10 @@ MonoBehaviour:
   - {fileID: 1494130784}
   - {fileID: 504263947}
   isUD: 0
-  shouldScaleOnHover: 1
-  scaleFactor: 1.05
-  shouldChangeColour: 1
-  defaultColour: {r: 0.4901961, g: 0.4901961, b: 0.4901961, a: 1}
-  hoverColour: {r: 0.4245283, g: 0.42124602, b: 0.23028658, a: 1}
-  pos: 0
-  maxPos: 0
+  isKeyboard: 0
+  effects:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1358123008 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 313739673870753493, guid: 27843fbe9ed923a4bb081a009f041f2e,

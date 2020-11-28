@@ -9,44 +9,45 @@ using UnityEngine.UI;
 
 namespace CarterGames.CWIS.Menu
 {
-    public class UIBSColourChange : UIButtonSwitch
+    public class UIBSColourChange : MonoBehaviour
     {
         [Header("Colour Change Setting")]
         [SerializeField] private bool shouldChangeColour;
         [SerializeField] private Color defaultColour;
         [SerializeField] private Color hoverColour;
 
+        private UIButtonSwitch uibs;
 
-        public override void Start()
+        private void Awake()
         {
-            base.Start();
-            ChangeColour();
+            uibs = GetComponent<UIButtonSwitch>();
         }
 
-
-        private void ChangeColour()
+        public void ChangeColour()
         {
             if (shouldChangeColour)
             {
-                for (int i = 0; i < buttons.Length; i++)
+                for (int i = 0; i < uibs.buttons.Length; i++)
                 {
-                    if (!i.Equals(pos))
+                    if (!i.Equals(uibs.pos))
                     {
-                        buttons[i].GetComponent<Image>().color = defaultColour;
+                        uibs.buttons[i].GetComponent<Image>().color = defaultColour;
                     }
                     else
                     {
-                        buttons[i].GetComponent<Image>().color = hoverColour;
+                        uibs.buttons[i].GetComponent<Image>().color = hoverColour;
                     }
                 }
             }
         }
 
 
-        public override void UpdatePos(int value)
+        public void RevertEffects()
         {
-            base.UpdatePos(value);
-            ChangeColour();
+            for (int i = 0; i < uibs.buttons.Length; i++)
+            {
+                uibs.buttons[i].GetComponent<Image>().color = hoverColour;
+            }
         }
     }
 }

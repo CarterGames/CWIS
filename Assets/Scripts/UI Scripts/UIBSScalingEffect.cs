@@ -8,46 +8,48 @@
 
 namespace CarterGames.CWIS.Menu
 {
-    public class UIBSScalingEffect : UIButtonSwitch
+    public class UIBSScalingEffect : MonoBehaviour
     {
         [Header("Scaling Settings")]
         [SerializeField] private bool shouldScaleOnHover;
         [SerializeField] private float scaleFactor;
 
+        private UIButtonSwitch uibs;
 
-        public override void Start()
+
+        private void Awake()
         {
-            base.Start();
-            HoverButton();
+            uibs = GetComponent<UIButtonSwitch>();
         }
-
 
         /// <summary>
         /// Controls the hover factor.
         /// </summary>
-        private void HoverButton()
+        public void HoverButton()
         {
             if (shouldScaleOnHover)
             {
-                for (int i = 0; i < base.buttons.Length; i++)
+                for (int i = 0; i < uibs.buttons.Length; i++)
                 {
-                    if (!i.Equals(pos))
+                    if (!i.Equals(uibs.pos))
                     {
-                        buttons[i].transform.localScale = Vector3.one;
+                        uibs.buttons[i].transform.localScale = Vector3.one;
                     }
                     else
                     {
-                        buttons[i].transform.localScale = Vector3.one * scaleFactor;
+                        uibs.buttons[i].transform.localScale = Vector3.one * scaleFactor;
                     }
                 }
             }
         }
 
 
-        public override void UpdatePos(int value)
+        public void RevertEffect()
         {
-            base.UpdatePos(value);
-            HoverButton();
+            for (int i = 0; i < uibs.buttons.Length; i++)
+            {
+                uibs.buttons[i].transform.localScale = Vector3.one;
+            }
         }
     }
 }

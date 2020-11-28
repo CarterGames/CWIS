@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Collections;
@@ -17,10 +18,11 @@ namespace CarterGames.CWIS.Menu
         [SerializeField] internal GameObject[] buttons;
         [SerializeField] private bool isUD;
         [SerializeField] private bool isKeyboard;
+        [SerializeField] private UnityEvent effects;
 
-        private bool isCoR;
-        private Actions action;
+        [SerializeField] private bool isCoR;
 
+        internal Actions action;
         internal bool isUsingController;
         internal int pos;
         internal int maxPos;
@@ -39,14 +41,20 @@ namespace CarterGames.CWIS.Menu
         {
             StopAllCoroutines();
             action.Disable();
+            isCoR = false;
         }
 
 
-        public virtual void Start()
+        private void Start()
         {
             pos = 0;
             maxPos = buttons.Length - 1;
             isCoR = false;
+
+            if (effects != null)
+            {
+                effects.Invoke();
+            }
         }
 
 
@@ -111,10 +119,20 @@ namespace CarterGames.CWIS.Menu
                 }
             }
 
-            if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+            if (!isCoR)
             {
-                buttons[pos].GetComponent<Button>().onClick.Invoke();
-                StartCoroutine(ButtonDelay());
+                if (action.Menu.Accept.phase.Equals(InputActionPhase.Performed))
+                {
+                    buttons[pos].GetComponent<Button>().onClick.Invoke();
+                    StartCoroutine(ButtonDelay());
+                }
+
+
+                if (action.Menu.Back.phase.Equals(InputActionPhase.Performed))
+                {
+
+                    StartCoroutine(ButtonDelay());
+                }
             }
         }
 
@@ -137,7 +155,7 @@ namespace CarterGames.CWIS.Menu
         /// Updates the position in the menu.
         /// </summary>
         /// <param name="value">value to change to.</param>
-        public virtual void UpdatePos(int value)
+        private void UpdatePos(int value)
         {
             pos += value;
 
@@ -148,6 +166,11 @@ namespace CarterGames.CWIS.Menu
             else if (pos.Equals(-1))
             {
                 pos = maxPos;
+            }
+
+            if (effects != null)
+            {
+                effects.Invoke();
             }
 
             StartCoroutine(ButtonDelay());
@@ -172,7 +195,7 @@ namespace CarterGames.CWIS.Menu
         /// <summary>
         /// Runs a short button delay on the menu buttons.
         /// </summary>
-        private IEnumerator ButtonDelay()
+        internal IEnumerator ButtonDelay()
         {
             isCoR = true;
             yield return new WaitForSecondsRealtime(.3f);
