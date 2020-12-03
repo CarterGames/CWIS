@@ -40,12 +40,12 @@ namespace CarterGames.CWIS
                 if (actions.Weapons.Fire.phase.Equals(InputActionPhase.Performed))
                 {
                     base.shouldFireCWIS = true;
-                    //gunSmoke.Play();
+                    gunSmoke.Play();
                 }
                 else
                 {
                     base.shouldFireCWIS = false;
-                    //gunSmoke.Stop();
+                    gunSmoke.Stop();
                 }
 
                 base.Update();
