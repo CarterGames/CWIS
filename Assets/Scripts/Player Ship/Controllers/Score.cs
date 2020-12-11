@@ -18,6 +18,7 @@ namespace CarterGames.CWIS
             if (!textElement[0].GetTextValue().Equals(playerScore.ToString()))
             {
                 textElement[0].SetTextValue(playerScore.ToString());
+                textElement[0].FlashText();
                 textElement[1].SetTextValue(playerScore.ToString());
             }
         }

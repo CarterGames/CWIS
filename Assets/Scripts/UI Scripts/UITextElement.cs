@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -15,6 +16,8 @@ namespace CarterGames.CWIS
         /// Reference to text componenet on this object.
         /// </summary>
         private Text _text;
+        private bool isCoR;
+
 
         /// <summary>
         /// Unity Awake | sets the text reference up.
@@ -40,6 +43,23 @@ namespace CarterGames.CWIS
         public string GetTextValue()
         {
             return _text.text;
+        }
+
+
+        public void FlashText()
+        {
+            if (!isCoR)
+                StartCoroutine(FlashTextCo());
+        }
+
+        private IEnumerator FlashTextCo()
+        {
+            Color _temp = _text.color;
+            isCoR = true;
+            _text.color = Color.white;
+            yield return new WaitForSeconds(.25f);
+            _text.color = _temp;
+            isCoR = false;
         }
     }
 }

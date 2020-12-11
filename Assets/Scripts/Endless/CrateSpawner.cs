@@ -14,7 +14,6 @@ namespace CarterGames.CWIS.EndlessSurvival
     public class CrateSpawner : MonoBehaviour
     {
         [SerializeField] private GameObject crateObject;
-        [SerializeField] private float[] minMaxX;
         [SerializeField] private float[] minMaxWait;
         [SerializeField] private int maxCrates;
 
@@ -53,8 +52,8 @@ namespace CarterGames.CWIS.EndlessSurvival
             {
                 if (!cratePool[i].activeInHierarchy)
                 {
-                    Vector3 spawnPos = ChooseSpawnLocation();
-                    cratePool[i].transform.position = new Vector3(spawnPos.x, 4, spawnPos.z);
+                    //Vector3 spawnPos = ChooseSpawnLocation();
+                    cratePool[i].transform.position = new Vector3(GetRandom.Float(-150f, 150f), 3, -150f);
                     cratePool[i].SetActive(true);
                     break;
                 }
@@ -65,9 +64,9 @@ namespace CarterGames.CWIS.EndlessSurvival
         }
 
 
-        private Vector3 ChooseSpawnLocation()
-        {
-            return Random.onUnitSphere * (Random.Range(500, 2000));
-        }
+        //private Vector3 ChooseSpawnLocation()
+        //{
+        //    return Random.onUnitSphere * (Random.Range(500, 2000));
+        //}
     }
 }

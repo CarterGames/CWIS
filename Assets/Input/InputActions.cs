@@ -179,6 +179,14 @@ namespace CarterGames.CWIS
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press(pressPoint=0.5)""
+                },
+                {
+                    ""name"": ""CameraZoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""66a9d146-f14b-41cd-a83d-d705b4f709f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(pressPoint=0.5)""
                 }
             ],
             ""bindings"": [
@@ -291,6 +299,39 @@ namespace CarterGames.CWIS
                     ""action"": ""ToggleWeaponAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""D-Pad U/D"",
+                    ""id"": ""048ab2c7-3d73-463b-a34b-b9839b3d39a8"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""275f5abb-f3f9-46d9-b098-c6228f325a21"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d9fa232c-c6a3-40ac-9bd8-c9852d62ff70"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Controller"",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -808,6 +849,7 @@ namespace CarterGames.CWIS
             m_CIC_ToggleWeaponSix = m_CIC.FindAction("ToggleWeaponSix", throwIfNotFound: true);
             m_CIC_ToggleWesponUD = m_CIC.FindAction("ToggleWesponUD", throwIfNotFound: true);
             m_CIC_ToggleWeaponAbility = m_CIC.FindAction("ToggleWeaponAbility", throwIfNotFound: true);
+            m_CIC_CameraZoom = m_CIC.FindAction("CameraZoom", throwIfNotFound: true);
             // Menu
             m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
             m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
@@ -935,6 +977,7 @@ namespace CarterGames.CWIS
         private readonly InputAction m_CIC_ToggleWeaponSix;
         private readonly InputAction m_CIC_ToggleWesponUD;
         private readonly InputAction m_CIC_ToggleWeaponAbility;
+        private readonly InputAction m_CIC_CameraZoom;
         public struct CICActions
         {
             private @Actions m_Wrapper;
@@ -947,6 +990,7 @@ namespace CarterGames.CWIS
             public InputAction @ToggleWeaponSix => m_Wrapper.m_CIC_ToggleWeaponSix;
             public InputAction @ToggleWesponUD => m_Wrapper.m_CIC_ToggleWesponUD;
             public InputAction @ToggleWeaponAbility => m_Wrapper.m_CIC_ToggleWeaponAbility;
+            public InputAction @CameraZoom => m_Wrapper.m_CIC_CameraZoom;
             public InputActionMap Get() { return m_Wrapper.m_CIC; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -980,6 +1024,9 @@ namespace CarterGames.CWIS
                     @ToggleWeaponAbility.started -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponAbility;
                     @ToggleWeaponAbility.performed -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponAbility;
                     @ToggleWeaponAbility.canceled -= m_Wrapper.m_CICActionsCallbackInterface.OnToggleWeaponAbility;
+                    @CameraZoom.started -= m_Wrapper.m_CICActionsCallbackInterface.OnCameraZoom;
+                    @CameraZoom.performed -= m_Wrapper.m_CICActionsCallbackInterface.OnCameraZoom;
+                    @CameraZoom.canceled -= m_Wrapper.m_CICActionsCallbackInterface.OnCameraZoom;
                 }
                 m_Wrapper.m_CICActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1008,6 +1055,9 @@ namespace CarterGames.CWIS
                     @ToggleWeaponAbility.started += instance.OnToggleWeaponAbility;
                     @ToggleWeaponAbility.performed += instance.OnToggleWeaponAbility;
                     @ToggleWeaponAbility.canceled += instance.OnToggleWeaponAbility;
+                    @CameraZoom.started += instance.OnCameraZoom;
+                    @CameraZoom.performed += instance.OnCameraZoom;
+                    @CameraZoom.canceled += instance.OnCameraZoom;
                 }
             }
         }
@@ -1161,6 +1211,7 @@ namespace CarterGames.CWIS
             void OnToggleWeaponSix(InputAction.CallbackContext context);
             void OnToggleWesponUD(InputAction.CallbackContext context);
             void OnToggleWeaponAbility(InputAction.CallbackContext context);
+            void OnCameraZoom(InputAction.CallbackContext context);
         }
         public interface IMenuActions
         {

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 234135250390638889}
   - component: {fileID: 234135250390638901}
   - component: {fileID: 234135250390638888}
-  - component: {fileID: 234135250390638900}
+  - component: {fileID: 4986561507336044053}
   m_Layer: 0
   m_Name: SupplyCrate
   m_TagString: Untagged
@@ -111,7 +111,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 5, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &234135250390638900
+--- !u!114 &4986561507336044053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 234135250390638895}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6d3dc2493dc2e64495d99aa637dba74, type: 3}
+  m_Script: {fileID: 11500000, guid: a40e465b40032674fbfdc61cf34a21d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   crateuiPrefab: {fileID: 3701526001283821677, guid: 0ad9b3addb015154d9bdbec517c73be1,
@@ -128,5 +128,4 @@ MonoBehaviour:
   moveSpd: 10
   ammoStandard: 0
   ammoSpecial: 0
-  health: 0
   missiles: 0

@@ -35,7 +35,7 @@ namespace CarterGames.CWIS
 
             rB.velocity = (Vector3.zero - transform.position).normalized * moveSpd;
 
-            crateAnchor = GameObject.FindGameObjectWithTag("crateanchor").transform;
+            //crateAnchor = GameObject.FindGameObjectWithTag("crateanchor").transform;
         }
 
 

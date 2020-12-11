@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System.Linq;
 
@@ -33,6 +34,8 @@ namespace CarterGames.Assets.AudioManager
         [SerializeField] public GameObject soundPrefab = null;          // Holds the prefab that plays the sound requested
 
         [SerializeField] public Dictionary<string, AudioClip> soundLibrary = new Dictionary<string, AudioClip>();       // Dictionary that holds the audio names and clips
+        private bool canPlayOnce;
+        private GameObject lastSpawned;
 
         /// <summary>
         /// Unity Method | Runs basic startup for the script
@@ -323,28 +326,6 @@ namespace CarterGames.Assets.AudioManager
             }
         }
 
-        /// <summary>
-        /// Audio Manager | Play a random sound that has been scanned by this manager
-        /// </summary>
-        /// <param name="delay">The amount of time you want the clip to wait before playing</param>
-        /// <param name="volume">(*Optional*) The volume that the clip will be played at | Default = 1</param>
-        /// <param name="pitch">(*Optional*) The pitch that the sound is played at | Default = 1</param>
-        public void PlayRandomWithDelay(float delay, float volume = 1, float pitch = 1)
-        {
-            if (soundLibrary.ContainsKey(GetRandomSound().name))
-            {
-                GameObject clip = Instantiate(soundPrefab);
-                clip.GetComponent<AudioSource>().clip = soundLibrary[GetRandomSound().name];
-                clip.GetComponent<AudioSource>().volume = volume;
-                clip.GetComponent<AudioSource>().pitch = pitch;
-                clip.GetComponent<AudioSource>().PlayDelayed(delay);                            // Only difference, played with a delay rather that right away
-                Destroy(clip, clip.GetComponent<AudioSource>().clip.length);
-            }
-            else
-            {
-                Debug.LogWarning("* Audio Manager * | Warning Code 2 | Could not find clip. Please ensure the clip is scanned and the string you entered is correct (Note the input is CaSe SeNsItIvE).");
-            }
-        }
 
         /// <summary>
         /// Audio Manager | gets the number of clips currently in this instance of the Audio Manager.

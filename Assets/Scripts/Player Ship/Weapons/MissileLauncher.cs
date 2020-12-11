@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CarterGames.Assets.AudioManager;
+using CarterGames.Utilities;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -27,6 +29,7 @@ namespace CarterGames.CWIS
         private MissileTargeting missileTargeting;
         private ParticleSystem particles;
         private WaitForSeconds wait;
+        private AudioManager am;
 
         private Color defaultColour;
 
@@ -40,6 +43,7 @@ namespace CarterGames.CWIS
 
             missileTargeting = GetComponentInChildren<MissileTargeting>();
             particles = GetComponentInChildren<ParticleSystem>();
+            am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
 
             wait = new WaitForSeconds(.2f);
 
@@ -139,11 +143,13 @@ namespace CarterGames.CWIS
                 if ((setting + 1).Equals(MissileSetting.TripleShot + 1))
                 {
                     setting = 0;
+                    am.Play("click", .25f, GetRandom.Float(.75f, 1f));
                     base.StartInputCooldown(.25f);
                 }
                 else
                 {
                     ++setting;
+                    am.Play("click", .25f, GetRandom.Float(.75f, 1f));
                     base.StartInputCooldown(.25f);
                 }
             }

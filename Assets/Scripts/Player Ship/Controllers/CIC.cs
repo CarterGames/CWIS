@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CarterGames.Assets.AudioManager;
+using CarterGames.Utilities;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -19,9 +21,11 @@ namespace CarterGames.CWIS
     public class CIC : MonoBehaviour
     {
         [SerializeField] internal Turret[] shipWeapons;
+        [SerializeField] private AudioManager am;
 
         private WaitForSeconds wait;
         private bool isCoR;
+        private bool canPlayAudio = true;
         internal Actions action;
 
         /// <summary>
@@ -71,18 +75,39 @@ namespace CarterGames.CWIS
         /// </summary>
         private void ToggleCICWeaponPC()
         {
-            if (action.CIC.ToggleWeaponOne.phase.Equals(InputActionPhase.Performed))
-                activeCICWeapon = ShipWeapons.FiveInch;
-            else if (action.CIC.ToggleWeaponTwo.phase.Equals(InputActionPhase.Performed))
-                activeCICWeapon = ShipWeapons.BowMissiles;
-            else if (action.CIC.ToggleWeaponThree.phase.Equals(InputActionPhase.Performed))
-                activeCICWeapon = ShipWeapons.BowCWIS;
-            else if (action.CIC.ToggleWeaponFour.phase.Equals(InputActionPhase.Performed))
-                activeCICWeapon = ShipWeapons.Chafts;
-            else if (action.CIC.ToggleWeaponFive.phase.Equals(InputActionPhase.Performed))
-                activeCICWeapon = ShipWeapons.SternCWIS;
-            else if (action.CIC.ToggleWeaponSix.phase.Equals(InputActionPhase.Performed))
-                activeCICWeapon = ShipWeapons.SternMissiles;
+            if (!isCoR)
+            {
+                if (action.CIC.ToggleWeaponOne.phase.Equals(InputActionPhase.Performed))
+                {
+                    activeCICWeapon = ShipWeapons.FiveInch;
+                    StartCoroutine(ToggleCooldown());
+                }
+                else if (action.CIC.ToggleWeaponTwo.phase.Equals(InputActionPhase.Performed))
+                {
+                    activeCICWeapon = ShipWeapons.BowMissiles;
+                    StartCoroutine(ToggleCooldown());
+                }
+                else if (action.CIC.ToggleWeaponThree.phase.Equals(InputActionPhase.Performed))
+                {
+                    activeCICWeapon = ShipWeapons.BowCWIS;
+                    StartCoroutine(ToggleCooldown());
+                }
+                else if (action.CIC.ToggleWeaponFour.phase.Equals(InputActionPhase.Performed))
+                {
+                    activeCICWeapon = ShipWeapons.Chafts;
+                    StartCoroutine(ToggleCooldown());
+                }
+                else if (action.CIC.ToggleWeaponFive.phase.Equals(InputActionPhase.Performed))
+                {
+                    activeCICWeapon = ShipWeapons.SternCWIS;
+                    StartCoroutine(ToggleCooldown());
+                }
+                else if (action.CIC.ToggleWeaponSix.phase.Equals(InputActionPhase.Performed))
+                {
+                    activeCICWeapon = ShipWeapons.SternMissiles;
+                    StartCoroutine(ToggleCooldown());
+                }
+            }
         }
 
 
@@ -127,17 +152,9 @@ namespace CarterGames.CWIS
         private IEnumerator ToggleCooldown()
         {
             isCoR = true;
+            am.Play("click", .25f, GetRandom.Float(.75f, 1f));
             yield return wait;
             isCoR = false;
-        }
-
-
-        /// <summary>
-        /// Fires the active weapon.
-        /// </summary>
-        public void FireWeapon()
-        {
-            
         }
     }
 }
