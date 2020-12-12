@@ -12,7 +12,7 @@ namespace CarterGames.CWIS
 {
     public class CameraZoom : MonoBehaviour
     {
-        [SerializeField] private Camera mainCam;
+        [SerializeField] private Camera[] cameras;
         [SerializeField] private GameObject[] zooms;
 
         private Actions actions;
@@ -46,7 +46,13 @@ namespace CarterGames.CWIS
                 }
             }
 
-            mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, zooms[pos].transform.position, Time.deltaTime * 2);
+            for (int i = 0; i < cameras.Length; i++)
+            {
+                if (!cameras[i].transform.position.Equals(zooms[pos].transform.position))
+                {
+                    cameras[i].transform.position = Vector3.Lerp(cameras[i].transform.position, zooms[pos].transform.position, Time.deltaTime * 2);
+                }
+            }
         }
 
 

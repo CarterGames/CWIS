@@ -5,10 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu.unity
     guid: 113ac202222597841a79e81a2736001e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game.unity
     guid: f7f08488226a4204993382096bdcf42f
+  - enabled: 1
+    path: Assets/Scenes/Endless_Survival.unity
+    guid: b96a10d22b0c8954ab9ae607a4e263de
   m_configObjects: {}
