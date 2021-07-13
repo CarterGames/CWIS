@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -13,7 +14,7 @@ namespace CarterGames.CWIS
 {
     public class Ship : MonoBehaviour
     {
-        [SerializeField] private UITextElement[] uITextElements = default;
+        [SerializeField] private TMP_Text[] uITextElements = default;
 
         internal Actions action;
         [SerializeField] private BoxCollider boxCollider = default;
@@ -94,7 +95,7 @@ namespace CarterGames.CWIS
                 shipHealth -= value;
 
                 // Update the health UI
-                uITextElements[0].SetTextValue(shipHealth.ToString());
+                uITextElements[0].text = shipHealth.ToString();
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using CarterGames.Utilities;
+using TMPro;
 
 /*
 *  Copyright (c) Jonathan Carter
@@ -11,16 +12,15 @@ namespace CarterGames.CWIS
 {
     public class Score : MonoBehaviour
     {
-        [SerializeField] private UITextElement[] textElement;
+        [SerializeField] private TMP_Text textElement;
         private int playerScore;
+
 
         private void Update()
         {
-            if (!textElement[0].GetTextValue().Equals(playerScore.ToString()))
+            if (!textElement.text.Equals(playerScore.ToString()))
             {
-                textElement[0].SetTextValue(playerScore.ToString());
-                textElement[0].FlashText();
-                textElement[1].SetTextValue(playerScore.ToString());
+                textElement.text = playerScore.ToString();
             }
         }
 

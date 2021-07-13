@@ -12,28 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1a550171c18a144be85aee12017d69, type: 3}
   m_Name: Audio Manager File
   m_EditorClassIdentifier: 
-  clipName:
-  - cwisShoot
-  - chaft
-  - click
-  - confirm
-  - hit
-  - inbound
-  - levelup
-  - missileFire
-  - missileHitFar
-  - missileSmoke
-  audioClip:
-  - {fileID: 8300000, guid: dc7af62be9c41444fb2ca1d6bbd65204, type: 3}
-  - {fileID: 8300000, guid: e12d04c0741452b47a71a79b95eb4b9b, type: 3}
-  - {fileID: 8300000, guid: 0bb909d8a0a9dbe4a880c33d87d5d448, type: 3}
-  - {fileID: 8300000, guid: 57000cbbdcd7c764cb5b284033341172, type: 3}
-  - {fileID: 8300000, guid: 5e048e5947f1d554da678ac65a467a3d, type: 3}
-  - {fileID: 8300000, guid: 93036413699d20a429587bd2a209e3f4, type: 3}
-  - {fileID: 8300000, guid: 3c26f0f77746427439c9e23e218f688c, type: 3}
-  - {fileID: 8300000, guid: 961d4dc1848e4f54990becdac82f2e8b, type: 3}
-  - {fileID: 8300000, guid: a2e14c7bd2e4fc44499954ab069d63e8, type: 3}
-  - {fileID: 8300000, guid: 9fae692c649192446ad96d87c6c3001a, type: 3}
+  audioMixer:
+  - {fileID: -7923606588980237156, guid: 2e8159ae406729b4eb71e9293aded0f8, type: 2}
+  - {fileID: 6901542723952871410, guid: 2e8159ae406729b4eb71e9293aded0f8, type: 2}
   soundPrefab: {fileID: 977031777656076914, guid: b5d5badebe4196a46b2ceec15e850185,
     type: 3}
   isPopulated: 1
@@ -41,3 +22,24 @@ MonoBehaviour:
   directory:
   - CWIS
   - SFX
+  library:
+  - key: cwisShoot
+    value: {fileID: 8300000, guid: dc7af62be9c41444fb2ca1d6bbd65204, type: 3}
+  - key: chaft
+    value: {fileID: 8300000, guid: e12d04c0741452b47a71a79b95eb4b9b, type: 3}
+  - key: click
+    value: {fileID: 8300000, guid: 0bb909d8a0a9dbe4a880c33d87d5d448, type: 3}
+  - key: confirm
+    value: {fileID: 8300000, guid: 57000cbbdcd7c764cb5b284033341172, type: 3}
+  - key: hit
+    value: {fileID: 8300000, guid: 5e048e5947f1d554da678ac65a467a3d, type: 3}
+  - key: inbound
+    value: {fileID: 8300000, guid: 93036413699d20a429587bd2a209e3f4, type: 3}
+  - key: levelup
+    value: {fileID: 8300000, guid: 3c26f0f77746427439c9e23e218f688c, type: 3}
+  - key: missileFire
+    value: {fileID: 8300000, guid: 961d4dc1848e4f54990becdac82f2e8b, type: 3}
+  - key: missileHitFar
+    value: {fileID: 8300000, guid: a2e14c7bd2e4fc44499954ab069d63e8, type: 3}
+  - key: missileSmoke
+    value: {fileID: 8300000, guid: 9fae692c649192446ad96d87c6c3001a, type: 3}
